@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="api_map_key">AIzaSyDBd9BYtE13_5X0nfbOzqhwqA4OfPbX6_M</string>
 
     <string name="app_name">TimeAttack</string>
     <string name="hello_world">Hello world!</string>
