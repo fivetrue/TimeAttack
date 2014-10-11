@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Common  -->
+    
+    <!-- Drawer text -->
+    <!-- <color name="drawer_text_color_n">#FFE04848</color> -->
+    <color name="drawer_text_color_n">#FF191919</color>
+    <color name="drawer_text_color_p">#FFEAEAEA</color>
+    <color name="drawer_text_color_s">#FFFFFFFF</color>
+    <color name="drawer_text_color_d">#66191919</color>
+    
+    <!-- Drawer Layout -->
+    <color name="drawer_item_under_line">#FF353535</color>
+    
+    <color name="drawer_item_background_n">#FFBDBDBD</color>
+    <color name="drawer_item_background_d">#66BDBDBD</color>
+</resources>
+
