@@ -4,6 +4,8 @@ import com.fivetrue.location.activity.LocationActivity;
 import com.fivetrue.timeattack.R;
 import com.fivetrue.timeattack.fragment.DrawerFragment;
 
+import android.app.Fragment;
+import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.support.v4.widget.DrawerLayout;
@@ -127,7 +129,19 @@ abstract public class BaseActivity extends LocationActivity {
 		};
 		return super.onOptionsItemSelected(item);
 	}
-
+	
+	
+	public void createFragment(Fragment fragment, String tag){
+		FragmentTransaction trans = getFragmentManager().beginTransaction();
+		trans.add(R.id.layout_main_frame, fragment, tag);
+		trans.commit();
+	}
+	
+	public void createFragment(int containLayoutId, Fragment fragment, String tag){
+		FragmentTransaction trans = getFragmentManager().beginTransaction();
+		trans.add(containLayoutId, fragment, tag);
+		trans.commit();
+	};
 	
 	
 	abstract View onCreateView(LayoutInflater inflater);

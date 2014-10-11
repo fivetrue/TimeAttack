@@ -13,19 +13,30 @@ import android.widget.Toast;
 
 public class DrawerFragment extends Fragment {
 	
+	public interface OnDrawerMenuClickListener{
+		public void onMenuClick(View view);
+	}
+	
+	private OnDrawerMenuClickListener mDrawerMenuClickListener = null;
+	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		View view = inflater.inflate(R.layout.fragment_drawer, null);
-		view.findViewById(R.id.btn_map).setOnClickListener(new OnClickListener() {
+		
+		view.findViewById(R.id.layout_drawer_home).setOnClickListener(new OnClickListener() {
 			
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				Toast.makeText(getActivity(), "Click Button", Toast.LENGTH_SHORT).show();
+				Toast.makeText(getActivity(), "on Click", Toast.LENGTH_SHORT).show();
 			}
 		});
 		return view;
+	}
+	
+	public void setOnClickDrawerMenuClickListener(OnDrawerMenuClickListener listener){
+		mDrawerMenuClickListener = listener;
 	}
 }
