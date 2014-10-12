@@ -3,6 +3,7 @@ package com.fivetrue.timeattack.activity;
 import com.fivetrue.location.activity.LocationActivity;
 import com.fivetrue.timeattack.R;
 import com.fivetrue.timeattack.fragment.DrawerFragment;
+import com.fivetrue.timeattack.fragment.DrawerFragment.OnDrawerMenuClickListener;
 
 import android.app.Fragment;
 import android.app.FragmentTransaction;
@@ -10,11 +11,13 @@ import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.DrawerLayout.DrawerListener;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 abstract public class BaseActivity extends LocationActivity {
 	
@@ -22,7 +25,7 @@ abstract public class BaseActivity extends LocationActivity {
 
 	private ViewGroup mContentView = null;
 	private ViewGroup mLayoutDrawer = null;
-	private DrawerFragment mFragmentDrawer = null;
+	static protected DrawerFragment mFragmentDrawer = null;
 	
 	private LayoutInflater mInflater = null;
 	
@@ -54,8 +57,10 @@ abstract public class BaseActivity extends LocationActivity {
 		mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 		mContentView = (ViewGroup) findViewById(R.id.layout_main_frame);
 		mLayoutDrawer = (ViewGroup) findViewById(R.id.layout_drawer);
-		mFragmentDrawer = (DrawerFragment) getFragmentManager().findFragmentById(R.id.fragment_drawer);
-	
+		if(mFragmentDrawer == null){
+			mFragmentDrawer = (DrawerFragment) getFragmentManager().findFragmentById(R.id.fragment_drawer);
+			mFragmentDrawer.setOnClickDrawerMenuClickListener(mDrawerMenuClickListener);
+		}
 		View contentView = onCreateView(mInflater);
 		if(contentView != null){
 			mContentView.addView(contentView);
@@ -151,5 +156,41 @@ abstract public class BaseActivity extends LocationActivity {
 	abstract String getActionBarSubTitle();
 	
 	abstract boolean isHomeAsUp();
+	
+	protected OnDrawerMenuClickListener  mDrawerMenuClickListener = new OnDrawerMenuClickListener() {
+		
+		@Override
+		public void onMenuClick(ViewGroup parent, ViewGroup itemLayout,
+				TextView itemText) {
+			// TODO Auto-generated method stub
+			if(parent != null){
+				for(int i = 0 ; i < parent.getChildCount() ; i ++){
+					ViewGroup view = (ViewGroup) parent.getChildAt(i);
+					if(view != null){
+						for(int index = 0 ; index < view.getChildCount() ; index ++){
+							View child = view.getChildAt(index);
+							if(child != null){
+								if(child instanceof TextView){
+									child.setSelected(false);
+								}
+							}
+						}
+					}
+				}
+			}
+			
+			if(itemText == null && itemLayout == null){
+				Log.e(getPackageName(), "Drawer layout item is null");
+				return;
+			}
+			
+			itemText.setSelected(true);
+			
+			if(mDrawerLayout != null && mLayoutDrawer != null){
+				mDrawerLayout.closeDrawer(mLayoutDrawer);
+			}
+			
+		}
+	};
 	
 }
