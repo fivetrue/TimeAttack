@@ -5,9 +5,9 @@ import com.fivetrue.timeattack.R;
 import com.fivetrue.timeattack.fragment.DrawerFragment;
 import com.fivetrue.timeattack.fragment.DrawerFragment.OnDrawerMenuClickListener;
 
-import android.app.Fragment;
-import android.app.FragmentTransaction;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.NavUtils;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.DrawerLayout.DrawerListener;
@@ -58,7 +58,7 @@ abstract public class BaseActivity extends LocationActivity {
 		mContentView = (ViewGroup) findViewById(R.id.layout_main_frame);
 		mLayoutDrawer = (ViewGroup) findViewById(R.id.layout_drawer);
 		if(mFragmentDrawer == null){
-			mFragmentDrawer = (DrawerFragment) getFragmentManager().findFragmentById(R.id.fragment_drawer);
+			mFragmentDrawer = (DrawerFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_drawer);
 			mFragmentDrawer.setOnClickDrawerMenuClickListener(mDrawerMenuClickListener);
 		}
 		View contentView = onCreateView(mInflater);
@@ -137,13 +137,13 @@ abstract public class BaseActivity extends LocationActivity {
 	
 	
 	public void createFragment(Fragment fragment, String tag){
-		FragmentTransaction trans = getFragmentManager().beginTransaction();
+		FragmentTransaction trans =  getSupportFragmentManager().beginTransaction();
 		trans.add(R.id.layout_main_frame, fragment, tag);
 		trans.commit();
 	}
 	
 	public void createFragment(int containLayoutId, Fragment fragment, String tag){
-		FragmentTransaction trans = getFragmentManager().beginTransaction();
+		FragmentTransaction trans = getSupportFragmentManager().beginTransaction();
 		trans.add(containLayoutId, fragment, tag);
 		trans.commit();
 	};

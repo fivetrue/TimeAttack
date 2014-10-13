@@ -2,7 +2,6 @@ package com.fivetrue.timeattack.fragment;
 
 import com.fivetrue.timeattack.R;
 
-import android.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,7 +10,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 
-public class DrawerFragment extends Fragment {
+public class DrawerFragment extends BaseFragment {
 	
 	public interface OnDrawerMenuClickListener{
 		public void onMenuClick(ViewGroup parent, ViewGroup itemLayout, TextView itemText);
