@@ -126,6 +126,7 @@ public class TabFragment extends BaseFragment {
 
 	private void initModel(){
 
+		mViewPager.setOffscreenPageLimit(mFragmentList.size());
 		makeTabLayoutTitle(mTabLayout);
 		mPagerAdapter = new CustomFragmentPagerAdapter(getFragmentManager(), mFragmentList);
 		mViewPager.setAdapter(mPagerAdapter);

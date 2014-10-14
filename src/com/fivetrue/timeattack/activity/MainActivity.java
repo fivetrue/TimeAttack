@@ -2,7 +2,7 @@ package com.fivetrue.timeattack.activity;
 
 import com.fivetrue.timeattack.R;
 import com.fivetrue.timeattack.fragment.DrawerFragment;
-import com.fivetrue.timeattack.fragment.main.RecentlyRouteFragment;
+import com.fivetrue.timeattack.fragment.main.RecentlyUseFragment;
 import com.fivetrue.timeattack.fragment.tab.TabFragment;
 
 import android.location.Location;
@@ -43,10 +43,9 @@ public class MainActivity extends BaseActivity{
 	
 		TabFragment tabFragment = new TabFragment();
 		createFragment(tabFragment, "");
-		tabFragment.addFragment(new RecentlyRouteFragment(), "최근");
-		tabFragment.addFragment(new RecentlyRouteFragment(), "이전");
-		tabFragment.addFragment(new RecentlyRouteFragment(), "나중");
-		
+		tabFragment.addFragment(new RecentlyUseFragment(), "최근");
+		tabFragment.addFragment(new RecentlyUseFragment(), "이전");
+		tabFragment.addFragment(new RecentlyUseFragment(), "나중");
 		return null;
 	}
 
