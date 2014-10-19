@@ -13,7 +13,10 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.TextView;
 
@@ -23,6 +26,12 @@ import com.fivetrue.timeattack.view.pager.CustomViewPager;
 import com.fivetrue.timeattack.view.pager.adapter.CustomFragmentPagerAdapter;
 
 public class TabFragment extends BaseFragment {
+	
+	private class ViewHolder{
+		ViewGroup layoutHolder = null;
+		TextView tvTitle = null;
+		View vUnderline = null;
+	}
 
 	private final int INVALID_VALUE = -1;
 
@@ -30,27 +39,28 @@ public class TabFragment extends BaseFragment {
 	private LayoutParams mContentViewLayoutParam = null;
 
 	private LinearLayout mTabLayout = null;
+	private HorizontalScrollView mTabScrollView = null;
 	private LayoutParams mTabLayoutParam = null;
 
 	private FrameLayout mContentLayout = null;
 	private LayoutParams mContentLayoutParam = null;
 
-	private View mAnimationTab = null;
-	private LayoutParams mAnimaitonTabLayoutParam = null;
 
 	private int mTabWidth = INVALID_VALUE;
 	private int mTabHeight = INVALID_VALUE;
+	private int mTabUnderlineHeight = INVALID_VALUE;
+	private int mTabUnderlineWidth = INVALID_VALUE;
 
 	private int mLayoutWidth = INVALID_VALUE;
 	private int mLayoutHeight = INVALID_VALUE;
-
+	
 
 	private CustomViewPager mViewPager = null;
 	private CustomFragmentPagerAdapter mPagerAdapter = null;
 
 	private ArrayList<Fragment> mFragmentList = new ArrayList<Fragment>();
 	private ArrayList<String> mTitleList = new ArrayList<String>();
-	private ArrayList<TextView> mTextViewList = new ArrayList<TextView>();
+	private ArrayList<ViewHolder> mViewList = new ArrayList<ViewHolder>();
 
 	private Typeface roboto_bold = null;
 	private Typeface roboto_light = null;
@@ -81,6 +91,8 @@ public class TabFragment extends BaseFragment {
 
 		mTabWidth = getResources().getDisplayMetrics().widthPixels;
 		mTabHeight = (int) getResources().getDimension(R.dimen.tab_height);
+		mTabUnderlineHeight = (int) getResources().getDimension(R.dimen.tab_underline_height);
+		mTabUnderlineWidth = (int) getResources().getDimension(R.dimen.tab_underline_width);
 	}
 
 	private void initView(){
@@ -90,23 +102,27 @@ public class TabFragment extends BaseFragment {
 		mContentView.setLayoutParams(mContentViewLayoutParam);
 		mContentView.setBackgroundColor(getResources().getColor(R.color.drawer_item_background_n));
 
+		
+		mTabScrollView = new HorizontalScrollView(getActivity());
+		mTabScrollView.setLayoutParams(new ScrollView.LayoutParams(mTabWidth, mTabHeight));
+		mTabScrollView.setScrollContainer(false);
+		mTabScrollView.setVerticalScrollBarEnabled(false);
+		mTabScrollView.setHorizontalScrollBarEnabled(false);
+		
 		mTabLayout = new LinearLayout(getActivity());
 		mTabLayout.setOrientation(LinearLayout.HORIZONTAL);
 		mTabLayout.setBackgroundColor(getResources().getColor(R.color.drawer_item_background_n));
-		mTabLayoutParam = new LayoutParams(mTabWidth, mTabHeight);
+		mTabLayoutParam = new LayoutParams(LayoutParams.WRAP_CONTENT, mTabHeight);
 		mTabLayout.setLayoutParams(mTabLayoutParam);
 		mTabLayout.setPadding((int) getResources().getDimension(R.dimen.tab_side_padding),
 				0, (int) getResources().getDimension(R.dimen.tab_side_padding), 0);
+
+		mTabScrollView.addView(mTabLayout);
 
 		mContentLayout = new FrameLayout(getActivity());
 		mContentLayoutParam = new LayoutParams(mLayoutWidth, mLayoutHeight - mTabHeight);
 		mContentLayout.setLayoutParams(mContentLayoutParam);
 
-		mAnimationTab = new View(getActivity());
-		mAnimationTab.setBackground(getResources().getDrawable(R.drawable.tab_sel_white));
-		mAnimaitonTabLayoutParam = new LayoutParams((int)getResources().getDimension(R.dimen.tab_height), (int)getResources().getDimension(R.dimen.tab_animation_height));
-		mAnimationTab.setLayoutParams(mAnimaitonTabLayoutParam);
-		
 		mViewPager = new CustomViewPager(getActivity());
 		mViewPager.setId(0x009900);
 
@@ -119,24 +135,25 @@ public class TabFragment extends BaseFragment {
 		mContentLayout.addView(shadowView, new LayoutParams(android.view.ViewGroup.LayoutParams.MATCH_PARENT,
 				3 * (int)getResources().getDisplayMetrics().density));
 
-		mContentView.addView(mTabLayout);
-		mContentView.addView(mAnimationTab);
+		mContentView.addView(mTabScrollView);
+//		mContentView.addView(mAnimationTab);
 		mContentView.addView(mContentLayout);
 	}
 
 	private void initModel(){
 
 		mViewPager.setOffscreenPageLimit(mFragmentList.size());
-		makeTabLayoutTitle(mTabLayout);
+		makeTabViews(mTabLayout);
 		mPagerAdapter = new CustomFragmentPagerAdapter(getFragmentManager(), mFragmentList);
 		mViewPager.setAdapter(mPagerAdapter);
 		mViewPager.setOnPageChangeListener(mPageChangeListener);
 	}
 
-	private void makeTabLayoutTitle(ViewGroup parent){
-		if(mTitleList != null && parent != null){
+	private void makeTabViews(ViewGroup parent){
+		if(mTitleList != null && mTabLayout != null ){
 			for(int i = 0 ; i < mTitleList.size() ; i ++){
-				addTextView(parent, mTitleList.get(i));
+			
+				addTabViewItem(parent, mTitleList.get(i));
 
 				if(i != mTitleList.size() - 1){
 					View line = new View(getActivity());
@@ -150,12 +167,12 @@ public class TabFragment extends BaseFragment {
 			}
 		}
 
-		mTextViewList.get(0).setSelected(true);
-		mAnimationTab.setX(mTextViewList.get(0).getX());
+		mViewList.get(0).tvTitle.setSelected(true);
+		mViewList.get(0).vUnderline.setVisibility(View.VISIBLE);
 
-		for(int i = 0 ; i < mTextViewList.size() ; i ++){
+		for(int i = 0 ; i < mViewList.size() ; i ++){
 			final int position = i;
-			mTextViewList.get(position).setOnClickListener(new OnClickListener() {
+			mViewList.get(position).layoutHolder.setOnClickListener(new OnClickListener() {
 
 				@Override
 				public void onClick(View v) {
@@ -168,23 +185,36 @@ public class TabFragment extends BaseFragment {
 
 	}
 
-	private void addTextView(ViewGroup parent, String text){
+	private void addTabViewItem(ViewGroup parent, String text){
 		if(getActivity() == null || parent == null || TextUtils.isEmpty(text))
-			return;
+			return ;
+		ViewHolder holder = new ViewHolder();
+		
+		holder.layoutHolder = new RelativeLayout(getActivity());
 
-		TextView tv = new TextView(getActivity());
-		tv.setText(text);
-		tv.setTextSize(getResources().getDimension(R.dimen.tab_text_size));
-		tv.setTextColor(getResources().getColorStateList(R.color.selector_drawer_text_color));
-		tv.setTypeface(roboto_light);
-		tv.setGravity(Gravity.CENTER);
-		tv.setPadding((int) getResources().getDimension(R.dimen.tab_text_side_padding),
+		holder.tvTitle = new TextView(getActivity());
+		holder.tvTitle.setText(text);
+		holder.tvTitle.setTextSize(getResources().getDimension(R.dimen.tab_text_size));
+		holder.tvTitle.setTextColor(getResources().getColorStateList(R.color.selector_drawer_text_color));
+		holder.tvTitle.setTypeface(roboto_light);
+		holder.tvTitle.setGravity(Gravity.CENTER);
+		holder.tvTitle.setPadding((int) getResources().getDimension(R.dimen.tab_text_side_padding),
 				0, (int) getResources().getDimension(R.dimen.tab_text_side_padding), 0);
-		tv.setBackground(getResources().getDrawable(R.drawable.selector_drawer_layout));
-		mTextViewList.add(tv);
-		parent.addView(tv, new LayoutParams(android.view.ViewGroup.LayoutParams.WRAP_CONTENT, android.view.ViewGroup.LayoutParams.MATCH_PARENT));
+		holder.tvTitle.setBackground(getResources().getDrawable(R.drawable.selector_drawer_layout));
+		
+		holder.vUnderline = new View(getActivity());
+		holder.vUnderline.setBackground(getResources().getDrawable(R.drawable.tab_sel_white));
+		RelativeLayout.LayoutParams param = new RelativeLayout.LayoutParams(mTabUnderlineWidth, mTabUnderlineHeight);
+		param.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+		holder.vUnderline.setVisibility(View.GONE);
+		
+		holder.layoutHolder.addView(holder.tvTitle, new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.MATCH_PARENT));
+		holder.layoutHolder.addView(holder.vUnderline, param);
+		
+		mViewList.add(holder);
+		parent.addView(holder.layoutHolder, new LayoutParams(android.view.ViewGroup.LayoutParams.WRAP_CONTENT, android.view.ViewGroup.LayoutParams.MATCH_PARENT));
 	}
-
+	
 	public void addFragment(Fragment f, String title){
 		mTitleList.add(title);
 		mFragmentList.add(f);
@@ -197,34 +227,30 @@ public class TabFragment extends BaseFragment {
 		@Override
 		public void onPageSelected(int position) {
 			// TODO Auto-generated method stub
-			if(mTextViewList != null && mTextViewList.size() > 0){
-				for(TextView view : mTextViewList){
-					view.setSelected(false);
+			if(mViewList != null && mViewList.size() > 0){
+				for(ViewHolder holder : mViewList){
+					holder.tvTitle.setSelected(false);
+					holder.vUnderline.setVisibility(View.GONE);
 				}
-				mTextViewList.get(position).setSelected(true);
-				mAnimationTab.setX(mTextViewList.get(position).getX());
+				
+				mViewList.get(position).tvTitle.setSelected(true);
+				mViewList.get(position).vUnderline.setVisibility(View.VISIBLE);
+				mTabScrollView.smoothScrollTo((int)mViewList.get(position).layoutHolder.getX(), 0);
 			}
 		}
 
 		@Override
 		public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 			// TODO Auto-generated method stub
-			if(mTextViewList != null && mTextViewList.size() > 0 && mViewPager != null){
+			if(mViewList != null && mViewList.size() > 0 && mViewPager != null){
 				int currentPosition = mViewPager.getCurrentItem();
-				TextView tv = mTextViewList.get(position);
-
-				if(tv == null)
-					return ;
 
 				if(nowDragging){
 					if(position == currentPosition && positionOffset > 0){
 						//swipe right
-						mAnimationTab.setX(mAnimationTab.getX() + positionOffset);
 					}else if (positionOffset > 0){
 						//swipe left
-						mAnimationTab.setX(mAnimationTab.getX() - positionOffset);
 					}
-					mAnimaitonTabLayoutParam.width = tv.getWidth();
 				}
 			}
 		}
@@ -233,14 +259,11 @@ public class TabFragment extends BaseFragment {
 		public void onPageScrollStateChanged(int state) {
 			// TODO Auto-generated method stub
 			
-			if(mViewPager == null || mTextViewList == null || mTextViewList.size() <= 0)
+			if(mViewPager == null || mViewList == null || mViewList.size() <= 0)
 				return;
-			TextView tv = mTextViewList.get(mViewPager.getCurrentItem());
 			switch(state){
 			case CustomViewPager.SCROLL_STATE_IDLE :
 				nowDragging = false;
-				mAnimationTab.setX(tv.getX());
-				mAnimaitonTabLayoutParam.width = tv.getWidth();
 				break;
 
 			case CustomViewPager.SCROLL_STATE_DRAGGING :
@@ -249,11 +272,9 @@ public class TabFragment extends BaseFragment {
 
 			case CustomViewPager.SCROLL_STATE_SETTLING :
 				nowDragging = false;
-				mAnimationTab.setX(tv.getX());
-				mAnimaitonTabLayoutParam.width = tv.getWidth();
 				break;
 			}
 		}
-
 	};
 }
+
