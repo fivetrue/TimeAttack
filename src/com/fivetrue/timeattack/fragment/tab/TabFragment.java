@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.animation.AlphaAnimation;
 import android.widget.FrameLayout;
 import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
@@ -34,6 +35,7 @@ public class TabFragment extends BaseFragment {
 	}
 
 	private final int INVALID_VALUE = -1;
+	private final int ALPHA_ANI_DURAION = 100;
 
 	private LinearLayout mContentView = null;
 	private LayoutParams mContentViewLayoutParam = null;
@@ -168,6 +170,7 @@ public class TabFragment extends BaseFragment {
 		}
 
 		mViewList.get(0).tvTitle.setSelected(true);
+		mViewList.get(0).tvTitle.setTypeface(roboto_bold);
 		mViewList.get(0).vUnderline.setVisibility(View.VISIBLE);
 
 		for(int i = 0 ; i < mViewList.size() ; i ++){
@@ -206,6 +209,7 @@ public class TabFragment extends BaseFragment {
 		holder.vUnderline.setBackground(getResources().getDrawable(R.drawable.tab_sel_white));
 		RelativeLayout.LayoutParams param = new RelativeLayout.LayoutParams(mTabUnderlineWidth, mTabUnderlineHeight);
 		param.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+		param.addRule(RelativeLayout.CENTER_HORIZONTAL);
 		holder.vUnderline.setVisibility(View.GONE);
 		
 		holder.layoutHolder.addView(holder.tvTitle, new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.MATCH_PARENT));
@@ -228,12 +232,22 @@ public class TabFragment extends BaseFragment {
 		public void onPageSelected(int position) {
 			// TODO Auto-generated method stub
 			if(mViewList != null && mViewList.size() > 0){
+				AlphaAnimation ani = new AlphaAnimation(1, 0);
+				ani.setDuration(ALPHA_ANI_DURAION);
+				
 				for(ViewHolder holder : mViewList){
 					holder.tvTitle.setSelected(false);
+					holder.tvTitle.setTypeface(roboto_light);
+					holder.vUnderline.setAnimation(ani);
 					holder.vUnderline.setVisibility(View.GONE);
 				}
 				
+				ani = new AlphaAnimation(0, 1);
+				ani.setDuration(ALPHA_ANI_DURAION);
+				
 				mViewList.get(position).tvTitle.setSelected(true);
+				mViewList.get(position).tvTitle.setTypeface(roboto_bold);
+				mViewList.get(position).vUnderline.setAnimation(ani);
 				mViewList.get(position).vUnderline.setVisibility(View.VISIBLE);
 				mTabScrollView.smoothScrollTo((int)mViewList.get(position).layoutHolder.getX(), 0);
 			}
