@@ -3,9 +3,12 @@ package com.fivetrue.timeattack.activity;
 import com.api.common.IRequestResult;
 import com.fivetrue.location.activity.LocationActivity;
 import com.fivetrue.timeattack.R;
+import com.fivetrue.timeattack.database.NetworkResultDBHelper;
+import com.fivetrue.timeattack.database.NetworkResultDBManager;
 import com.fivetrue.timeattack.fragment.DrawerFragment;
 import com.fivetrue.timeattack.fragment.DrawerFragment.OnDrawerMenuClickListener;
 
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -27,6 +30,7 @@ abstract public class BaseActivity extends LocationActivity implements IRequestR
 	private ViewGroup mContentView = null;
 	private ViewGroup mLayoutDrawer = null;
 	static protected DrawerFragment mFragmentDrawer = null;
+	private NetworkResultDBManager mNetworkResultDBM = null;
 	
 	private LayoutInflater mInflater = null;
 	
@@ -37,6 +41,9 @@ abstract public class BaseActivity extends LocationActivity implements IRequestR
 		setContentView(R.layout.activity_base);
 		initViews();
 		initActionBarSetting();
+		initModels();
+		
+		
 	}
 	
 	public void initActionBarSetting(){
@@ -68,6 +75,10 @@ abstract public class BaseActivity extends LocationActivity implements IRequestR
 		}
 		
 		mDrawerLayout.setDrawerListener(mDrawerListener);
+	}
+	
+	private void initModels(){
+		mNetworkResultDBM = new NetworkResultDBManager(getApplicationContext());
 	}
 	
 	private DrawerListener mDrawerListener = new DrawerListener() {
@@ -195,6 +206,7 @@ abstract public class BaseActivity extends LocationActivity implements IRequestR
 	};
 	
 	public void onSuccessRequest(String url, org.json.JSONObject request) {
+		mNetworkResultDBM.insertNetworkResult(url, request);
 	};
 	
 	@Override
