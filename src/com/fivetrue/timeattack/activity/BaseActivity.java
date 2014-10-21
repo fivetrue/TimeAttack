@@ -1,5 +1,6 @@
 package com.fivetrue.timeattack.activity;
 
+import com.api.common.IRequestResult;
 import com.fivetrue.location.activity.LocationActivity;
 import com.fivetrue.timeattack.R;
 import com.fivetrue.timeattack.fragment.DrawerFragment;
@@ -19,7 +20,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-abstract public class BaseActivity extends LocationActivity {
+abstract public class BaseActivity extends LocationActivity implements IRequestResult{
 	
 	private DrawerLayout mDrawerLayout = null;
 
@@ -192,5 +193,13 @@ abstract public class BaseActivity extends LocationActivity {
 			
 		}
 	};
+	
+	public void onSuccessRequest(String url, org.json.JSONObject request) {
+	};
+	
+	@Override
+	public void onFailRequest(String url) {
+		// TODO Auto-generated method stub
+	}
 	
 }
