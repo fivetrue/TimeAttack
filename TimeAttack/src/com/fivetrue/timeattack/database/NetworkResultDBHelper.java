@@ -3,9 +3,9 @@ package com.fivetrue.timeattack.database;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase.CursorFactory;
 
-public class NetworkTransactionOpenHelper extends BaseSQLiteOpenHelper {
+public class NetworkResultDBHelper extends BaseSQLiteOpenHelper {
 
-	public NetworkTransactionOpenHelper(Context context, String name,
+	public NetworkResultDBHelper(Context context, String name,
 			CursorFactory factory, int version) {
 		super(context, name, factory, version);
 		// TODO Auto-generated constructor stub

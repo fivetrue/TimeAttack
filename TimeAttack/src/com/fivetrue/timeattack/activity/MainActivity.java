@@ -1,7 +1,5 @@
 package com.fivetrue.timeattack.activity;
 
-import com.fivetrue.timeattack.R;
-import com.fivetrue.timeattack.fragment.DrawerFragment;
 import com.fivetrue.timeattack.fragment.main.RecentlyUseFragment;
 import com.fivetrue.timeattack.fragment.tab.TabFragment;
 
@@ -9,7 +7,6 @@ import android.location.Location;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.Toast;
 
 public class MainActivity extends BaseActivity{
 
