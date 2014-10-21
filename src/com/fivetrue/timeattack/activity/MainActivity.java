@@ -1,5 +1,6 @@
 package com.fivetrue.timeattack.activity;
 
+import com.fivetrue.timeattack.fragment.main.NearBySearchFragment;
 import com.fivetrue.timeattack.fragment.main.RecentlyUseFragment;
 import com.fivetrue.timeattack.fragment.tab.TabFragment;
 
@@ -41,8 +42,7 @@ public class MainActivity extends BaseActivity{
 		TabFragment tabFragment = new TabFragment();
 		createFragment(tabFragment, "");
 		tabFragment.addFragment(new RecentlyUseFragment(), "최근");
-		tabFragment.addFragment(new RecentlyUseFragment(), "이전");
-		tabFragment.addFragment(new RecentlyUseFragment(), "나중");
+		tabFragment.addFragment(new NearBySearchFragment(), "주변 찾기");
 		return null;
 	}
 

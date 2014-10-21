@@ -9,20 +9,15 @@ import android.util.Log;
 // http://kuroikuma.tistory.com/entry/Android-DB-SQLite-%EC%98%88%EC%A0%9C
 abstract public class BaseSQLiteOpenHelper extends SQLiteOpenHelper{
 	
-	protected final int INVALID_VALUE = -1;
 	private Context context = null;
-	private String dataBaseFileName = null;
-	private int databaseVerison = INVALID_VALUE;
 	private CursorFactory cursorFactory = null;
 	
 
-	public BaseSQLiteOpenHelper(Context context, String name,
-			CursorFactory factory, int version) {
-		super(context, name, factory, version);
+	public BaseSQLiteOpenHelper(Context context,
+			CursorFactory factory) {
+		super(context, DatabaseConstants.DB_FILE_NAME, factory, DatabaseConstants.DB_VERSION);
 		// TODO Auto-generated constructor stub
 		this.context = context;
-		this.dataBaseFileName = name;
-		this.databaseVerison = version;
 		this.cursorFactory = factory;
 	}
 
@@ -64,11 +59,11 @@ abstract public class BaseSQLiteOpenHelper extends SQLiteOpenHelper{
 	}
 
 	public String getDataBaseFileName() {
-		return dataBaseFileName;
+		return DatabaseConstants.DB_FILE_NAME;
 	}
 
 	public int getDatabaseVerison() {
-		return databaseVerison;
+		return  DatabaseConstants.DB_VERSION;
 	}
 
 	public CursorFactory getCursorFactory() {

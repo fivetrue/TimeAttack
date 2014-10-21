@@ -10,7 +10,7 @@ public class NetworkResult {
 		SUbwayArrival,
 	}
 	
-	private String index = null;
+	private int index = 0;
 	private String url = null;
 	private String result = null;
 	private String timestamp = null;
@@ -18,13 +18,13 @@ public class NetworkResult {
 	/**
 	 * @return the index
 	 */
-	public String getIndex() {
+	public int getIndex() {
 		return index;
 	}
 	/**
 	 * @param index the index to set
 	 */
-	public void setIndex(String index) {
+	public void setIndex(int index) {
 		this.index = index;
 	}
 	/**
