@@ -2,11 +2,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-
     <fragment
         android:id="@+id/fragment_map"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        class="com.google.android.gms.maps.MapFragment" />
-
+        android:layout_marginLeft="@dimen/map_margin_left"
+        android:layout_marginRight="@dimen/map_margin_right"
+        android:layout_marginTop="@dimen/map_margin_top"
+        android:layout_marginBottom="@dimen/map_margin_bottom"
+        class="com.google.android.gms.maps.SupportMapFragment" />
 </RelativeLayout>

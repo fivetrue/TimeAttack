@@ -7,7 +7,7 @@ public class NetworkResult {
 		GeoCoding,
 		Place,
 		SubwayInfo,
-		SUbwayArrival,
+		SubwayArrival,
 	}
 	
 	private int index = 0;
