@@ -59,7 +59,7 @@ public class NetworkResultDBManager {
 				}else if(url.contains(Constants.GoogleGeocodingAPI.GEOCODING_API_HOST)){
 					data.setType(Type.GeoCoding);
 				}else if(url.contains(SeoulAPIConstants.Subway.ARRIVAL_INFO_SERVICE)){
-					data.setType(Type.SUbwayArrival);
+					data.setType(Type.SubwayArrival);
 				}else if(url.contains(SeoulAPIConstants.Subway.FIND_INFO_SERVICE)){
 					data.setType(Type.SubwayInfo);
 				}
