@@ -4,6 +4,9 @@ import com.fivetrue.timeattack.R;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
 
+import android.content.Context;
+import android.content.Intent;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -15,6 +18,7 @@ abstract public class BaseMapFragment extends BaseFragment{
 	private ViewGroup contentView = null;
 	private GoogleMap map = null;
 	private SupportMapFragment mapFragment = null;
+	private LocationManager locationManager = null;
 	
 	public BaseMapFragment(){};
 	
@@ -23,6 +27,7 @@ abstract public class BaseMapFragment extends BaseFragment{
 			@Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		initView(inflater);
+		initModel();
 		loadData();
 		return contentView;
 	}
@@ -36,6 +41,10 @@ abstract public class BaseMapFragment extends BaseFragment{
 			contentView.addView(childView);
 		}
 		setVisibleMap(false);
+	}
+	
+	private void initModel(){
+		locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
 	}
 	
 	/**
@@ -88,6 +97,32 @@ abstract public class BaseMapFragment extends BaseFragment{
 		}else{
 			return false;
 		}
+	}
+
+	public SupportMapFragment getMapFragment() {
+		return mapFragment;
+	}
+
+	public LocationManager getLocationManager() {
+		return locationManager;
+	}
+	
+	public boolean isGpsOn(){
+		if(locationManager != null){
+			return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+		}else{
+			return false;
+		}
+	}
+	
+	public void goToGpsSetting(){
+		if(getActivity() != null){
+			startActivity(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+		}
+	}
+	
+	public void turnOnGpsSetting(){
 		
 	}
+	
 }

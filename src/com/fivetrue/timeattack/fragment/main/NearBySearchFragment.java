@@ -8,7 +8,12 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import com.api.common.BaseResponseListener;
+import com.api.google.place.PlaceAPIHelper;
+import com.api.google.place.PlaceAPIHelper.API_TYPE;
+import com.api.google.place.entry.PlacesEntry;
 import com.fivetrue.timeattack.R;
+import com.fivetrue.timeattack.activity.BaseActivity;
 import com.fivetrue.timeattack.fragment.BaseMapFragment;
 import com.google.android.gms.maps.GoogleMap;
 
@@ -58,7 +63,17 @@ public class NearBySearchFragment extends BaseMapFragment {
 	@Override
 	protected void loadData() {
 		// TODO Auto-generated method stub
-		
+		BaseActivity activity = (BaseActivity) getActivity();
+//		if(activity.)
+		new PlaceAPIHelper(activity, API_TYPE.NEAR_BY_SEARCH, activity)
+		.requestNearBySearchSubway(0, 0, 0, new BaseResponseListener<PlacesEntry>() {
+			
+			@Override
+			public void onResponse(PlacesEntry response) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
 	}
 
 	
