@@ -13,5 +13,10 @@
     <string name="drawer_home">홈</string>
     <string name="drawer_near_by">주변 찾기</string>
     <string name="drawer_direction">길 찾기</string>
+    
+    <!-- Map Fragment -->
+    <string name="show_map">지도 보기</string>
+    <string name="hide_map">지도 닫기</string>
+    
 
 </resources>
