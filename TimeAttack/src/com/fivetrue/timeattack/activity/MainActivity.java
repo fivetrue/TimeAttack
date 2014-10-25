@@ -10,6 +10,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 
 public class MainActivity extends BaseActivity{
+	
+	private TabFragment mTapFragment = null;
 
 	@Override
 	View onCreateView(LayoutInflater inflater) {
@@ -39,10 +41,9 @@ public class MainActivity extends BaseActivity{
 //			Toast.makeText(getApplicationContext(), "View null", Toast.LENGTH_SHORT).show();
 //		}
 	
-		TabFragment tabFragment = new TabFragment();
-		createFragment(tabFragment, "");
-		tabFragment.addFragment(new RecentlyUseFragment(), "최근");
-		tabFragment.addFragment(new NearBySearchFragment(), "주변 찾기");
+		mTapFragment = (TabFragment) createFragment(TabFragment.class, "");
+		mTapFragment.addFragment(new RecentlyUseFragment(), "최근");
+		mTapFragment.addFragment(new NearBySearchFragment(), "주변 찾기");
 		return null;
 	}
 

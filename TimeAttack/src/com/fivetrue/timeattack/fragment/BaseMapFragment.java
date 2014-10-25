@@ -14,6 +14,7 @@ abstract public class BaseMapFragment extends BaseFragment{
 	
 	private ViewGroup contentView = null;
 	private GoogleMap map = null;
+	private SupportMapFragment mapFragment = null;
 	
 	public BaseMapFragment(){};
 	
@@ -28,11 +29,13 @@ abstract public class BaseMapFragment extends BaseFragment{
 	
 	private void initView(LayoutInflater inflater){
 		contentView = (ViewGroup) inflater.inflate(R.layout.fragment_map, null);
-		map = ((SupportMapFragment)getFragmentManager().findFragmentById(R.id.fragment_map)).getMap();
+		mapFragment = (SupportMapFragment)getFragmentManager().findFragmentById(R.id.fragment_map);
+		map = mapFragment.getMap();
 		View childView = onCreateAddingViews(inflater);
 		if(childView != null){
 			contentView.addView(childView);
 		}
+		setVisibleMap(false);
 	}
 	
 	/**
@@ -59,5 +62,32 @@ abstract public class BaseMapFragment extends BaseFragment{
 
 	public GoogleMap getMap() {
 		return map;
+	}
+	
+	public void setVisibleMap(boolean visible){
+		if(mapFragment != null){
+			if(visible){
+				getFragmentManager()
+				.beginTransaction()
+//				.setCustomAnimations(android.R.animator.fade_out, android.R.animator.fade_in)
+				.show(mapFragment)
+				.commit();
+			}else{
+				getFragmentManager()
+				.beginTransaction()
+//				.setCustomAnimations(android.R.animator.fade_in, android.R.animator.fade_out)
+				.hide(mapFragment)
+				.commit();
+			}
+		}
+	}
+	
+	public boolean isVisibleMap(){
+		if(mapFragment != null){
+			return mapFragment.isVisible();
+		}else{
+			return false;
+		}
+		
 	}
 }

@@ -148,17 +148,42 @@ abstract public class BaseActivity extends LocationActivity implements IRequestR
 	}
 	
 	
-	public void createFragment(Fragment fragment, String tag){
-		FragmentTransaction trans =  getSupportFragmentManager().beginTransaction();
-		trans.add(R.id.layout_main_frame, fragment, tag);
-		trans.commit();
+	public Fragment createFragment(Class<?> fragmentClass, String tag){
+		Fragment f = null;
+		try {
+			f = (Fragment) fragmentClass.newInstance();
+			FragmentTransaction trans =  getSupportFragmentManager().beginTransaction();
+			trans.add(R.id.layout_main_frame, f, tag);
+			trans.commit();
+			return f;
+		} catch (InstantiationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
 	}
 	
-	public void createFragment(int containLayoutId, Fragment fragment, String tag){
-		FragmentTransaction trans = getSupportFragmentManager().beginTransaction();
-		trans.add(containLayoutId, fragment, tag);
-		trans.commit();
-	};
+	public Fragment createFragment(int containLayoutId, Class<?> fragmentClass, String tag){
+		
+		Fragment f = null;
+		try {
+			f = (Fragment) fragmentClass.newInstance();
+			FragmentTransaction trans =  getSupportFragmentManager().beginTransaction();
+			trans.add(containLayoutId, f, tag);
+			trans.commit();
+			return f;
+		} catch (InstantiationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
 	
 	
 	abstract View onCreateView(LayoutInflater inflater);
