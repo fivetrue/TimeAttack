@@ -41,6 +41,11 @@
     <dimen name="map_margin_right">30dp</dimen>
     <dimen name="map_margin_bottom">20dp</dimen>
     
+    <!-- NearByFragment -->
+    <dimen name="nearby_layout_top_height">50dp</dimen>
+    <dimen name="nearby_button_size">50dp</dimen>
+    
+    
     
 
 </resources>
