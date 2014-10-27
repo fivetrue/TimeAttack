@@ -55,8 +55,13 @@ public class RecentlyNetworkResultAdapter extends TimeAttackBaseAdapter <Network
 		}else {
 			mViewHolder = (ViewHolder) convertView.getTag();
 		}
-
+		
 		NetworkResult data = getItem(position);
+		
+		if(data == null){
+			return convertView;
+		}
+		
 		switch(data.getType()){
 		case Direction : 
 		{
@@ -68,35 +73,39 @@ public class RecentlyNetworkResultAdapter extends TimeAttackBaseAdapter <Network
 
 		case Place :
 		{
-			PlacesEntry entry = convertPlaceEntry(data.getResult());
-			mViewHolder.tvTitle.setText(entry.getPlaceList().get(0).getName());
-			mViewHolder.tvDescription.setText(entry.getPlaceList().get(0).getTypeList().get(0));
+			if(data.getResult() != null){
+				PlacesEntry entry = convertPlaceEntry(data.getResult());
+				if(entry.getPlaceList().size() > 0){
+					mViewHolder.tvTitle.setText(entry.getPlaceList().get(0).getName());
+					mViewHolder.tvDescription.setText(entry.getPlaceList().get(0).getTypeList().get(0));
 
-			Bitmap bm = VolleyInstance.getLruCache().get(entry.getPlaceList().get(0).getIcon());
+					Bitmap bm = VolleyInstance.getLruCache().get(entry.getPlaceList().get(0).getIcon());
 
-			if(bm != null){
-				mViewHolder.ivImage.setImageBitmap(bm);
-			}else{
-				VolleyInstance.getImageLoader().get(entry.getPlaceList().get(0).getIcon(), new ImageListener() {
+					if(bm != null){
+						mViewHolder.ivImage.setImageBitmap(bm);
+					}else{
+						VolleyInstance.getImageLoader().get(entry.getPlaceList().get(0).getIcon(), new ImageListener() {
 
-					@Override
-					public void onErrorResponse(VolleyError error) {
-						// TODO Auto-generated method stub
-						error.printStackTrace();
-					}
-
-					@Override
-					public void onResponse(ImageContainer response, boolean isImmediate) {
-						// TODO Auto-generated method stub
-						if(response != null){
-							Bitmap bm = response.getBitmap();
-							if(bm != null){
-								mViewHolder.ivImage.setImageBitmap(bm);
+							@Override
+							public void onErrorResponse(VolleyError error) {
+								// TODO Auto-generated method stub
+								error.printStackTrace();
 							}
-						}
 
+							@Override
+							public void onResponse(ImageContainer response, boolean isImmediate) {
+								// TODO Auto-generated method stub
+								if(response != null){
+									Bitmap bm = response.getBitmap();
+									if(bm != null){
+										mViewHolder.ivImage.setImageBitmap(bm);
+									}
+								}
+
+							}
+						});
 					}
-				});
+				}
 			}
 			break;
 		}

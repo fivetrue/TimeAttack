@@ -1,10 +1,48 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-	<Button 
-	    android:id="@+id/btn_visible"
-	    android:layout_width="match_parent"
-	    android:layout_height="wrap_content"
-	    android:text="@string/show_map" />"
-</RelativeLayout>
+    android:layout_height="match_parent" >
+
+    <RelativeLayout
+        android:id="@+id/layout_location_search"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="visible" >
+
+        <RelativeLayout
+            android:id="@+id/layout_location_search_top"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/nearby_layout_top_height"
+            android:layout_alignParentTop="true"
+            android:orientation="horizontal" >
+            
+             <Button
+                android:id="@+id/btn_location_search_top"
+                android:layout_width="@dimen/nearby_button_size"
+                android:layout_height="@dimen/nearby_button_size"
+                android:layout_alignParentRight="true"
+                android:text="@string/search" />
+
+            <EditText
+                android:id="@+id/et_location_search_top"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_toLeftOf="@id/btn_location_search_top"
+                android:hint="@string/near_by_search_hint" />
+        </RelativeLayout>
+
+        <ListView
+            android:id="@+id/lv_location_search"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/layout_location_search_top" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/layout_nearby_subway"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone" >
+    </RelativeLayout>
+
+</FrameLayout>
