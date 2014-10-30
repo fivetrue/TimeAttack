@@ -1,70 +1,104 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/recentry_item_height"
-    android:background="@color/drawer_item_background_n" >
-
-    <RelativeLayout
-        android:id="@+id/layout_recently_item_image"
-        android:layout_width="@dimen/recentry_item_image_size"
-        android:layout_height="@dimen/recentry_item_image_size"
-        android:layout_alignParentLeft="true"
-        android:layout_margin="@dimen/recentry_item_margin" >
-
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:src="@drawable/list_bg"
-            android:scaleType="fitXY"/>
-
-        <ImageView
-            android:id="@+id/iv_recently_item_image"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
-    </RelativeLayout>
-    
-    <ImageView 
-        android:id="@+id/iv_recently_item_arrow"
-        android:layout_width="@dimen/recentry_item_arrow_size"
-        android:layout_height="@dimen/recentry_item_arrow_size"
-        android:layout_marginRight="@dimen/recentry_item_margin" 
-        android:layout_alignParentRight="true"
-        android:layout_centerVertical="true"
-        android:src="@drawable/arrow_d"/>
+    android:layout_height="wrap_content"
+    android:orientation="vertical" >
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/recentry_item_text_margin"
-        android:layout_marginRight="@dimen/recentry_item_margin"
-        android:layout_toRightOf="@id/layout_recently_item_image"
-        android:layout_toLeftOf="@id/iv_recently_item_arrow"
+        android:layout_height="@dimen/recentry_item_height"
+        android:layout_marginLeft="@dimen/list_item_margin"
+        android:layout_marginRight="@dimen/list_item_margin"
+        android:layout_marginTop="@dimen/list_item_margin"
+        android:background="@color/list_background"
         android:orientation="vertical" >
 
-        <TextView
-            android:id="@+id/tv_recently_item_title"
+        <RelativeLayout
+            android:id="@+id/layout_recently_list_header"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/title"
-            android:textSize="@dimen/recentry_item_title_size"
-            android:singleLine="true"
-            style="@style/DrawerText" />
-        
-        <TextView
-            android:id="@+id/tv_recently_item_description"
+            android:layout_height="@dimen/recentry_item_header_height"
+            android:paddingLeft="@dimen/list_item_padding_left"
+            android:paddingRight="@dimen/list_item_padding_right" >
+
+            <RelativeLayout
+                android:id="@+id/layout_recently_item_image"
+                android:layout_width="@dimen/recentry_item_image_size"
+                android:layout_height="@dimen/recentry_item_image_size"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true" >
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/list_bg" />
+
+                <ImageView
+                    android:id="@+id/iv_recently_item_image"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="@dimen/recentry_item_image_padding" />
+            </RelativeLayout>
+
+            <ImageView
+                android:id="@+id/iv_recently_item_arrow"
+                android:layout_width="@dimen/recentry_item_pattern_size"
+                android:layout_height="@dimen/recentry_item_pattern_size"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:src="@drawable/arrow_d" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/recentry_item_text_margin_left"
+                android:layout_toLeftOf="@id/iv_recently_item_arrow"
+                android:layout_toRightOf="@id/layout_recently_item_image"
+                android:orientation="vertical" >
+
+                <TextView
+                    android:id="@+id/tv_recently_item_title"
+                    style="@style/listTitleText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:singleLine="true"
+                    android:text="@string/title" />
+
+                <TextView
+                    android:id="@+id/tv_recently_item_description"
+                    style="@style/listSubTitleText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/description" />
+            </LinearLayout>
+        </RelativeLayout>
+
+        <View
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/description"
-            android:textColor="@color/drawer_text_color_p"
-            android:typeface="sans"
-            android:textSize="@dimen/recentry_item_description_size" />
+            android:layout_height="1px"
+            android:background="@color/list_item_under_line" />
+
+        <RelativeLayout
+            android:id="@+id/layout_recently_list_body"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingLeft="@dimen/list_item_padding_left"
+            android:paddingRight="@dimen/list_item_padding_right" >
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="left|top"
+                android:padding="@dimen/recentry_item_body_padding" />
+        </RelativeLayout>
     </LinearLayout>
 
     <View
         android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginLeft="@dimen/recentry_item_margin"
-        android:layout_marginRight="@dimen/recentry_item_margin"
-        android:layout_alignParentBottom="true"
-        android:background="@android:color/white" />
+        android:layout_height="4dp"
+        android:layout_marginBottom="@dimen/list_item_margin"
+        android:layout_marginLeft="@dimen/list_item_margin"
+        android:layout_marginRight="@dimen/list_item_margin"
+        android:background="@drawable/tab_img_shadow_pattern" />
 
-</RelativeLayout>
+</LinearLayout>

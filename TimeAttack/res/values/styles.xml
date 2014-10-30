@@ -2,13 +2,13 @@
 
     <!--
         Base application theme, dependent on API level. This theme is replaced
-        by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
+        by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
     -->
     <style name="AppBaseTheme" parent="android:Theme.Light">
         <!--
             Theme customizations available in newer API levels can go in
             res/values-vXX/styles.xml, while customizations related to
-            backward-compatibility can go here.
+            backward-compatibility can go here.
         -->
     </style>
 
@@ -16,13 +16,31 @@
     <style name="AppTheme" parent="AppBaseTheme">
         <!-- All customizations that are NOT specific to a particular API-level can go here. -->
     </style>
-    
-    <!-- Drawer Item Style  -->
-   <style name="DrawerText">
+
+    <!-- Drawer Item Style -->
+    <style name="DrawerText">
         <item name="android:textSize">@dimen/drawer_item_text_size</item>
         <item name="android:textColor">@color/selector_drawer_text_color</item>
         <item name="android:gravity">center_vertical</item>
+        <item name="android:paddingLeft">@dimen/drawer_item_text_padding</item>
+        <item name="android:paddingRight">@dimen/drawer_item_text_padding</item>
         <item name="android:typeface">sans</item>
+    </style>
+
+    <style name="baseListTextProperties">
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:typeface">monospace</item>
+    </style>
+
+    <style name="listTitleText" parent="baseListTextProperties">
+        <item name="android:textSize">@dimen/list_item_title_text_size</item>
+        <item name="android:textColor">@color/selector_list_title_text_color</item>
+    </style>
+
+    <style name="listSubTitleText" parent="baseListTextProperties">
+        <item name="android:textSize">@dimen/list_item_sub_title_text_size</item>
+        <item name="android:textColor">@color/selector_list_sub_title_text_color</item>
     </style>
 
 </resources>
