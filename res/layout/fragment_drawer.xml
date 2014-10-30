@@ -1,101 +1,99 @@
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/layout_items_parent"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/white" >
+    android:orientation="vertical"
+    android:background="@color/muli_brown" >
 
-    <LinearLayout
-        android:id="@+id/layout_items_parent"
+    <RelativeLayout
+        android:id="@+id/layout_drawer_home"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical" >
+        android:layout_height="@dimen/drawer_item_height"
+        android:background="@drawable/selector_drawer_layout"
+        android:paddingLeft="@dimen/drawer_item_padding_left"
+        android:paddingRight="@dimen/drawer_item_padding_right" >
 
-        <RelativeLayout
-            android:id="@+id/layout_drawer_home"
+        <TextView
+            android:id="@+id/tv_drawer_home"
+            style="@style/DrawerText"
             android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="@string/drawer_home" />
+
+        <ImageView
+            android:layout_width="wrap_content"
             android:layout_height="@dimen/drawer_item_height"
-            android:paddingLeft="@dimen/drawer_item_padding_left"
-            android:paddingRight="@dimen/drawer_item_padding_right"
-            android:background="@drawable/selector_drawer_layout" >
+            android:layout_marginRight="@dimen/drawer_item_image_padding"
+            android:layout_alignParentRight="true"
+            android:scaleType="center"
+            android:src="@drawable/selector_drawer_arrow" />
 
-            <TextView
-                android:id="@+id/tv_drawer_home"
-                style="@style/DrawerText"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:text="@string/drawer_home" />
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="@dimen/drawer_item_height"
-                android:layout_alignParentRight="true"
-                android:scaleType="center"
-                android:src="@drawable/selector_drawer_arrow" />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="0.5dp"
-                android:layout_alignParentBottom="true"
-                android:background="@color/drawer_item_under_line" />
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:id="@+id/layout_drawer_near_by"
+        <View
             android:layout_width="match_parent"
-            android:layout_height="@dimen/drawer_item_height"
-            android:paddingLeft="@dimen/drawer_item_padding_left"
-            android:paddingRight="@dimen/drawer_item_padding_right"
-            android:background="@drawable/selector_drawer_layout" >
+            android:layout_height="0.5dp"
+            android:layout_alignParentBottom="true"
+            android:background="@color/drawer_item_under_line" />
+    </RelativeLayout>
 
-            <TextView
-                android:id="@+id/tv_drawer_near_by"
-                style="@style/DrawerText"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:text="@string/drawer_near_by" />
+    <RelativeLayout
+        android:id="@+id/layout_drawer_near_by"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/drawer_item_height"
+        android:background="@drawable/selector_drawer_layout"
+        android:paddingLeft="@dimen/drawer_item_padding_left"
+        android:paddingRight="@dimen/drawer_item_padding_right" >
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="@dimen/drawer_item_height"
-                android:layout_alignParentRight="true"
-                android:scaleType="center"
-                android:src="@drawable/selector_drawer_arrow" />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="0.5dp"
-                android:layout_alignParentBottom="true"
-                android:background="@color/drawer_item_under_line" />
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:id="@+id/layout_drawer_direction"
+        <TextView
+            android:id="@+id/tv_drawer_near_by"
+            style="@style/DrawerText"
             android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="@string/drawer_near_by" />
+
+        <ImageView
+            android:layout_width="wrap_content"
             android:layout_height="@dimen/drawer_item_height"
-            android:paddingLeft="@dimen/drawer_item_padding_left"
-            android:paddingRight="@dimen/drawer_item_padding_right"
-            android:background="@drawable/selector_drawer_layout" >
+            android:layout_marginRight="@dimen/drawer_item_image_padding"
+            android:layout_alignParentRight="true"
+            android:scaleType="center"
+            android:src="@drawable/selector_drawer_arrow" />
 
-            <TextView
-                android:id="@+id/tv_drawer_direction"
-                style="@style/DrawerText"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:text="@string/drawer_direction" />
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:layout_alignParentBottom="true"
+            android:background="@color/drawer_item_under_line" />
+    </RelativeLayout>
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="@dimen/drawer_item_height"
-                android:layout_alignParentRight="true"
-                android:scaleType="center"
-                android:src="@drawable/selector_drawer_arrow" />
+    <RelativeLayout
+        android:id="@+id/layout_drawer_direction"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/drawer_item_height"
+        android:background="@drawable/selector_drawer_layout"
+        android:paddingLeft="@dimen/drawer_item_padding_left"
+        android:paddingRight="@dimen/drawer_item_padding_right" >
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="0.5dp"
-                android:layout_alignParentBottom="true"
-                android:background="@color/drawer_item_under_line" />
-        </RelativeLayout>
-    </LinearLayout>
+        <TextView
+            android:id="@+id/tv_drawer_direction"
+            style="@style/DrawerText"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="@string/drawer_direction" />
 
-</ScrollView>
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/drawer_item_height"
+            android:layout_marginRight="@dimen/drawer_item_image_padding"
+            android:layout_alignParentRight="true"
+            android:scaleType="center"
+            android:src="@drawable/selector_drawer_arrow" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:layout_alignParentBottom="true"
+            android:background="@color/drawer_item_under_line" />
+    </RelativeLayout>
+
+</LinearLayout>
