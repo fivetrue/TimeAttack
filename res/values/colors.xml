@@ -1,15 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- Common  -->
+    <color name="actionbar_background">#FFEBE1C5</color>
+    <color name="list_background">#FFEBCC6E</color>
+    <color name="common_background">#FFFFFFFF</color>
     
     <!-- Drawer text -->
-    <!-- <color name="drawer_text_color_n">#FF191919</color>
-    <color name="drawer_text_color_p">#FFEAEAEA</color>
-    <color name="drawer_text_color_s">#FFFFFFFF</color>
-    <color name="drawer_text_color_d">#66191919</color> -->
     <!-- another_gray  -->
-    <color name="drawer_text_color_n">#FFEBE1C5</color>
-    <color name="drawer_text_color_p">#FF595643</color>
+    <color name="drawer_text_color_n">#FF595643</color>
+    <color name="drawer_text_color_p">#FFFFFFFF</color>
     <color name="drawer_text_color_s">#FFFFFFFF</color>
     <color name="drawer_text_color_d">#66EBE1C5</color>
     
@@ -26,7 +25,6 @@
     <color name="list_item_under_line">#FF4E6B66</color> 
     
     
-    <color name="list_background">#FFEBCC6E</color>
      
     
     
@@ -38,10 +36,11 @@
     <!-- <color name="drawer_item_background_n">#FFBDBDBD</color> -->
     <!-- <color name="drawer_item_background_d">#66BDBDBD</color> -->
     <!-- muli_brown -->
-    <color name="drawer_item_background_n">#FF595643</color>
+    <!-- <color name="drawer_item_background_n">#FF595643</color> -->
+    <color name="drawer_item_background_n">#FFEBCC6E</color>
     <color name="drawer_item_background_p">#FFEBE1C5</color>
     <color name="drawer_item_background_s">#FFEBE1C5</color>
-    <color name="drawer_item_background_d">#66595643</color>
+    <color name="drawer_item_background_d">#66EBCC6E</color>
     
     <!-- Awsome Colors  -->
     <color name="muli_brown">#FF595643</color>

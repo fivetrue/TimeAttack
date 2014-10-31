@@ -4,7 +4,6 @@ import com.fivetrue.timeattack.R;
 import com.fivetrue.timeattack.view.adapter.TimeAttackBaseAdapter;
 
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,7 +32,7 @@ abstract public class BaseListFragment <T> extends BaseFragment implements OnIte
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater,
-			@Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+			ViewGroup container, Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		initView(inflater);
 		onLoadListData();

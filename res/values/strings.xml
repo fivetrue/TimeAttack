@@ -7,6 +7,9 @@
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
     
+    <string name="drawer_open">DrawerOpen</string>
+    <string name="drawer_close">DrawerClose</string>
+    
     <string name="search">검색</string>
     <string name="title">Title</string>
     <string name="description">Description</string>
@@ -23,6 +26,12 @@
     <!-- NearbyFragment -->
     <string name="near_by_search_hint">위치 검색</string>
     <string name="current_loaction">현재 위치</string>
+    
+    <!-- ActionBar Items -->
+    <string name="actionbar_setting">설정</string>
+    <string name="actionbar_place">주변 찾기</string>
+    
+    
     
     
 
