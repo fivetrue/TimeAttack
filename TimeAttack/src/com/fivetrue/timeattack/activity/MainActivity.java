@@ -1,5 +1,6 @@
 package com.fivetrue.timeattack.activity;
 
+import com.fivetrue.timeattack.R;
 import com.fivetrue.timeattack.fragment.main.NearBySearchFragment;
 import com.fivetrue.timeattack.fragment.main.RecentlyUseFragment;
 import com.fivetrue.timeattack.fragment.tab.TabFragment;
@@ -90,5 +91,9 @@ public class MainActivity extends BaseActivity{
 		
 	}
 
-	
+	@Override
+	int getActionBarMenuResource() {
+		// TODO Auto-generated method stub
+		return R.menu.actionbar_menu;
+	}
 }

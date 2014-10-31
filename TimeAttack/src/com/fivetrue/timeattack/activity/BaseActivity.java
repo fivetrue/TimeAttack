@@ -3,21 +3,22 @@ package com.fivetrue.timeattack.activity;
 import com.api.common.IRequestResult;
 import com.fivetrue.location.activity.LocationActivity;
 import com.fivetrue.timeattack.R;
-import com.fivetrue.timeattack.database.NetworkResultDBHelper;
 import com.fivetrue.timeattack.database.NetworkResultDBManager;
 import com.fivetrue.timeattack.fragment.DrawerFragment;
 import com.fivetrue.timeattack.fragment.DrawerFragment.OnDrawerMenuClickListener;
 
-import android.database.sqlite.SQLiteDatabase;
+import android.content.res.Configuration;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.NavUtils;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v4.widget.DrawerLayout.DrawerListener;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,6 +27,7 @@ import android.widget.TextView;
 abstract public class BaseActivity extends LocationActivity implements IRequestResult{
 	
 	private DrawerLayout mDrawerLayout = null;
+	private ActionBarDrawerToggle mDrawerToggle = null;
 
 	private ViewGroup mContentView = null;
 	private ViewGroup mLayoutDrawer = null;
@@ -48,14 +50,9 @@ abstract public class BaseActivity extends LocationActivity implements IRequestR
 	
 	public void initActionBarSetting(){
 		
-		getActionBar().setDisplayHomeAsUpEnabled(isHomeAsUp());
-		if(isHomeAsUp()){
-			
-		}else{
-			getActionBar().setDisplayShowHomeEnabled(true);
-			getActionBar().setHomeButtonEnabled(true);
-		}
-		
+		getActionBar().setDisplayHomeAsUpEnabled(true);
+        getActionBar().setHomeButtonEnabled(true);
+        getActionBar().setIcon(new ColorDrawable(0x00000000));
 		getActionBar().setTitle(getActionBarTitleName());
 		getActionBar().setSubtitle(getActionBarSubTitle());
 	}
@@ -74,53 +71,41 @@ abstract public class BaseActivity extends LocationActivity implements IRequestR
 			mContentView.addView(contentView);
 		}
 		
-		mDrawerLayout.setDrawerListener(mDrawerListener);
+		mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, isHomeAsUp() ? R.drawable.ic_action_back : R.drawable.ic_drawer, R.string.drawer_open, R.string.drawer_close){
+
+			@Override
+			public void onDrawerStateChanged(int arg0) {
+				// TODO Auto-generated method stub
+			}
+
+			@Override
+			public void onDrawerSlide(View arg0, float arg1) {
+				// TODO Auto-generated method stub
+			}
+
+			@Override
+			public void onDrawerOpened(View arg0) {
+				// TODO Auto-generated method stub
+			}
+
+			@Override
+			public void onDrawerClosed(View arg0) {
+				// TODO Auto-generated method stub
+			}
+		};
+		mDrawerLayout.setDrawerListener(mDrawerToggle);
 	}
 	
 	private void initModels(){
 		mNetworkResultDBM = new NetworkResultDBManager(getApplicationContext());
 	}
 	
-	private DrawerListener mDrawerListener = new DrawerListener() {
-		
-		@Override
-		public void onDrawerStateChanged(int arg0) {
-			// TODO Auto-generated method stub
-            switch (arg0) {
-            case DrawerLayout.STATE_IDLE:
-                break;
-            case DrawerLayout.STATE_DRAGGING:
-                break;
-            case DrawerLayout.STATE_SETTLING:
-                break;
-            default:
-            }
-		}
-		
-		@Override
-		public void onDrawerSlide(View arg0, float arg1) {
-			// TODO Auto-generated method stub
-			
-		}
-		
-		@Override
-		public void onDrawerOpened(View arg0) {
-			// TODO Auto-generated method stub
-			
-		}
-		
-		@Override
-		public void onDrawerClosed(View arg0) {
-			// TODO Auto-generated method stub
-			
-		}
-	};
-	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.main, menu);
-		return true;
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(getActionBarMenuResource(), menu);
+		return super.onCreateOptionsMenu(menu);
 	}
 
 	@Override
@@ -128,24 +113,49 @@ abstract public class BaseActivity extends LocationActivity implements IRequestR
 		// Handle action bar item clicks here. The action bar will
 		// automatically handle clicks on the Home/Up button, so long
 		// as you specify a parent activity in AndroidManifest.xml.
+
+		
+		if(mDrawerToggle.onOptionsItemSelected(item)){
+	        return onSelectedActionBarItem(item);
+	    }
+		return super.onOptionsItemSelected(item);
+	}
+	
+	protected boolean onSelectedActionBarItem(MenuItem item){
 		int id = item.getItemId();
-		if (id == R.id.action_settings) {
-			return true;
-		}else if(id == android.R.id.home){
-			
+		
+		switch(id){
+		case android.R.id.home :
 			if(isHomeAsUp()){
 				NavUtils.navigateUpFromSameTask(this);
 			}else{
-				if(mDrawerLayout.isDrawerOpen(mLayoutDrawer)){
-					mDrawerLayout.closeDrawer(mLayoutDrawer);
-				}else{
-					mDrawerLayout.openDrawer(mLayoutDrawer);
-				}
+//				if(mDrawerLayout.isDrawerOpen(mLayoutDrawer)){
+//					mDrawerLayout.closeDrawer(mLayoutDrawer);
+//				}else{
+//					mDrawerLayout.openDrawer(mLayoutDrawer);
+//				}
 			}
 			return true;
-		};
-		return super.onOptionsItemSelected(item);
+			
+		case R.id.action_settings :
+			
+			return true;
+		}
+		
+		return false;
 	}
+	
+	protected void onPostCreate(Bundle savedInstanceState){
+	    super.onPostCreate(savedInstanceState);
+	    mDrawerToggle.syncState();
+	}
+	 
+	@Override
+	public void onConfigurationChanged(Configuration newConfig) {
+	    super.onConfigurationChanged(newConfig);
+	    mDrawerToggle.onConfigurationChanged(newConfig);
+	}
+	 
 	
 	
 	public Fragment createFragment(Class<?> fragmentClass, String tag){
@@ -191,6 +201,8 @@ abstract public class BaseActivity extends LocationActivity implements IRequestR
 	abstract String getActionBarTitleName();
 	
 	abstract String getActionBarSubTitle();
+	
+	abstract int getActionBarMenuResource();
 	
 	abstract boolean isHomeAsUp();
 	
