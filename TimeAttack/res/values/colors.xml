@@ -4,6 +4,8 @@
     <color name="actionbar_background">#FFEBE1C5</color>
     <color name="list_background">#FFEBCC6E</color>
     <color name="common_background">#FFFFFFFF</color>
+    <color name="actionbar_title">#FF595643</color>
+    <color name="actionbar_sub_title">#FFED834E</color>
     
     <!-- Drawer text -->
     <!-- another_gray  -->

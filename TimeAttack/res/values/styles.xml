@@ -2,21 +2,23 @@
 
     <!--
         Base application theme, dependent on API level. This theme is replaced
-        by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
+        by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
     -->
     <style name="AppBaseTheme" parent="android:Theme.Light">
         <!--
             Theme customizations available in newer API levels can go in
             res/values-vXX/styles.xml, while customizations related to
-            backward-compatibility can go here.        -->
+            backward-compatibility can go here.
+        -->
     </style>
 
     <!-- Application theme. -->
     <style name="AppTheme" parent="AppBaseTheme">
         <!-- All customizations that are NOT specific to a particular API-level can go here. -->
     </style>
-    
+
     <style name="TimeAttackBaseTheme" parent="AppTheme">
+
         <!-- ActionBar Custom -->
         <item name="android:actionBarStyle">@style/MyActionBar</item>
         <!-- ActionBar Custom -->
@@ -25,8 +27,8 @@
     <!-- Fivetrue Custom ActionBar -->
     <style name="MyActionBar" parent="@android:style/Widget.ActionBar">
         <item name="android:background">@color/actionbar_background</item>
-        <item name="android:titleTextStyle">@style/listTitleText</item>
-        <item name="android:subtitleTextStyle">@style/listSubTitleText</item>
+        <item name="android:titleTextStyle">@style/actionBarTitleText</item>
+        <item name="android:subtitleTextStyle">@style/actionBarSubTitleText</item>
         <item name="android:actionBarItemBackground">@drawable/selector_common_black</item>
         <item name="android:itemPadding">0dp</item>
     </style>
@@ -56,6 +58,17 @@
         <item name="android:typeface">monospace</item>
     </style>
 
+    <!-- TextStyles -->
+    <style name="actionBarTitleText" parent="baseListTextProperties">
+        <item name="android:textSize">@dimen/actionbar_title_text_size</item>
+        <item name="android:textColor">@color/actionbar_title</item>
+    </style>
+
+    <style name="actionBarSubTitleText" parent="baseListTextProperties">
+        <item name="android:textSize">@dimen/actionbar_sub_title_text_size</item>
+        <item name="android:textColor">@color/actionbar_sub_title</item>
+    </style>
+
     <style name="listTitleText" parent="baseListTextProperties">
         <item name="android:textSize">@dimen/list_item_title_text_size</item>
         <item name="android:textColor">@color/selector_list_title_text_color</item>
@@ -65,5 +78,10 @@
         <item name="android:textSize">@dimen/list_item_sub_title_text_size</item>
         <item name="android:textColor">@color/selector_list_sub_title_text_color</item>
     </style>
-
+    
+    <style name="TabTitleText">
+        <item name="android:textSize">@dimen/tab_text_size</item>
+        <item name="android:textColor">@color/selector_drawer_text_color</item>
+        <item name="android:background">@drawable/selector_drawer_layout</item>
+    </style>
 </resources>

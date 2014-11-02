@@ -3,7 +3,7 @@
     <string name="api_map_key">AIzaSyDBd9BYtE13_5X0nfbOzqhwqA4OfPbX6_M</string>
 
     <!-- Common -->
-    <string name="app_name">TimeAttack</string>
+    <string name="app_name">타임어택</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
     
@@ -30,6 +30,9 @@
     <!-- ActionBar Items -->
     <string name="actionbar_setting">설정</string>
     <string name="actionbar_place">주변 찾기</string>
+    
+    <!-- Main -->
+    <string name="activity_home"></string>
     
     
     

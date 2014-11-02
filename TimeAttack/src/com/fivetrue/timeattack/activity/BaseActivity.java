@@ -15,6 +15,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.NavUtils;
 import android.support.v4.widget.DrawerLayout;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -22,6 +23,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.TextView;
 
 abstract public class BaseActivity extends LocationActivity implements IRequestResult{
@@ -33,6 +35,8 @@ abstract public class BaseActivity extends LocationActivity implements IRequestR
 	private ViewGroup mLayoutDrawer = null;
 	static protected DrawerFragment mFragmentDrawer = null;
 	private NetworkResultDBManager mNetworkResultDBM = null;
+	
+	private View mHomeImageView = null;
 	
 	private LayoutInflater mInflater = null;
 	
@@ -54,7 +58,9 @@ abstract public class BaseActivity extends LocationActivity implements IRequestR
         getActionBar().setHomeButtonEnabled(true);
         getActionBar().setIcon(new ColorDrawable(0x00000000));
 		getActionBar().setTitle(getActionBarTitleName());
-		getActionBar().setSubtitle(getActionBarSubTitle());
+		if(!TextUtils.isEmpty(getActionBarSubTitle())){
+			getActionBar().setSubtitle(getActionBarSubTitle());
+		}
 	}
 	
 	private void initViews(){
@@ -62,6 +68,7 @@ abstract public class BaseActivity extends LocationActivity implements IRequestR
 		mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 		mContentView = (ViewGroup) findViewById(R.id.layout_main_frame);
 		mLayoutDrawer = (ViewGroup) findViewById(R.id.layout_drawer);
+		
 		if(mFragmentDrawer == null){
 			mFragmentDrawer = (DrawerFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_drawer);
 			mFragmentDrawer.setOnClickDrawerMenuClickListener(mDrawerMenuClickListener);
@@ -86,11 +93,17 @@ abstract public class BaseActivity extends LocationActivity implements IRequestR
 			@Override
 			public void onDrawerOpened(View arg0) {
 				// TODO Auto-generated method stub
+				getActionBar().setTitle(R.string.app_name);
+				getActionBar().setSubtitle(null);
 			}
 
 			@Override
 			public void onDrawerClosed(View arg0) {
 				// TODO Auto-generated method stub
+				getActionBar().setTitle(getActionBarTitleName());
+				if(!TextUtils.isEmpty(getActionBarSubTitle())){
+					getActionBar().setSubtitle(getActionBarSubTitle());
+				}
 			}
 		};
 		mDrawerLayout.setDrawerListener(mDrawerToggle);
@@ -116,6 +129,37 @@ abstract public class BaseActivity extends LocationActivity implements IRequestR
 
 		
 		if(mDrawerToggle.onOptionsItemSelected(item)){
+			ViewGroup v = (ViewGroup) getActionBarView();
+			
+//			if(v != null){
+//				System.out.println("ojkwon : " + v.getChildCount());
+//				for(int i = 0 ; i < v.getChildCount() ; i ++){
+//					View child = v.getChildAt(i);
+//					if(child != null){
+//						if(child instanceof ViewGroup){
+//							System.out.println("ojkwon : child = " + i + ((ViewGroup)child).getChildCount());
+//							for(int j = 0 ; j < ((ViewGroup)child).getChildCount() ; j ++){
+//								
+//								if(child instanceof ViewGroup){
+//									ViewGroup child2 = (ViewGroup) ((ViewGroup)child).getChildAt(j);
+//									System.out.println("ojkwon : child2 j = " + j + ((ViewGroup)child2).getChildCount());
+//									for(int k = 0 ; k < ((ViewGroup)child2).getChildCount() ; k ++){
+//										System.out.println("ojkwon : child k = " + k + ((ViewGroup)child2).getChildAt(k).getClass().getCanonicalName());
+//										if(((ViewGroup)child2).getChildAt(k).getAlpha() == 0.5f){
+//											((ViewGroup)child2).getChildAt(k).setAlpha(1);
+//										}else{
+//											((ViewGroup)child2).getChildAt(k).setAlpha(0.5f);
+//										}
+//									}
+//								}
+//								
+//								System.out.println("ojkwon : child j = " + j + ((ViewGroup)child).getChildAt(j).getClass().getCanonicalName());
+//							}
+//						}
+//					}
+//				}
+//				
+//			}
 	        return onSelectedActionBarItem(item);
 	    }
 		return super.onOptionsItemSelected(item);
@@ -155,8 +199,13 @@ abstract public class BaseActivity extends LocationActivity implements IRequestR
 	    super.onConfigurationChanged(newConfig);
 	    mDrawerToggle.onConfigurationChanged(newConfig);
 	}
-	 
 	
+	public View getActionBarView() {
+	    Window window = getWindow();
+	    View v = window.getDecorView();
+	    int resId = getResources().getIdentifier("action_bar_container", "id", "android");
+	    return v.findViewById(resId);
+	}
 	
 	public Fragment createFragment(Class<?> fragmentClass, String tag){
 		Fragment f = null;
