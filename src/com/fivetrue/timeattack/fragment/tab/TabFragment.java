@@ -28,6 +28,8 @@ import com.fivetrue.timeattack.view.pager.adapter.CustomFragmentPagerAdapter;
 
 public class TabFragment extends BaseFragment {
 	
+	private int mViewPagerId = 0x009900;
+	
 	private class ViewHolder{
 		ViewGroup layoutHolder = null;
 		TextView tvTitle = null;
@@ -126,7 +128,7 @@ public class TabFragment extends BaseFragment {
 		mContentLayout.setLayoutParams(mContentLayoutParam);
 
 		mViewPager = new CustomViewPager(getActivity());
-		mViewPager.setId(0x009900);
+		mViewPager.setId(mViewPagerId);
 
 		View shadowView = new View(getActivity());
 		shadowView.setBackground(getResources().getDrawable(R.drawable.tab_img_shadow_pattern));
@@ -194,26 +196,24 @@ public class TabFragment extends BaseFragment {
 		ViewHolder holder = new ViewHolder();
 		
 		holder.layoutHolder = new RelativeLayout(getActivity());
-
 		holder.tvTitle = new TextView(getActivity());
 		holder.tvTitle.setText(text);
-		holder.tvTitle.setTextSize(getResources().getDimension(R.dimen.tab_text_size));
-		holder.tvTitle.setTextColor(getResources().getColorStateList(R.color.selector_drawer_text_color));
 		holder.tvTitle.setTypeface(roboto_light);
 		holder.tvTitle.setGravity(Gravity.CENTER);
 		holder.tvTitle.setPadding((int) getResources().getDimension(R.dimen.tab_text_side_padding),
 				0, (int) getResources().getDimension(R.dimen.tab_text_side_padding), 0);
-		holder.tvTitle.setBackground(getResources().getDrawable(R.drawable.selector_drawer_layout));
+		holder.tvTitle.setTextAppearance(getActivity(), R.style.TabTitleText);
 		
 		holder.vUnderline = new View(getActivity());
 		holder.vUnderline.setBackground(getResources().getDrawable(R.drawable.tab_sel_white));
-		RelativeLayout.LayoutParams param = new RelativeLayout.LayoutParams(mTabUnderlineWidth, mTabUnderlineHeight);
-		param.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
-		param.addRule(RelativeLayout.CENTER_HORIZONTAL);
 		holder.vUnderline.setVisibility(View.GONE);
 		
+		RelativeLayout.LayoutParams underLineParam = new RelativeLayout.LayoutParams(mTabUnderlineWidth, mTabUnderlineHeight);
+		underLineParam.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+		underLineParam.addRule(RelativeLayout.CENTER_HORIZONTAL);
+		
 		holder.layoutHolder.addView(holder.tvTitle, new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.MATCH_PARENT));
-		holder.layoutHolder.addView(holder.vUnderline, param);
+		holder.layoutHolder.addView(holder.vUnderline, underLineParam);
 		
 		mViewList.add(holder);
 		parent.addView(holder.layoutHolder, new LayoutParams(android.view.ViewGroup.LayoutParams.WRAP_CONTENT, android.view.ViewGroup.LayoutParams.MATCH_PARENT));
