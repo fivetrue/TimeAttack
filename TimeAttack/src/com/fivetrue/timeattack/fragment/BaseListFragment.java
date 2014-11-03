@@ -12,13 +12,16 @@ import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.TextView;
 
 abstract public class BaseListFragment <T> extends BaseFragment implements OnItemClickListener, OnScrollListener{
 	
 	protected ListView listView = null;
+	protected ViewGroup emptyLayout = null;
+	protected TextView tvEmpty = null;
 	protected TimeAttackBaseAdapter<T> adapter = null;
-	private ViewGroup contentView = null;
 	
+	private ViewGroup contentView = null;
 	private View listHeader = null;
 	private View listFooter = null;
 	
@@ -42,6 +45,8 @@ abstract public class BaseListFragment <T> extends BaseFragment implements OnIte
 	public void initView(LayoutInflater inflater){
 		contentView = (ViewGroup) inflater.inflate(R.layout.fragment_list, null);
 		listView = (ListView) contentView.findViewById(R.id.lv_base_list);
+		emptyLayout = (ViewGroup) contentView.findViewById(R.id.layout_empty);
+		tvEmpty = (TextView) contentView.findViewById(R.id.tv_empty);
 		
 		listFooter = initFooter();
 		listHeader = initHeader();
@@ -132,6 +137,14 @@ abstract public class BaseListFragment <T> extends BaseFragment implements OnIte
 
 	public void setListFooter(View listFooter) {
 		this.listFooter = listFooter;
+	}
+
+	public ViewGroup getEmptyLayout() {
+		return emptyLayout;
+	}
+
+	public TextView getTvEmpty() {
+		return tvEmpty;
 	}
 	
 }

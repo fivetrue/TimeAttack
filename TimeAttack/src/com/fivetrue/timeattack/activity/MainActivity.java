@@ -17,33 +17,8 @@ public class MainActivity extends BaseActivity{
 	@Override
 	View onCreateView(LayoutInflater inflater) {
 		// TODO Auto-generated method stub
-//		View view = inflater.inflate(R.layout.activity_main, null);
-//		if(view != null){
-//			
-//			view.findViewById(R.id.btn_add_map).setOnClickListener(new OnClickListener() {
-//				
-//				@Override
-//				public void onClick(View v) {
-					// TODO Auto-generated method stub
-//					FragmentTransaction trans = getSupportFragmentManager().beginTransaction();
-//					if(!fragmentSubway.isHidden()){
-//						trans.hide(fragmentSubway);
-//						trans.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_CLOSE);
-//					}else{
-//						if(fragmentSubway != null){
-//						}
-//						trans.add(R.id.layout_map, fragmentSubway);
-//						trans.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-//					}
-//					trans.commit();
-//				}
-//			});
-//		}else{
-//			Toast.makeText(getApplicationContext(), "View null", Toast.LENGTH_SHORT).show();
-//		}
-	
 		mTapFragment = (TabFragment) createFragment(TabFragment.class, "");
-		mTapFragment.addFragment(new RecentlyUseFragment(), "최근");
+		mTapFragment.addFragment(new RecentlyUseFragment(), getString(R.string.recently_infomation));
 		mTapFragment.addFragment(new NearBySearchFragment(), "주변 찾기");
 		return null;
 	}
@@ -51,13 +26,13 @@ public class MainActivity extends BaseActivity{
 	@Override
 	String getActionBarTitleName() {
 		// TODO Auto-generated method stub
-		return "TimeAttack";
+		return getString(R.string.activity_home);
 	}
 
 	@Override
 	String getActionBarSubTitle() {
 		// TODO Auto-generated method stub
-		return "MainActivty";
+		return null;
 	}
 
 	@Override

@@ -19,6 +19,10 @@
     <string name="drawer_near_by">주변 찾기</string>
     <string name="drawer_direction">길 찾기</string>
     
+    <!-- Fragment -->
+    <string name="recently_infomation">최근 이용정보</string>
+    <string name="recently_infomation_empty">최근 이용한 정보가 없습니다.</string>
+    
     <!-- Map Fragment -->
     <string name="show_map">지도 보기</string>
     <string name="hide_map">지도 닫기</string>
@@ -32,7 +36,7 @@
     <string name="actionbar_place">주변 찾기</string>
     
     <!-- Main -->
-    <string name="activity_home"></string>
+    <string name="activity_home">타임어택</string>
     
     
     

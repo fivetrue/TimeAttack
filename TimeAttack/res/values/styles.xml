@@ -2,13 +2,13 @@
 
     <!--
         Base application theme, dependent on API level. This theme is replaced
-        by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
+        by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
     -->
     <style name="AppBaseTheme" parent="android:Theme.Light">
         <!--
             Theme customizations available in newer API levels can go in
             res/values-vXX/styles.xml, while customizations related to
-            backward-compatibility can go here.
+            backward-compatibility can go here.
         -->
     </style>
 
@@ -21,7 +21,7 @@
 
         <!-- ActionBar Custom -->
         <item name="android:actionBarStyle">@style/MyActionBar</item>
-         <item name="android:actionBarSplitStyle">@style/MyActionButtonStyle</item>
+        <item name="android:actionBarSplitStyle">@style/MyActionButtonStyle</item>
         <!-- ActionBar Custom -->
     </style>
 
@@ -37,6 +37,7 @@
         <item name="android:background">@drawable/selector_common_black</item>
     </style>
     <!-- Fivetrue Custom ActionBar -->
+
 
     <!-- Drawer Item Style -->
     <style name="DrawerText">
@@ -74,10 +75,19 @@
         <item name="android:textSize">@dimen/list_item_sub_title_text_size</item>
         <item name="android:textColor">@color/selector_list_sub_title_text_color</item>
     </style>
-    
+
     <style name="TabTitleText">
         <item name="android:textSize">@dimen/tab_text_size</item>
         <item name="android:textColor">@color/selector_drawer_text_color</item>
         <item name="android:background">@drawable/selector_drawer_layout</item>
     </style>
+
+    <style name="EmptyText">
+        <item name="android:textSize">@dimen/empty_text_size</item>
+        <item name="android:textColor">@color/drawer_text_color_n</item>
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:gravity">center</item>
+        <item name="android:typeface">sans</item>
+    </style>
+
 </resources>
