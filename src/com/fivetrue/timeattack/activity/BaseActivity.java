@@ -37,6 +37,7 @@ abstract public class BaseActivity extends LocationActivity implements IRequestR
 	private NetworkResultDBManager mNetworkResultDBM = null;
 	
 	private View mHomeImageView = null;
+	private float mHomeImageX = 0;
 	
 	private LayoutInflater mInflater = null;
 	
@@ -61,6 +62,16 @@ abstract public class BaseActivity extends LocationActivity implements IRequestR
 		if(!TextUtils.isEmpty(getActionBarSubTitle())){
 			getActionBar().setSubtitle(getActionBarSubTitle());
 		}
+		
+		ViewGroup actionBar = (ViewGroup) getActionBarView();
+		View child = actionBar.getChildAt(0);
+		if(child != null){
+			ViewGroup homeViewGroup = (ViewGroup) ((ViewGroup)child).getChildAt(0);
+			if(homeViewGroup != null){
+				mHomeImageView = ((ViewGroup)homeViewGroup).getChildAt(0);
+				mHomeImageX = mHomeImageView.getX();
+			}
+		}
 	}
 	
 	private void initViews(){
@@ -79,7 +90,7 @@ abstract public class BaseActivity extends LocationActivity implements IRequestR
 		}
 		
 		mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, isHomeAsUp() ? R.drawable.ic_action_back : R.drawable.ic_drawer, R.string.drawer_open, R.string.drawer_close){
-
+			private int moveValue = 10;
 			@Override
 			public void onDrawerStateChanged(int arg0) {
 				// TODO Auto-generated method stub
@@ -88,6 +99,9 @@ abstract public class BaseActivity extends LocationActivity implements IRequestR
 			@Override
 			public void onDrawerSlide(View arg0, float arg1) {
 				// TODO Auto-generated method stub
+				if(mHomeImageView != null){
+					mHomeImageView.setX(mHomeImageX - (arg1 * moveValue));
+				}
 			}
 
 			@Override
@@ -129,37 +143,6 @@ abstract public class BaseActivity extends LocationActivity implements IRequestR
 
 		
 		if(mDrawerToggle.onOptionsItemSelected(item)){
-			ViewGroup v = (ViewGroup) getActionBarView();
-			
-//			if(v != null){
-//				System.out.println("ojkwon : " + v.getChildCount());
-//				for(int i = 0 ; i < v.getChildCount() ; i ++){
-//					View child = v.getChildAt(i);
-//					if(child != null){
-//						if(child instanceof ViewGroup){
-//							System.out.println("ojkwon : child = " + i + ((ViewGroup)child).getChildCount());
-//							for(int j = 0 ; j < ((ViewGroup)child).getChildCount() ; j ++){
-//								
-//								if(child instanceof ViewGroup){
-//									ViewGroup child2 = (ViewGroup) ((ViewGroup)child).getChildAt(j);
-//									System.out.println("ojkwon : child2 j = " + j + ((ViewGroup)child2).getChildCount());
-//									for(int k = 0 ; k < ((ViewGroup)child2).getChildCount() ; k ++){
-//										System.out.println("ojkwon : child k = " + k + ((ViewGroup)child2).getChildAt(k).getClass().getCanonicalName());
-//										if(((ViewGroup)child2).getChildAt(k).getAlpha() == 0.5f){
-//											((ViewGroup)child2).getChildAt(k).setAlpha(1);
-//										}else{
-//											((ViewGroup)child2).getChildAt(k).setAlpha(0.5f);
-//										}
-//									}
-//								}
-//								
-//								System.out.println("ojkwon : child j = " + j + ((ViewGroup)child).getChildAt(j).getClass().getCanonicalName());
-//							}
-//						}
-//					}
-//				}
-//				
-//			}
 	        return onSelectedActionBarItem(item);
 	    }
 		return super.onOptionsItemSelected(item);
