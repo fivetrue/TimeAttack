@@ -38,6 +38,7 @@ abstract public class BaseActivity extends LocationActivity implements IRequestR
 	
 	private View mHomeImageView = null;
 	private float mHomeImageX = 0;
+	private int mActionBarBackgroundDrawbleRes = 0;
 	
 	private LayoutInflater mInflater = null;
 	
@@ -55,6 +56,8 @@ abstract public class BaseActivity extends LocationActivity implements IRequestR
 	
 	public void initActionBarSetting(){
 		
+		mActionBarBackgroundDrawbleRes = R.drawable.selector_common_black;
+		
 		getActionBar().setDisplayHomeAsUpEnabled(true);
         getActionBar().setHomeButtonEnabled(true);
         getActionBar().setIcon(new ColorDrawable(0x00000000));
@@ -63,15 +66,8 @@ abstract public class BaseActivity extends LocationActivity implements IRequestR
 			getActionBar().setSubtitle(getActionBarSubTitle());
 		}
 		
-		ViewGroup actionBar = (ViewGroup) getActionBarView();
-		View child = actionBar.getChildAt(0);
-		if(child != null){
-			ViewGroup homeViewGroup = (ViewGroup) ((ViewGroup)child).getChildAt(0);
-			if(homeViewGroup != null){
-				mHomeImageView = ((ViewGroup)homeViewGroup).getChildAt(0);
-				mHomeImageX = mHomeImageView.getX();
-			}
-		}
+		initActionBarHomeView();
+		
 	}
 	
 	private void initViews(){
@@ -125,6 +121,19 @@ abstract public class BaseActivity extends LocationActivity implements IRequestR
 	
 	private void initModels(){
 		mNetworkResultDBM = new NetworkResultDBManager(getApplicationContext());
+	}
+	
+	private void initActionBarHomeView(){
+		ViewGroup actionBar = (ViewGroup) getActionBarView();
+		ViewGroup home = (ViewGroup) actionBar.getChildAt(0);
+		if(home != null){
+			ViewGroup homeViewGroup = (ViewGroup) home.getChildAt(0);
+			if(homeViewGroup != null){
+//				homeViewGroup.setBackgroundResource(mActionBarBackgroundDrawbleRes);
+				mHomeImageView = ((ViewGroup)homeViewGroup).getChildAt(0);
+				mHomeImageX = mHomeImageView.getX();
+			}
+		}
 	}
 	
 	@Override
