@@ -36,8 +36,15 @@ public class RecentlyUseFragment extends BaseListFragment<NetworkResult> {
 		NetworkResultDBManager manager = new NetworkResultDBManager(getActivity());
 		ArrayList<NetworkResult> arr = manager.getNetworkResults();
 		if(arr != null && arr.size() > 0){
+			listView.setVisibility(View.VISIBLE);
+			emptyLayout.setVisibility(View.GONE);
 			adapter = new RecentlyNetworkResultAdapter(getActivity(), R.layout.item_recently_use, arr);
 			listView.setAdapter(adapter);
+		}else{
+			listView.setVisibility(View.GONE);
+			emptyLayout.setVisibility(View.VISIBLE);
+			emptyLayout.setBackgroundColor(getResources().getColor(R.color.list_background));
+			tvEmpty.setText(R.string.recently_infomation_empty);
 		}
 	}
 

@@ -4,6 +4,8 @@
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
     
+    <dimen name="empty_text_size">17dp</dimen>
+    
     <!-- ActionBar -->
     <dimen name="actionbar_height">45dp</dimen>
     <dimen name="actionbar_title_text_size">18dp</dimen>
