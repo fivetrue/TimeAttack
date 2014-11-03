@@ -84,10 +84,10 @@
 
     <style name="EmptyText">
         <item name="android:textSize">@dimen/empty_text_size</item>
-        <item name="android:textColor">@color/drawer_text_color_n</item>
+        <item name="android:textColor">@android:color/white</item>
         <item name="android:background">@android:color/transparent</item>
         <item name="android:gravity">center</item>
-        <item name="android:typeface">sans</item>
+        <item name="android:typeface">monospace</item>
     </style>
 
 </resources>
