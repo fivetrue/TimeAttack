@@ -18,19 +18,19 @@ import com.fivetrue.timeattack.view.adapter.RecentlyNetworkResultAdapter;
 public class RecentlyUseFragment extends BaseListFragment<NetworkResult> {
 
 	@Override
-	protected View initHeader() {
+	public View initHeader() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	protected View initFooter() {
+	public View initFooter() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	protected void onLoadListData() {
+	public void onLoadListData() {
 		// TODO Auto-generated method stub
 		
 		NetworkResultDBManager manager = new NetworkResultDBManager(getActivity());
@@ -38,7 +38,12 @@ public class RecentlyUseFragment extends BaseListFragment<NetworkResult> {
 		if(arr != null && arr.size() > 0){
 			listView.setVisibility(View.VISIBLE);
 			emptyLayout.setVisibility(View.GONE);
-			adapter = new RecentlyNetworkResultAdapter(getActivity(), R.layout.item_recently_use, arr);
+			if(adapter != null){
+				adapter.setArrayList(arr);
+				adapter.notifyDataSetChanged();
+			}else{
+				adapter = new RecentlyNetworkResultAdapter(getActivity(), R.layout.item_recently_use, arr);
+			}
 			listView.setAdapter(adapter);
 		}else{
 			listView.setVisibility(View.GONE);

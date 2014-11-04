@@ -63,11 +63,11 @@ abstract public class BaseListFragment <T> extends BaseFragment implements OnIte
 	}
 	
 	
-	abstract protected View initHeader();
+	abstract public View initHeader();
 	
-	abstract protected View initFooter();
+	abstract public View initFooter();
 	
-	abstract protected void onLoadListData();
+	abstract public void onLoadListData();
 	
 	abstract protected void configListView(ListView listview);
 	

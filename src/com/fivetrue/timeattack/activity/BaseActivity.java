@@ -1,6 +1,21 @@
 package com.fivetrue.timeattack.activity;
 
+import com.api.common.Constants;
 import com.api.common.IRequestResult;
+import com.api.google.directions.DirectionsConstants;
+import com.api.google.directions.converter.DirectionsConverter;
+import com.api.google.directions.entry.DirectionsEntry;
+import com.api.google.geocoding.GeocodingConstants;
+import com.api.google.geocoding.converter.GeocodingConverter;
+import com.api.google.geocoding.entry.GeocodingEntry;
+import com.api.google.place.PlacesConstans;
+import com.api.google.place.converter.PlacesConverter;
+import com.api.google.place.entry.PlacesEntry;
+import com.api.seoul.SeoulAPIConstants;
+import com.api.seoul.subway.converter.SubwayArrivalInfoConverter;
+import com.api.seoul.subway.converter.SubwayInfoConverter;
+import com.api.seoul.subway.entry.SubwayArrivalInfoEntry;
+import com.api.seoul.subway.entry.SubwayInfoEntry;
 import com.fivetrue.location.activity.LocationActivity;
 import com.fivetrue.timeattack.R;
 import com.fivetrue.timeattack.database.NetworkResultDBManager;
@@ -247,6 +262,8 @@ abstract public class BaseActivity extends LocationActivity implements IRequestR
 	
 	abstract boolean isHomeAsUp();
 	
+	abstract void requsetNetworkResultSuccess();
+	
 	protected OnDrawerMenuClickListener  mDrawerMenuClickListener = new OnDrawerMenuClickListener() {
 		
 		@Override
@@ -284,7 +301,40 @@ abstract public class BaseActivity extends LocationActivity implements IRequestR
 	};
 	
 	public void onSuccessRequest(String url, org.json.JSONObject request) {
-		mNetworkResultDBM.insertNetworkResult(url, request);
+		boolean isResultOK = false;
+		if(url.contains(Constants.GoogleDirectionsAPI.DIRECTION_API_HOST)){
+			DirectionsEntry entry = new DirectionsConverter().onReceive(request);
+			if(entry.getStatus().equals(DirectionsConstants.Status.OK.toString())){
+				isResultOK = true;
+			}
+		}else if(url.contains(Constants.GooglePlaceAPI.PLACE_API_HOST)){
+			PlacesEntry entry = new PlacesConverter().onReceive(request);
+			if(entry.getStatus().equals(PlacesConstans.Status.OK.toString())){
+				isResultOK = true;
+			}
+		}else if(url.contains(Constants.GoogleGeocodingAPI.GEOCODING_API_HOST)){
+			GeocodingEntry entry = new GeocodingConverter().onReceive(request);
+			if(entry.getStatus().equals(GeocodingConstants.Status.OK.toString())){
+				isResultOK = true;
+			}
+		}else if(url.contains(SeoulAPIConstants.API_HOST)){
+			
+			if(url.contains(SeoulAPIConstants.Subway.ARRIVAL_INFO_SERVICE)){
+				SubwayArrivalInfoEntry entry = new SubwayArrivalInfoConverter().onReceive(request);
+				if(entry.getStatus().equals(SeoulAPIConstants.ResultInfo.OK)){
+					isResultOK = true;
+				}
+			}else if(url.contains(SeoulAPIConstants.Subway.FIND_INFO_SERVICE)){
+				SubwayInfoEntry entry = new SubwayInfoConverter().onReceive(request);
+				if(entry.getStatus().equals(SeoulAPIConstants.ResultInfo.OK)){
+					isResultOK = true;
+				}
+			}
+		}
+		if(isResultOK){
+			mNetworkResultDBM.insertNetworkResult(url, request);
+			requsetNetworkResultSuccess();
+		}
 	};
 	
 	@Override
