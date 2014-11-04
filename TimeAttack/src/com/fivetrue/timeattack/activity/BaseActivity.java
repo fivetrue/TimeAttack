@@ -53,7 +53,7 @@ abstract public class BaseActivity extends LocationActivity implements IRequestR
 	
 	private View mHomeImageView = null;
 	private float mHomeImageX = 0;
-	private int mActionBarBackgroundDrawbleRes = 0;
+	private int mActionBarBackgroundSelectorRes = 0;
 	
 	private LayoutInflater mInflater = null;
 	
@@ -71,7 +71,7 @@ abstract public class BaseActivity extends LocationActivity implements IRequestR
 	
 	public void initActionBarSetting(){
 		
-		mActionBarBackgroundDrawbleRes = R.drawable.selector_common_black;
+		mActionBarBackgroundSelectorRes = R.drawable.selector_common_alpha_another_gray;
 		
 		getActionBar().setDisplayHomeAsUpEnabled(true);
         getActionBar().setHomeButtonEnabled(true);
@@ -144,9 +144,23 @@ abstract public class BaseActivity extends LocationActivity implements IRequestR
 		if(home != null){
 			ViewGroup homeViewGroup = (ViewGroup) home.getChildAt(0);
 			if(homeViewGroup != null){
-//				homeViewGroup.setBackgroundResource(mActionBarBackgroundDrawbleRes);
-				mHomeImageView = ((ViewGroup)homeViewGroup).getChildAt(0);
+				homeViewGroup.setBackgroundResource(mActionBarBackgroundSelectorRes);
+				mHomeImageView = homeViewGroup.getChildAt(0);
 				mHomeImageX = mHomeImageView.getX();
+				
+			}
+//			ViewGroup buttonsViewGroup = (ViewGroup) ((ViewGroup) home.getChildAt(0)).getChildAt(2);
+			ViewGroup buttonsViewGroup = (ViewGroup) home.getChildAt(0);
+			if(buttonsViewGroup != null){
+				System.out.println("ojkwon : " + buttonsViewGroup.getChildCount() );
+				System.out.println("ojkwon : " + buttonsViewGroup.getClass().getCanonicalName() );
+				for(int i = 0 ; i < buttonsViewGroup.getChildCount() ; i ++){
+					View button = buttonsViewGroup.getChildAt(i);
+					if(button != null){
+						System.out.println("ojkwon : " + button.getClass().getCanonicalName() );
+						button.setBackgroundResource(mActionBarBackgroundSelectorRes);
+					}
+				}
 			}
 		}
 	}
