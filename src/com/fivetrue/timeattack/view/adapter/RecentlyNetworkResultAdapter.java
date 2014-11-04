@@ -10,8 +10,10 @@ import com.android.volley.toolbox.ImageLoader.ImageContainer;
 import com.android.volley.toolbox.ImageLoader.ImageListener;
 import com.api.google.directions.converter.DirectionsConverter;
 import com.api.google.directions.entry.DirectionsEntry;
+import com.api.google.geocoding.GeocodingConstants;
 import com.api.google.geocoding.converter.GeocodingConverter;
 import com.api.google.geocoding.entry.GeocodingEntry;
+import com.api.google.geocoding.model.AddressComponentVO;
 import com.api.google.place.converter.PlacesConverter;
 import com.api.google.place.entry.PlacesEntry;
 import com.api.seoul.subway.converter.SubwayArrivalInfoConverter;
@@ -24,6 +26,7 @@ import com.fivetrue.timeattack.database.model.NetworkResult;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -49,7 +52,10 @@ public class RecentlyNetworkResultAdapter extends TimeAttackBaseAdapter <Network
 			convertView = mLayoutInflater.inflate(mResourceId, null);
 
 			mViewHolder.ivImage = (ImageView) convertView.findViewById(R.id.iv_recently_item_image);
+			mViewHolder.ivBackImage = (ImageView) convertView.findViewById(R.id.iv_recently_item_back_image);
+			mViewHolder.ivArrow =  (ImageView) convertView.findViewById(R.id.iv_recently_item_arrow);
 			mViewHolder.tvTitle = (TextView) convertView.findViewById(R.id.tv_recently_item_title);
+			mViewHolder.tvSubtitle = (TextView) convertView.findViewById(R.id.tv_recently_item_sub_title);
 			mViewHolder.tvDescription = (TextView) convertView.findViewById(R.id.tv_recently_item_description);
 			convertView.setTag(mViewHolder);
 		}else {
@@ -62,12 +68,14 @@ public class RecentlyNetworkResultAdapter extends TimeAttackBaseAdapter <Network
 			return convertView;
 		}
 		
+		mViewHolder.ivBackImage.setVisibility(View.VISIBLE);
+		
 		switch(data.getType()){
 		case Direction : 
 		{
 			DirectionsEntry entry = convertDirectionEntry(data.getResult());
 			mViewHolder.tvTitle.setText(entry.getRouteArray().get(0).getArrivalAddress());
-			mViewHolder.tvDescription.setText(entry.getRouteArray().get(0).getSummary());
+			mViewHolder.tvSubtitle.setText(entry.getRouteArray().get(0).getSummary());
 			break;
 		}
 
@@ -77,7 +85,7 @@ public class RecentlyNetworkResultAdapter extends TimeAttackBaseAdapter <Network
 				PlacesEntry entry = convertPlaceEntry(data.getResult());
 				if(entry.getPlaceList().size() > 0){
 					mViewHolder.tvTitle.setText(entry.getPlaceList().get(0).getName());
-					mViewHolder.tvDescription.setText(entry.getPlaceList().get(0).getTypeList().get(0));
+					mViewHolder.tvSubtitle.setText(entry.getPlaceList().get(0).getTypeList().get(0));
 
 					Bitmap bm = VolleyInstance.getLruCache().get(entry.getPlaceList().get(0).getIcon());
 
@@ -113,8 +121,15 @@ public class RecentlyNetworkResultAdapter extends TimeAttackBaseAdapter <Network
 		case GeoCoding :
 		{
 			GeocodingEntry entry = convertGeocodeEntry(data.getResult());
-			mViewHolder.tvTitle.setText(entry.getAddress());
-			mViewHolder.tvDescription.setText(entry.getLocationType());
+			mViewHolder.ivImage.setImageResource(R.drawable.map);
+			mViewHolder.ivBackImage.setVisibility(View.GONE);
+			mViewHolder.tvTitle.setText(mContext.getString(R.string.location_infomation));
+			if(entry.getTypes() != null){
+				if(!TextUtils.isEmpty(entry.getTypes().get(0))){
+					mViewHolder.tvSubtitle.setText(entry.getTypes().get(0));
+				}
+			}
+			mViewHolder.tvDescription.setText(getGeocodingDescription(entry));
 			break;
 		}
 
@@ -122,7 +137,7 @@ public class RecentlyNetworkResultAdapter extends TimeAttackBaseAdapter <Network
 		{
 			SubwayInfoEntry entry = convertSubwayInfoEntry(data.getResult());
 			mViewHolder.tvTitle.setText(entry.getStationList().get(0).getStationName());
-			mViewHolder.tvDescription.setText(entry.getStationList().get(0).getLineNumber());
+			mViewHolder.tvSubtitle.setText(entry.getStationList().get(0).getLineNumber());
 			break;
 		}
 
@@ -130,7 +145,7 @@ public class RecentlyNetworkResultAdapter extends TimeAttackBaseAdapter <Network
 		{
 			SubwayArrivalInfoEntry entry = convertSubwayArrivalInfoEntry(data.getResult());
 			mViewHolder.tvTitle.setText(entry.getArrivalList().get(0).getSubwayName());
-			mViewHolder.tvDescription.setText(entry.getArrivalList().get(0).getDestinationName());
+			mViewHolder.tvSubtitle.setText(entry.getArrivalList().get(0).getDestinationName());
 			break;
 		}
 		}
@@ -139,8 +154,39 @@ public class RecentlyNetworkResultAdapter extends TimeAttackBaseAdapter <Network
 
 	private class ViewHolder{
 		public ImageView ivImage;
+		public ImageView ivBackImage;
 		public TextView tvTitle;
+		public TextView tvSubtitle;
+		public ImageView ivArrow;
 		public TextView tvDescription;
+	}
+	
+	private String getGeocodingDescription(GeocodingEntry entry){
+		String postal_code = null;
+		for(AddressComponentVO componnt : entry.getAddressComponents()){
+			if(componnt.getTypes() != null && componnt.getTypes().size() >= 0){
+				if(componnt.getTypes().get(0).equals(GeocodingConstants.Types.postal_code.toString())){
+					postal_code = componnt.getLongName();
+					break;
+				}
+			}
+		}
+		
+		StringBuilder desc = new StringBuilder();
+		desc.append(mContext.getString(R.string.location_address))
+		.append("\n")
+		.append(entry.getAddress())
+		.append("\n")
+		.append(postal_code)
+		.append("\n\n")
+		.append(mContext.getString(R.string.location_latitude))
+		.append(",")
+		.append(mContext.getString(R.string.location_longitude))
+		.append(" - ")
+		.append(entry.getLatitude())
+		.append(",")
+		.append(entry.getLongitude());
+		return desc.toString();
 	}
 
 	public DirectionsEntry convertDirectionEntry(String result){

@@ -38,6 +38,7 @@
     <dimen name="list_item_padding_right">12dp</dimen>
     <dimen name="list_item_title_text_size">13dp</dimen>
     <dimen name="list_item_sub_title_text_size">9dp</dimen>
+    <dimen name="list_item_description_text_size">11dp</dimen>
     
     <!-- Recentry list item -->
     <dimen name="recentry_item_height">300dp</dimen>

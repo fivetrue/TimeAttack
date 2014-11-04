@@ -6,24 +6,15 @@
     android:paddingRight="@dimen/list_item_margin"
     android:paddingTop="@dimen/list_item_margin" >
 
-    <View
-        android:id="@+id/shadow"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/list_item_margin"
-        android:layout_alignParentBottom="true"
-        android:background="@drawable/tab_img_shadow_pattern" />
-
     <ListView
         android:id="@+id/lv_base_list"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@id/shadow" />
+        android:layout_height="match_parent" />
 
     <RelativeLayout
         android:id="@+id/layout_empty"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@id/shadow"
         android:visibility="gone" >
 
         <TextView
@@ -32,6 +23,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true" />
+
+        <View
+            android:id="@+id/shadow"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/list_item_margin"
+            android:layout_alignParentBottom="true"
+            android:background="@drawable/tab_img_shadow_pattern" />
     </RelativeLayout>
 
 </RelativeLayout>

@@ -38,6 +38,14 @@
     <!-- Main -->
     <string name="activity_home">타임어택</string>
     
+    <!-- Location Infomation -->
+    <string name="location_infomation">위치 정보</string>
+    <string name="location_address">주소</string>
+	<string name="location_postal_code">우편번호</string>
+    <string name="location_latitude">위도</string>
+    <string name="location_longitude">경도</string>
+    <string name="location_type">주소</string>
+    
     
     
     

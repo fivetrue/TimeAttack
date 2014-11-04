@@ -76,6 +76,14 @@
         <item name="android:textSize">@dimen/list_item_sub_title_text_size</item>
         <item name="android:textColor">@color/selector_list_sub_title_text_color</item>
     </style>
+    
+    <style name="listDescriptionText">
+        <item name="android:textSize">@dimen/list_item_description_text_size</item>
+        <item name="android:textColor">@color/list_sub_title_text_color_n</item>
+        <item name="android:padding">@dimen/recentry_item_body_padding</item>
+        <item name="android:gravity">left|bottom</item>
+        <item name="android:typeface">monospace</item>
+    </style>
 
     <style name="TabTitleText">
         <item name="android:textSize">@dimen/tab_text_size</item>
