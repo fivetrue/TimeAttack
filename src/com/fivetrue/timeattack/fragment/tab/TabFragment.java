@@ -57,6 +57,7 @@ public class TabFragment extends BaseFragment {
 
 	private int mLayoutWidth = INVALID_VALUE;
 	private int mLayoutHeight = INVALID_VALUE;
+	private int mActionBarHeight = INVALID_VALUE;
 	
 
 	private CustomViewPager mViewPager = null;
@@ -91,8 +92,8 @@ public class TabFragment extends BaseFragment {
 
 	private void initViewData(){
 		mLayoutWidth = getResources().getDisplayMetrics().widthPixels;
-		mLayoutHeight = getResources().getDisplayMetrics().heightPixels;
-
+		mLayoutHeight = getResources().getDisplayMetrics().heightPixels - getStatusBarHeight(); 
+		mActionBarHeight = (int) getResources().getDimension(R.dimen.actionbar_height);
 		mTabWidth = getResources().getDisplayMetrics().widthPixels;
 		mTabHeight = (int) getResources().getDimension(R.dimen.tab_height);
 		mTabUnderlineHeight = (int) getResources().getDimension(R.dimen.tab_underline_height);
@@ -102,7 +103,7 @@ public class TabFragment extends BaseFragment {
 	private void initView(){
 		mContentView = new LinearLayout(getActivity());
 		mContentView.setOrientation(LinearLayout.VERTICAL);
-		mContentViewLayoutParam = new LayoutParams(mLayoutWidth, mLayoutHeight);
+		mContentViewLayoutParam = new LayoutParams(mLayoutWidth, mLayoutHeight - mActionBarHeight);
 		mContentView.setLayoutParams(mContentViewLayoutParam);
 		mContentView.setBackgroundColor(getResources().getColor(R.color.drawer_item_background_n));
 
@@ -124,7 +125,7 @@ public class TabFragment extends BaseFragment {
 		mTabScrollView.addView(mTabLayout);
 
 		mContentLayout = new FrameLayout(getActivity());
-		mContentLayoutParam = new LayoutParams(mLayoutWidth, mLayoutHeight - mTabHeight);
+		mContentLayoutParam = new LayoutParams(mLayoutWidth, mLayoutHeight - mTabHeight - mActionBarHeight);
 		mContentLayout.setLayoutParams(mContentLayoutParam);
 
 		mViewPager = new CustomViewPager(getActivity());
@@ -135,12 +136,10 @@ public class TabFragment extends BaseFragment {
 
 		mContentLayout.addView(mViewPager, new LayoutParams(android.view.ViewGroup.LayoutParams.MATCH_PARENT,
 				android.view.ViewGroup.LayoutParams.MATCH_PARENT));
-
 		mContentLayout.addView(shadowView, new LayoutParams(android.view.ViewGroup.LayoutParams.MATCH_PARENT,
 				3 * (int)getResources().getDisplayMetrics().density));
-
+		
 		mContentView.addView(mTabScrollView);
-//		mContentView.addView(mAnimationTab);
 		mContentView.addView(mContentLayout);
 	}
 
@@ -290,5 +289,14 @@ public class TabFragment extends BaseFragment {
 			}
 		}
 	};
+	
+	public int getStatusBarHeight() { 
+	      int result = 0;
+	      int resourceId = getResources().getIdentifier("status_bar_height", "dimen", "android");
+	      if (resourceId > 0) {
+	          result = getResources().getDimensionPixelSize(resourceId);
+	      } 
+	      return result;
+	} 
 }
 

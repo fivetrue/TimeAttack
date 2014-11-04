@@ -29,6 +29,7 @@
     <style name="MyActionBar" parent="@android:style/Widget.ActionBar">
         <item name="android:background">@color/actionbar_background</item>
         <item name="android:titleTextStyle">@style/actionBarTitleText</item>
+        <item name="android:height">@dimen/actionbar_height</item>
         <item name="android:subtitleTextStyle">@style/actionBarSubTitleText</item>
         <item name="android:itemPadding">0dp</item>
     </style>
