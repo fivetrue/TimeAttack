@@ -1,20 +1,24 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/common_background"
-    android:paddingLeft="@dimen/list_item_margin"
-    android:paddingRight="@dimen/list_item_margin"
-    android:paddingTop="@dimen/list_item_margin" >
+    android:background="@color/common_background" >
 
     <ListView
         android:id="@+id/lv_base_list"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:listSelector="@android:color/white" 
+        android:scrollingCache="false"/>
 
     <RelativeLayout
         android:id="@+id/layout_empty"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginBottom="@dimen/list_item_margin"
+        android:layout_marginLeft="@dimen/list_item_margin"
+        android:layout_marginRight="@dimen/list_item_margin"
+        android:layout_marginTop="@dimen/list_item_margin"
+        android:background="@color/list_background"
         android:visibility="gone" >
 
         <TextView
@@ -23,13 +27,15 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true" />
-
-        <View
-            android:id="@+id/shadow"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/list_item_margin"
-            android:layout_alignParentBottom="true"
-            android:background="@drawable/tab_img_shadow_pattern" />
     </RelativeLayout>
+
+    <View
+        android:id="@+id/shadow"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/list_item_margin"
+         android:layout_marginLeft="@dimen/list_item_margin"
+        android:layout_marginRight="@dimen/list_item_margin"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/tab_img_shadow_pattern" />
 
 </RelativeLayout>

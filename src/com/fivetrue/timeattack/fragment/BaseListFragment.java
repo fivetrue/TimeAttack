@@ -1,5 +1,6 @@
 package com.fivetrue.timeattack.fragment;
 
+
 import com.fivetrue.timeattack.R;
 import com.fivetrue.timeattack.view.adapter.TimeAttackBaseAdapter;
 
@@ -16,12 +17,13 @@ import android.widget.TextView;
 
 abstract public class BaseListFragment <T> extends BaseFragment implements OnItemClickListener, OnScrollListener{
 	
+	private ViewGroup emptyLayout = null;
+	private TextView tvEmpty = null;
 	protected ListView listView = null;
-	protected ViewGroup emptyLayout = null;
-	protected TextView tvEmpty = null;
 	protected TimeAttackBaseAdapter<T> adapter = null;
 	
 	private ViewGroup contentView = null;
+	private View shadow = null;
 	private View listHeader = null;
 	private View listFooter = null;
 	
@@ -47,6 +49,8 @@ abstract public class BaseListFragment <T> extends BaseFragment implements OnIte
 		listView = (ListView) contentView.findViewById(R.id.lv_base_list);
 		emptyLayout = (ViewGroup) contentView.findViewById(R.id.layout_empty);
 		tvEmpty = (TextView) contentView.findViewById(R.id.tv_empty);
+		shadow = contentView.findViewById(R.id.shadow);
+		listView.setOnItemClickListener(this);
 		
 		listFooter = initFooter();
 		listHeader = initHeader();
@@ -62,6 +66,21 @@ abstract public class BaseListFragment <T> extends BaseFragment implements OnIte
 		configListView(listView);
 	}
 	
+	protected void setEmptyLayout(boolean isShowing){
+		if(emptyLayout == null || listView == null){
+			return;
+		}
+		
+		if(isShowing){
+			emptyLayout.setVisibility(View.VISIBLE);
+			shadow.setVisibility(View.VISIBLE);
+			listView.setVisibility(View.GONE);
+		}else{
+			emptyLayout.setVisibility(View.GONE);
+			shadow.setVisibility(View.GONE);
+			listView.setVisibility(View.VISIBLE);
+		}
+	}
 	
 	abstract public View initHeader();
 	

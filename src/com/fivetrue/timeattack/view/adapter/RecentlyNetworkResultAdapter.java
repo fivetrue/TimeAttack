@@ -28,6 +28,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -130,6 +131,14 @@ public class RecentlyNetworkResultAdapter extends TimeAttackBaseAdapter <Network
 				}
 			}
 			mViewHolder.tvDescription.setText(getGeocodingDescription(entry));
+			mViewHolder.ivArrow.setOnClickListener(new OnClickListener() {
+				
+				@Override
+				public void onClick(View v) {
+					// TODO Auto-generated method stub
+					
+				}
+			});
 			break;
 		}
 
@@ -176,16 +185,22 @@ public class RecentlyNetworkResultAdapter extends TimeAttackBaseAdapter <Network
 		desc.append(mContext.getString(R.string.location_address))
 		.append("\n")
 		.append(entry.getAddress())
-		.append("\n")
-		.append(postal_code)
-		.append("\n\n")
+		.append("\n");
+		if(!TextUtils.isEmpty(postal_code)){
+			desc.append(mContext.getString(R.string.location_postal_code))
+			.append("(")
+			.append(postal_code)
+			.append(")\n");
+		}
+		desc.append("\n")
 		.append(mContext.getString(R.string.location_latitude))
 		.append(",")
 		.append(mContext.getString(R.string.location_longitude))
-		.append(" - ")
+		.append(" (")
 		.append(entry.getLatitude())
 		.append(",")
-		.append(entry.getLongitude());
+		.append(entry.getLongitude())
+		.append(")\n");
 		return desc.toString();
 	}
 

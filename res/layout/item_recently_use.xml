@@ -16,8 +16,7 @@
             android:id="@+id/layout_recently_list_header"
             android:layout_width="match_parent"
             android:layout_height="@dimen/recentry_item_header_height"
-            android:paddingLeft="@dimen/list_item_padding_left"
-            android:paddingRight="@dimen/list_item_padding_right" >
+            android:paddingLeft="@dimen/list_item_padding_left">
 
             <RelativeLayout
                 android:id="@+id/layout_recently_item_image"
@@ -43,11 +42,14 @@
             <ImageView
                 android:id="@+id/iv_recently_item_arrow"
                 android:layout_width="@dimen/recentry_item_pattern_size"
-                android:layout_height="@dimen/recentry_item_pattern_size"
+                android:layout_height="match_parent"
+                android:paddingRight="@dimen/recentry_item_pattern_padding"
+                android:paddingLeft="@dimen/recentry_item_pattern_padding"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
+                android:scaleType="center"
                 android:src="@drawable/arrow_d"
-                android:background="@drawable/selector_common_black" />
+                android:background="@drawable/selector_common_alpha_another_gray" />
 
             <LinearLayout
                 android:layout_width="match_parent"
