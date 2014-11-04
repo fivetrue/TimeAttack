@@ -297,6 +297,16 @@ public class TabFragment extends BaseFragment {
 	          result = getResources().getDimensionPixelSize(resourceId);
 	      } 
 	      return result;
+	}
+
+	public LinearLayout getTabLayout() {
+		return mTabLayout;
+	}
+
+	public ArrayList<Fragment> getFragmentList() {
+		return mFragmentList;
 	} 
+	
+	
 }
 

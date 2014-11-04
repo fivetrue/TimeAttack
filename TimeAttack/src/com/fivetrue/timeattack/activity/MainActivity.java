@@ -7,6 +7,7 @@ import com.fivetrue.timeattack.fragment.tab.TabFragment;
 
 import android.location.Location;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 
@@ -70,5 +71,18 @@ public class MainActivity extends BaseActivity{
 	int getActionBarMenuResource() {
 		// TODO Auto-generated method stub
 		return R.menu.actionbar_menu;
+	}
+
+	@Override
+	void requsetNetworkResultSuccess() {
+		// TODO Auto-generated method stub
+
+		if(mTapFragment != null){
+			for(Fragment f : mTapFragment.getFragmentList()){
+				if(f instanceof RecentlyUseFragment){
+					((RecentlyUseFragment)f).onLoadListData();
+				}
+			}
+		}
 	}
 }
