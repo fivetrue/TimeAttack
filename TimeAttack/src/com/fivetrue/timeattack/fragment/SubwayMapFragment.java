@@ -21,7 +21,7 @@ public class SubwayMapFragment extends Fragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
-		View view = inflater.inflate(R.layout.fragment_map, null);
+		View view = inflater.inflate(R.layout.activity_map, null);
 		mGoogleMap = ((MapFragment)getFragmentManager().findFragmentById(R.id.fragment_map)).getMap();
 		return view;
 	}

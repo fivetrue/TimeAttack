@@ -32,7 +32,7 @@ abstract public class BaseMapFragment extends BaseFragment{
 	}
 	
 	private void initView(LayoutInflater inflater){
-		contentView = (ViewGroup) inflater.inflate(R.layout.fragment_map, null);
+		contentView = (ViewGroup) inflater.inflate(R.layout.activity_map, null);
 		mapFragment = (SupportMapFragment)getFragmentManager().findFragmentById(R.id.fragment_map);
 		map = mapFragment.getMap();
 		View childView = onCreateAddingViews(inflater);

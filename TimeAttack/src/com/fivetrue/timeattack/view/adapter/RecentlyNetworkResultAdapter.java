@@ -22,9 +22,12 @@ import com.api.seoul.subway.entry.SubwayArrivalInfoEntry;
 import com.api.seoul.subway.entry.SubwayInfoEntry;
 import com.fivetrue.network.VolleyInstance;
 import com.fivetrue.timeattack.R;
+import com.fivetrue.timeattack.activity.MapActivity;
+import com.fivetrue.timeattack.activity.manager.MapActivityManager;
 import com.fivetrue.timeattack.database.model.NetworkResult;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.text.TextUtils;
 import android.view.View;
@@ -121,7 +124,7 @@ public class RecentlyNetworkResultAdapter extends TimeAttackBaseAdapter <Network
 
 		case GeoCoding :
 		{
-			GeocodingEntry entry = convertGeocodeEntry(data.getResult());
+			final GeocodingEntry entry = convertGeocodeEntry(data.getResult());
 			mViewHolder.ivImage.setImageResource(R.drawable.map);
 			mViewHolder.ivBackImage.setVisibility(View.GONE);
 			mViewHolder.tvTitle.setText(mContext.getString(R.string.location_infomation));
@@ -136,7 +139,7 @@ public class RecentlyNetworkResultAdapter extends TimeAttackBaseAdapter <Network
 				@Override
 				public void onClick(View v) {
 					// TODO Auto-generated method stub
-					
+					MapActivityManager.newInstance(mContext).goToMapActivity(entry);
 				}
 			});
 			break;

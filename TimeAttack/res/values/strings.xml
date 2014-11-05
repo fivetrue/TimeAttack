@@ -37,6 +37,7 @@
     
     <!-- Main -->
     <string name="activity_home">타임어택</string>
+    <string name="activity_map">위치</string>
     
     <!-- Location Infomation -->
     <string name="location_infomation">위치 정보</string>
