@@ -4,12 +4,9 @@ import com.api.common.BaseEntry;
 import com.api.google.geocoding.entry.GeocodingEntry;
 import com.fivetrue.timeattack.R;
 import com.fivetrue.timeattack.activity.manager.MapActivityManager;
-import com.fivetrue.timeattack.fragment.BaseMapFragment;
-import com.google.android.gms.internal.in;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
 
-import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -96,7 +93,15 @@ public class MapActivity extends BaseActivity {
 	@Override
 	String getActionBarSubTitle() {
 		// TODO Auto-generated method stub
-		return null;
+		String subTitle = null;
+		if(!TextUtils.isEmpty(mType)){
+			if(mType.equals(MapActivityManager.DATA_GEOCODING)){
+				subTitle = getString(R.string.location_infomation);
+			}else if(mType.equals(MapActivityManager.DATA_DIRECTION)){
+			}else if(mType.equals(MapActivityManager.DATA_PLACE)){
+			}
+		}
+		return subTitle;
 	}
 
 	@Override
