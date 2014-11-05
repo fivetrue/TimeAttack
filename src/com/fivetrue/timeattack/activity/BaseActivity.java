@@ -37,9 +37,11 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.TextView;
+import android.widget.Toast;
 
 abstract public class BaseActivity extends LocationActivity implements IRequestResult{
 	
@@ -71,7 +73,7 @@ abstract public class BaseActivity extends LocationActivity implements IRequestR
 	
 	public void initActionBarSetting(){
 		
-		mActionBarBackgroundSelectorRes = R.drawable.selector_common_alpha_another_gray;
+		mActionBarBackgroundSelectorRes = R.drawable.selector_common_alpha_raleway_yellow;
 		
 		getActionBar().setDisplayHomeAsUpEnabled(true);
         getActionBar().setHomeButtonEnabled(true);
@@ -82,7 +84,6 @@ abstract public class BaseActivity extends LocationActivity implements IRequestR
 		}
 		
 		initActionBarHomeView();
-		
 	}
 	
 	private void initViews(){
@@ -140,26 +141,25 @@ abstract public class BaseActivity extends LocationActivity implements IRequestR
 	
 	private void initActionBarHomeView(){
 		ViewGroup actionBar = (ViewGroup) getActionBarView();
-		ViewGroup home = (ViewGroup) actionBar.getChildAt(0);
-		if(home != null){
-			ViewGroup homeViewGroup = (ViewGroup) home.getChildAt(0);
+		
+		if(actionBar != null){
+			ViewGroup homeViewGroup = (ViewGroup) actionBar.getChildAt(0);
 			if(homeViewGroup != null){
 				homeViewGroup.setBackgroundResource(mActionBarBackgroundSelectorRes);
 				mHomeImageView = homeViewGroup.getChildAt(0);
-				mHomeImageX = mHomeImageView.getX();
-				
+				if(mHomeImageView != null){
+					mHomeImageX = mHomeImageView.getX();
+				}
 			}
-//			ViewGroup buttonsViewGroup = (ViewGroup) ((ViewGroup) home.getChildAt(0)).getChildAt(2);
-			ViewGroup buttonsViewGroup = (ViewGroup) home.getChildAt(0);
-			if(buttonsViewGroup != null){
-				System.out.println("ojkwon : " + buttonsViewGroup.getChildCount() );
-				System.out.println("ojkwon : " + buttonsViewGroup.getClass().getCanonicalName() );
-				for(int i = 0 ; i < buttonsViewGroup.getChildCount() ; i ++){
-					View button = buttonsViewGroup.getChildAt(i);
-					if(button != null){
-						System.out.println("ojkwon : " + button.getClass().getCanonicalName() );
-						button.setBackgroundResource(mActionBarBackgroundSelectorRes);
-					}
+		}
+	}
+	
+	private void initActionBarButtons(Menu menu){
+		if(menu != null){
+			for(int i = 0 ; i < menu.size() ; i ++){
+				View view = menu.getItem(i).getActionView();
+				if(view != null){
+					view.setOnClickListener(onClickActionBarItem);
 				}
 			}
 		}
@@ -170,6 +170,7 @@ abstract public class BaseActivity extends LocationActivity implements IRequestR
 		// Inflate the menu; this adds items to the action bar if it is present.
 		MenuInflater inflater = getMenuInflater();
 		inflater.inflate(getActionBarMenuResource(), menu);
+		initActionBarButtons(menu);
 		return super.onCreateOptionsMenu(menu);
 	}
 
@@ -201,10 +202,6 @@ abstract public class BaseActivity extends LocationActivity implements IRequestR
 //				}
 			}
 			return true;
-			
-		case R.id.action_settings :
-			
-			return true;
 		}
 		
 		return false;
@@ -224,7 +221,7 @@ abstract public class BaseActivity extends LocationActivity implements IRequestR
 	public View getActionBarView() {
 	    Window window = getWindow();
 	    View v = window.getDecorView();
-	    int resId = getResources().getIdentifier("action_bar_container", "id", "android");
+	    int resId = getResources().getIdentifier("action_bar", "id", "android");
 	    return v.findViewById(resId);
 	}
 	
@@ -311,6 +308,23 @@ abstract public class BaseActivity extends LocationActivity implements IRequestR
 				mDrawerLayout.closeDrawer(mLayoutDrawer);
 			}
 			
+		}
+	};
+	
+	protected OnClickListener onClickActionBarItem = new OnClickListener() {
+		
+		@Override
+		public void onClick(View v) {
+			// TODO Auto-generated method stub
+			switch(v.getId()){
+			case R.id.action_item_setting :
+				Toast.makeText(getApplicationContext(), "action_settings", Toast.LENGTH_SHORT).show();
+				return ;
+
+			case R.id.action_item_place : 
+				Toast.makeText(getApplicationContext(), "action_place", Toast.LENGTH_SHORT).show();
+				return ;
+			}
 		}
 	};
 	
