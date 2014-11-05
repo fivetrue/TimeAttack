@@ -37,10 +37,10 @@
     
     <!-- Main -->
     <string name="activity_home">타임어택</string>
-    <string name="activity_map">위치</string>
+    <string name="activity_map">지도정보</string>
     
     <!-- Location Infomation -->
-    <string name="location_infomation">위치 정보</string>
+    <string name="location_infomation">위치정보</string>
     <string name="location_address">주소</string>
 	<string name="location_postal_code">우편번호</string>
     <string name="location_latitude">위도</string>
