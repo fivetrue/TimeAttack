@@ -21,6 +21,7 @@ import com.fivetrue.timeattack.R;
 import com.fivetrue.timeattack.database.NetworkResultDBManager;
 import com.fivetrue.timeattack.fragment.DrawerFragment;
 import com.fivetrue.timeattack.fragment.DrawerFragment.OnDrawerMenuClickListener;
+import com.fivetrue.utils.Logger;
 
 import android.content.res.Configuration;
 import android.graphics.drawable.ColorDrawable;
@@ -45,6 +46,7 @@ import android.widget.Toast;
 
 abstract public class BaseActivity extends LocationActivity implements IRequestResult{
 	
+	protected int INVALID_VALUE = -1;
 	private DrawerLayout mDrawerLayout = null;
 	private ActionBarDrawerToggle mDrawerToggle = null;
 
@@ -168,9 +170,12 @@ abstract public class BaseActivity extends LocationActivity implements IRequestR
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
-		MenuInflater inflater = getMenuInflater();
-		inflater.inflate(getActionBarMenuResource(), menu);
-		initActionBarButtons(menu);
+		if(getActionBarMenuResource() != INVALID_VALUE){
+			MenuInflater inflater = getMenuInflater();
+			inflater.inflate(getActionBarMenuResource(), menu);
+			initActionBarButtons(menu);
+		}
+		
 		return super.onCreateOptionsMenu(menu);
 	}
 
@@ -193,7 +198,8 @@ abstract public class BaseActivity extends LocationActivity implements IRequestR
 		switch(id){
 		case android.R.id.home :
 			if(isHomeAsUp()){
-				NavUtils.navigateUpFromSameTask(this);
+//				NavUtils.navigateUpFromSameTask(this);
+				finish();
 			}else{
 //				if(mDrawerLayout.isDrawerOpen(mLayoutDrawer)){
 //					mDrawerLayout.closeDrawer(mLayoutDrawer);
@@ -368,6 +374,10 @@ abstract public class BaseActivity extends LocationActivity implements IRequestR
 	@Override
 	public void onFailRequest(String url) {
 		// TODO Auto-generated method stub
+	}
+	
+	protected void log(String msg){
+		Logger.e(getPackageName(), getClass().getName() + " = " + msg);
 	}
 	
 }
