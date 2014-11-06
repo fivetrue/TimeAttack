@@ -39,9 +39,14 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+/**
+ * @author Fivetrue
+ *
+ */
 abstract public class BaseActivity extends LocationActivity implements IRequestResult{
 	
 	protected int INVALID_VALUE = -1;
@@ -52,7 +57,7 @@ abstract public class BaseActivity extends LocationActivity implements IRequestR
 	static protected DrawerFragment mFragmentDrawer = null;
 	private NetworkResultDBManager mNetworkResultDBM = null;
 	
-	private View mHomeImageView = null;
+	private ViewGroup mHomeViewGroup = null;
 	private float mHomeImageX = 0;
 	private int mActionBarBackgroundSelectorRes = 0;
 	
@@ -70,19 +75,76 @@ abstract public class BaseActivity extends LocationActivity implements IRequestR
 		
 	}
 	
+	/**
+	 * 기본적인 View를 초기화함.
+	 */
+	private void initViews(){
+		mInflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
+		mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+		mContentView = (ViewGroup) findViewById(R.id.layout_main_frame);
+		mLayoutDrawer = (ViewGroup) findViewById(R.id.layout_drawer);
+		
+		if(mFragmentDrawer == null){
+			mFragmentDrawer = (DrawerFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_drawer);
+			mFragmentDrawer.setOnClickDrawerMenuClickListener(mDrawerMenuClickListener);
+		}
+		View contentView = onCreateView(mInflater);
+		if(contentView != null){
+			mContentView.addView(contentView);
+		}
+	}
+	
+	/**
+	 * Actionbar Setting Area Start
+	 */
 	public void initActionBarSetting(){
 		
 		mActionBarBackgroundSelectorRes = R.drawable.selector_common_alpha_raleway_yellow;
 		
-		getActionBar().setDisplayHomeAsUpEnabled(false);
+		getActionBar().setDisplayHomeAsUpEnabled(true);
         getActionBar().setHomeButtonEnabled(true);
-        getActionBar().setIcon(isHomeAsUp() ? R.drawable.ic_action_previous_item : R.drawable.ic_drawer);
 		getActionBar().setTitle(getActionBarTitleName());
 		if(!TextUtils.isEmpty(getActionBarSubTitle())){
 			getActionBar().setSubtitle(getActionBarSubTitle());
 		}
 		initActionBarHomeView();
 		mDrawerLayout.setDrawerListener(onDrawerListener);
+	}
+	
+	private void initActionBarHomeView(){
+		ViewGroup actionBar = (ViewGroup) getActionBarView();
+		
+		if(actionBar != null){
+			ViewGroup homeViewGroup = (ViewGroup) actionBar.getChildAt(0);
+			if(homeViewGroup != null){
+				homeViewGroup.setBackgroundResource(mActionBarBackgroundSelectorRes);
+				mHomeViewGroup = (ViewGroup) homeViewGroup.getChildAt(0);
+				if(mHomeViewGroup != null){
+					mHomeImageX = mHomeViewGroup.getX();
+					View homeImage = mHomeViewGroup.getChildAt(0);
+					
+					if(homeImage != null && homeImage instanceof ImageView){
+						((ImageView)homeImage).setImageResource(isHomeAsUp() ? R.drawable.ic_action_previous_item : R.drawable.ic_drawer);
+					}
+				
+					View homeIcon = mHomeViewGroup.getChildAt(1);
+					if(homeIcon != null){
+						homeIcon.setVisibility(View.GONE);
+					}
+				}
+			}
+		}
+	}
+	
+	private void initActionBarButtons(Menu menu){
+		if(menu != null){
+			for(int i = 0 ; i < menu.size() ; i ++){
+				View view = menu.getItem(i).getActionView();
+				if(view != null){
+					view.setOnClickListener(onClickActionBarItem);
+				}
+			}
+		}
 	}
 	
 	DrawerListener onDrawerListener = new DrawerListener() {
@@ -99,9 +161,9 @@ abstract public class BaseActivity extends LocationActivity implements IRequestR
 		@Override
 		public void onDrawerSlide(View arg0, float arg1) {
 			// TODO Auto-generated method stub
-			if(mHomeImageView != null){
-				mHomeImageView.setRotation(mHomeImageX - ((arg1 * rotateValue) * reverseInt));
-				mHomeImageView.setX(mHomeImageX - (arg1 * moveValue));
+			if(mHomeViewGroup != null){
+				mHomeViewGroup.setRotation(mHomeImageX - ((arg1 * rotateValue) * reverseInt));
+				mHomeViewGroup.setX(mHomeImageX - (arg1 * moveValue));
 			}
 		}
 
@@ -125,50 +187,12 @@ abstract public class BaseActivity extends LocationActivity implements IRequestR
 		}
 	};
 	
-	private void initViews(){
-		mInflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
-		mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-		mContentView = (ViewGroup) findViewById(R.id.layout_main_frame);
-		mLayoutDrawer = (ViewGroup) findViewById(R.id.layout_drawer);
-		
-		if(mFragmentDrawer == null){
-			mFragmentDrawer = (DrawerFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_drawer);
-			mFragmentDrawer.setOnClickDrawerMenuClickListener(mDrawerMenuClickListener);
-		}
-		View contentView = onCreateView(mInflater);
-		if(contentView != null){
-			mContentView.addView(contentView);
-		}
-	}
+	/**
+	 * Actionbar Setting Area End
+	 */
 	
 	private void initModels(){
 		mNetworkResultDBM = new NetworkResultDBManager(getApplicationContext());
-	}
-	
-	private void initActionBarHomeView(){
-		ViewGroup actionBar = (ViewGroup) getActionBarView();
-		
-		if(actionBar != null){
-			ViewGroup homeViewGroup = (ViewGroup) actionBar.getChildAt(0);
-			if(homeViewGroup != null){
-				homeViewGroup.setBackgroundResource(mActionBarBackgroundSelectorRes);
-				mHomeImageView = homeViewGroup.getChildAt(0);
-				if(mHomeImageView != null){
-					mHomeImageX = mHomeImageView.getX();
-				}
-			}
-		}
-	}
-	
-	private void initActionBarButtons(Menu menu){
-		if(menu != null){
-			for(int i = 0 ; i < menu.size() ; i ++){
-				View view = menu.getItem(i).getActionView();
-				if(view != null){
-					view.setOnClickListener(onClickActionBarItem);
-				}
-			}
-		}
 	}
 	
 	@Override
@@ -185,12 +209,7 @@ abstract public class BaseActivity extends LocationActivity implements IRequestR
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		// Handle action bar item clicks here. The action bar will
-		// automatically handle clicks on the Home/Up button, so long
-		// as you specify a parent activity in AndroidManifest.xml.
-//		if(mDrawerToggle.onOptionsItemSelected(item)){
-//	        return onSelectedActionBarItem(item);
-//	    }
+		
 		if(onSelectedActionBarItem(item)){
 			return false;
 		}else{
