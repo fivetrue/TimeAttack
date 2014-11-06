@@ -32,7 +32,7 @@
     <string name="current_loaction">현재 위치</string>
     
     <!-- Search Activity -->
-    <string name="location_search">위치 검색</string>
+    <string name="location_search">지역검색</string>
     
     <!-- ActionBar Items -->
     <string name="actionbar_search">검색</string>
@@ -44,6 +44,10 @@
     <!-- Main -->
     <string name="activity_home">타임어택</string>
     <string name="activity_map">지도정보</string>
+    
+    <!-- Search -->
+    <string name="input_location_place_message">검색 위치를 입력하세요.</string>
+    <string name="invalid_location_place_message">검색 위치를 다시 확인해주세요.</string>
     
     <!-- Location Infomation -->
     <string name="location_infomation">위치정보</string>

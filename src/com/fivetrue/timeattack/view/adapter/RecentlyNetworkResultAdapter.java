@@ -14,6 +14,7 @@ import com.api.google.geocoding.GeocodingConstants;
 import com.api.google.geocoding.converter.GeocodingConverter;
 import com.api.google.geocoding.entry.GeocodingEntry;
 import com.api.google.geocoding.model.AddressComponentVO;
+import com.api.google.geocoding.model.AddressResultVO;
 import com.api.google.place.converter.PlacesConverter;
 import com.api.google.place.entry.PlacesEntry;
 import com.api.seoul.subway.converter.SubwayArrivalInfoConverter;
@@ -24,6 +25,7 @@ import com.fivetrue.network.VolleyInstance;
 import com.fivetrue.timeattack.R;
 import com.fivetrue.timeattack.activity.MapActivity;
 import com.fivetrue.timeattack.activity.manager.MapActivityManager;
+import com.fivetrue.timeattack.activity.manager.SearchActivityManager;
 import com.fivetrue.timeattack.database.model.NetworkResult;
 
 import android.content.Context;
@@ -127,19 +129,19 @@ public class RecentlyNetworkResultAdapter extends TimeAttackBaseAdapter <Network
 			final GeocodingEntry entry = convertGeocodeEntry(data.getResult());
 			mViewHolder.ivImage.setImageResource(R.drawable.map);
 			mViewHolder.ivBackImage.setVisibility(View.GONE);
-			mViewHolder.tvTitle.setText(mContext.getString(R.string.location_infomation));
-			if(entry.getTypes() != null){
-				if(!TextUtils.isEmpty(entry.getTypes().get(0))){
-					mViewHolder.tvSubtitle.setText(entry.getTypes().get(0));
-				}
-			}
+			mViewHolder.tvTitle.setText(entry.getAddressList().size() > 1 ? R.string.location_search : R.string.location_infomation);
+			mViewHolder.tvSubtitle.setText(getGeocodingSubtitle(entry));
 			mViewHolder.tvDescription.setText(getGeocodingDescription(entry));
 			mViewHolder.ivArrow.setOnClickListener(new OnClickListener() {
 				
 				@Override
 				public void onClick(View v) {
 					// TODO Auto-generated method stub
-					MapActivityManager.newInstance(mContext).goToMapActivity(entry);
+					if(entry.getAddressList().size() > 1){
+						SearchActivityManager.newInstance(mContext).goToActivity(entry);
+					}else{
+						MapActivityManager.newInstance(mContext).goToActivity(entry.getAddressList().get(0));
+					}
 				}
 			});
 			break;
@@ -173,37 +175,77 @@ public class RecentlyNetworkResultAdapter extends TimeAttackBaseAdapter <Network
 		public TextView tvDescription;
 	}
 	
-	private String getGeocodingDescription(GeocodingEntry entry){
-		String postal_code = null;
-		for(AddressComponentVO componnt : entry.getAddressComponents()){
-			if(componnt.getTypes() != null && componnt.getTypes().size() >= 0){
-				if(componnt.getTypes().get(0).equals(GeocodingConstants.Types.postal_code.toString())){
-					postal_code = componnt.getLongName();
-					break;
+	private String getGeocodingSubtitle(GeocodingEntry entry){
+		String keyword  = null;
+		
+		if(entry == null){
+			return keyword;
+		}
+		
+		if(entry.getAddressList().size() > 1){
+			if(entry.getAddressList().size() > 0){
+				if(entry.getAddressList().get(0).getAddressComponents().size() > 0){
+					keyword = entry.getAddressList().get(0).getAddressComponents().get(0).getLongName();
+				}
+			}
+		}else{
+			if(entry.getAddressList().size() > 0){
+				if(entry.getAddressList().get(0).getAddressComponents().size() > 0){
+					keyword = entry.getAddressList().get(0).getAddressComponents().get(0).getTypes().get(0);
 				}
 			}
 		}
+	
+		return keyword;
+	}
 		
+	
+	private String getGeocodingDescription(GeocodingEntry entry){
 		StringBuilder desc = new StringBuilder();
-		desc.append(mContext.getString(R.string.location_address))
-		.append("\n")
-		.append(entry.getAddress())
-		.append("\n");
-		if(!TextUtils.isEmpty(postal_code)){
-			desc.append(mContext.getString(R.string.location_postal_code))
-			.append("(")
-			.append(postal_code)
+		
+		//주소가 복수개 일 경우.
+		if(entry.getAddressList().size() > 1){
+			for(AddressResultVO vo : entry.getAddressList()){
+				if(vo != null){
+					desc.append(vo.getAddress())
+					.append("\n");
+				}
+			}
+		}
+		//주소가 단수일 경우.
+		else{
+			String postal_code = null; 
+			AddressResultVO vo = entry.getAddressList().get(0);
+			for(AddressComponentVO component : vo.getAddressComponents()){
+				if(component.getTypes() != null && component.getTypes().size() >= 0){
+					if(component.getTypes().get(0).equals(GeocodingConstants.Types.postal_code.toString())){
+						postal_code = component.getLongName();
+						break;
+					}
+				}
+			}
+			
+			desc.append(mContext.getString(R.string.location_address))
+			.append("\n")
+			.append(vo.getAddress())
+			.append("\n");
+			if(!TextUtils.isEmpty(postal_code)){
+				desc.append(mContext.getString(R.string.location_postal_code))
+				.append("(")
+				.append(postal_code)
+				.append(")\n");
+			}
+			desc.append("\n")
+			.append(mContext.getString(R.string.location_latitude))
+			.append(",")
+			.append(mContext.getString(R.string.location_longitude))
+			.append(" (")
+			.append(vo.getLatitude())
+			.append(",")
+			.append(vo.getLongitude())
 			.append(")\n");
 		}
-		desc.append("\n")
-		.append(mContext.getString(R.string.location_latitude))
-		.append(",")
-		.append(mContext.getString(R.string.location_longitude))
-		.append(" (")
-		.append(entry.getLatitude())
-		.append(",")
-		.append(entry.getLongitude())
-		.append(")\n");
+		
 		return desc.toString();
 	}
 

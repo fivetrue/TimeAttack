@@ -53,7 +53,6 @@ public class RecentlyUseFragment extends BaseListFragment<NetworkResult> {
 	@Override
 	protected void configListView(ListView listview) {
 		// TODO Auto-generated method stub
-		listView.setDividerHeight(0);
 		
 	}
 

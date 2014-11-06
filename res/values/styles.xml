@@ -56,6 +56,13 @@
         <item name="android:singleLine">true</item>
         <item name="android:typeface">monospace</item>
     </style>
+    
+    <!-- ListStyle -->
+     <style name="MyBaseList" >
+        <item name="android:listSelector">@android:color/white</item>
+        <item name="android:scrollingCache">false</item>
+        <item name="android:dividerHeight">-1dp</item>
+    </style>
 
     <!-- TextStyles -->
     <style name="actionBarTitleText" parent="baseListTextProperties">
@@ -94,7 +101,7 @@
 
     <style name="EmptyText">
         <item name="android:textSize">@dimen/empty_text_size</item>
-        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textColor">@color/muli_brown</item>
         <item name="android:background">@android:color/transparent</item>
         <item name="android:gravity">center</item>
         <item name="android:typeface">monospace</item>
@@ -113,6 +120,12 @@
         <item name="android:hint">@string/location_search</item>
         <item name="android:textColorHint">@color/edit_text_hint_color</item>
         <item name="android:padding">@dimen/edit_text_padding</item>
+        <item name="android:background">@drawable/input_bg_n</item>
+    </style>
+    
+    <style name="MySearchEditText.Search" parent="MySearchEditText">
+        <item name="android:drawableLeft">@drawable/ic_action_location_searching</item>
+        <item name="android:drawablePadding">@dimen/edit_text_padding</item>
     </style>
 
 </resources>

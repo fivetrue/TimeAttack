@@ -7,8 +7,7 @@
         android:id="@+id/lv_base_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:listSelector="@android:color/white" 
-        android:scrollingCache="false"/>
+        style="@style/MyBaseList"/>
 
     <RelativeLayout
         android:id="@+id/layout_empty"
@@ -27,15 +26,25 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true" />
+
+        <ImageView
+            android:id="@+id/iv_search_map_point"
+            android:layout_width="@dimen/empty_image_size"
+            android:layout_height="@dimen/empty_image_size"
+            android:layout_above="@id/tv_empty"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="@dimen/empty_image_margin"
+            android:scaleType="fitXY"
+            android:src="@drawable/map_point" />
     </RelativeLayout>
 
     <View
         android:id="@+id/shadow"
         android:layout_width="match_parent"
         android:layout_height="@dimen/common_margin"
-         android:layout_marginLeft="@dimen/common_margin"
-        android:layout_marginRight="@dimen/common_margin"
         android:layout_alignParentBottom="true"
+        android:layout_marginLeft="@dimen/common_margin"
+        android:layout_marginRight="@dimen/common_margin"
         android:background="@drawable/tab_img_shadow_pattern" />
 
 </RelativeLayout>

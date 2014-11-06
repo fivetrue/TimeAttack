@@ -47,8 +47,8 @@ import android.widget.Toast;
  * @author Fivetrue
  *
  */
-abstract public class BaseActivity extends LocationActivity implements IRequestResult{
 	
+abstract public class BaseActivity extends LocationActivity implements IRequestResult{
 	protected int INVALID_VALUE = -1;
 	private DrawerLayout mDrawerLayout = null;
 
@@ -447,5 +447,12 @@ abstract public class BaseActivity extends LocationActivity implements IRequestR
 			intent.putExtras(b);
 		}
 		startActivity(intent);
+	}
+	
+	protected void makeToast(String str){
+		Toast.makeText(getApplicationContext(), str, Toast.LENGTH_SHORT).show();
+	}
+	protected void makeToast(int resId){
+		Toast.makeText(getApplicationContext(), resId, Toast.LENGTH_SHORT).show();
 	}
 }
