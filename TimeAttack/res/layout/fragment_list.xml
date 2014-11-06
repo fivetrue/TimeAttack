@@ -14,10 +14,10 @@
         android:id="@+id/layout_empty"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginBottom="@dimen/list_item_margin"
-        android:layout_marginLeft="@dimen/list_item_margin"
-        android:layout_marginRight="@dimen/list_item_margin"
-        android:layout_marginTop="@dimen/list_item_margin"
+        android:layout_marginBottom="@dimen/common_margin"
+        android:layout_marginLeft="@dimen/common_margin"
+        android:layout_marginRight="@dimen/common_margin"
+        android:layout_marginTop="@dimen/common_margin"
         android:background="@color/list_background"
         android:visibility="gone" >
 
@@ -32,9 +32,9 @@
     <View
         android:id="@+id/shadow"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/list_item_margin"
-         android:layout_marginLeft="@dimen/list_item_margin"
-        android:layout_marginRight="@dimen/list_item_margin"
+        android:layout_height="@dimen/common_margin"
+         android:layout_marginLeft="@dimen/common_margin"
+        android:layout_marginRight="@dimen/common_margin"
         android:layout_alignParentBottom="true"
         android:background="@drawable/tab_img_shadow_pattern" />
 
