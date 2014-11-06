@@ -107,7 +107,11 @@ public class MapActivity extends BaseActivity {
 	@Override
 	int getActionBarMenuResource() {
 		// TODO Auto-generated method stub
-		return INVALID_VALUE;
+		int menuRes = INVALID_VALUE;
+		if(TextUtils.isEmpty(mType)){
+			menuRes = R.menu.actionbar_map_menu;
+		}
+		return menuRes;
 	}
 
 	@Override

@@ -32,8 +32,11 @@
     <string name="current_loaction">현재 위치</string>
     
     <!-- ActionBar Items -->
+    <string name="actionbar_searching">검색</string>
+    <string name="actionbar_map">지도</string>
+    <string name="actionbar_place">주변찾기</string>
+    <string name="actionbar_direction">경로검색</string>
     <string name="actionbar_setting">설정</string>
-    <string name="actionbar_place">주변 찾기</string>
     
     <!-- Main -->
     <string name="activity_home">타임어택</string>

@@ -23,6 +23,7 @@ import com.fivetrue.timeattack.fragment.DrawerFragment;
 import com.fivetrue.timeattack.fragment.DrawerFragment.OnDrawerMenuClickListener;
 import com.fivetrue.utils.Logger;
 
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -324,12 +325,48 @@ abstract public class BaseActivity extends LocationActivity implements IRequestR
 			// TODO Auto-generated method stub
 			switch(v.getId()){
 			case R.id.action_item_setting :
+			{
+				//설정.
 				Toast.makeText(getApplicationContext(), "action_settings", Toast.LENGTH_SHORT).show();
 				return ;
+			}
+				
 
-			case R.id.action_item_place : 
+			case R.id.action_item_place :
+			{
+				//주변 검색.
 				Toast.makeText(getApplicationContext(), "action_place", Toast.LENGTH_SHORT).show();
 				return ;
+			}
+			case R.id.action_item_location_searching :
+			{
+				//위치 검색.
+				return;
+			}
+				
+			case R.id.action_item_map : 
+			{
+				//지도 이동.
+				Intent i = new Intent(getApplicationContext(), MapActivity.class);
+				startActivity(i);
+				return ;
+			}
+			
+			case R.id.action_item_alarm :
+			{
+				//알람.
+				return;
+			}
+			case R.id.action_item_add_alarm :
+			{
+				//알람 추가.
+				return;
+			}
+			case R.id.action_item_directions :
+			{
+				//경로 검색.
+				return;
+			}	
 			}
 		}
 	};
