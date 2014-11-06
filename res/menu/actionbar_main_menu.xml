@@ -3,8 +3,8 @@
 
     <item
         android:showAsAction="always"
-        android:title="@string/actionbar_searching"
-        android:actionLayout="@layout/actionbar_menu_location_searching"/>
+        android:title="@string/actionbar_search"
+        android:actionLayout="@layout/actionbar_menu_search"/>
     
     <item
         android:showAsAction="always"

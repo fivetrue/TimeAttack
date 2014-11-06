@@ -24,14 +24,11 @@ import com.fivetrue.timeattack.fragment.DrawerFragment.OnDrawerMenuClickListener
 import com.fivetrue.utils.Logger;
 
 import android.content.Intent;
-import android.content.res.Configuration;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.app.NavUtils;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v4.widget.DrawerLayout.DrawerListener;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -49,7 +46,6 @@ abstract public class BaseActivity extends LocationActivity implements IRequestR
 	
 	protected int INVALID_VALUE = -1;
 	private DrawerLayout mDrawerLayout = null;
-	private ActionBarDrawerToggle mDrawerToggle = null;
 
 	private ViewGroup mContentView = null;
 	private ViewGroup mLayoutDrawer = null;
@@ -78,16 +74,57 @@ abstract public class BaseActivity extends LocationActivity implements IRequestR
 		
 		mActionBarBackgroundSelectorRes = R.drawable.selector_common_alpha_raleway_yellow;
 		
-		getActionBar().setDisplayHomeAsUpEnabled(true);
+		getActionBar().setDisplayHomeAsUpEnabled(false);
         getActionBar().setHomeButtonEnabled(true);
-        getActionBar().setIcon(new ColorDrawable(0x00000000));
+//        getActionBar().setIcon(new ColorDrawable(0x00000000));
+        getActionBar().setIcon(isHomeAsUp() ? R.drawable.ic_action_previous_item : R.drawable.ic_drawer);
 		getActionBar().setTitle(getActionBarTitleName());
 		if(!TextUtils.isEmpty(getActionBarSubTitle())){
 			getActionBar().setSubtitle(getActionBarSubTitle());
 		}
-		
 		initActionBarHomeView();
+		mDrawerLayout.setDrawerListener(onDrawerListener);
 	}
+	
+	DrawerListener onDrawerListener = new DrawerListener() {
+
+		private int rotateValue = 180;
+		private int moveValue = 10;
+		private int reverseInt = 1;
+
+		@Override
+		public void onDrawerStateChanged(int arg0) {
+			// TODO Auto-generated method stub
+		}
+
+		@Override
+		public void onDrawerSlide(View arg0, float arg1) {
+			// TODO Auto-generated method stub
+			if(mHomeImageView != null){
+				mHomeImageView.setRotation(mHomeImageX - ((arg1 * rotateValue) * reverseInt));
+				mHomeImageView.setX(mHomeImageX - (arg1 * moveValue));
+			}
+		}
+
+		@Override
+		public void onDrawerOpened(View arg0) {
+			// TODO Auto-generated method stub
+			reverseInt = -1;
+			getActionBar().setTitle(R.string.app_name);
+			getActionBar().setSubtitle(null);
+		}
+
+
+		@Override
+		public void onDrawerClosed(View arg0) {
+			// TODO Auto-generated method stub
+			reverseInt = 1;
+			getActionBar().setTitle(getActionBarTitleName());
+			if(!TextUtils.isEmpty(getActionBarSubTitle())){
+				getActionBar().setSubtitle(getActionBarSubTitle());
+			}
+		}
+	};
 	
 	private void initViews(){
 		mInflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
@@ -103,39 +140,6 @@ abstract public class BaseActivity extends LocationActivity implements IRequestR
 		if(contentView != null){
 			mContentView.addView(contentView);
 		}
-		
-		mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, isHomeAsUp() ? R.drawable.ic_action_back : R.drawable.ic_drawer, R.string.drawer_open, R.string.drawer_close){
-			private int moveValue = 10;
-			@Override
-			public void onDrawerStateChanged(int arg0) {
-				// TODO Auto-generated method stub
-			}
-
-			@Override
-			public void onDrawerSlide(View arg0, float arg1) {
-				// TODO Auto-generated method stub
-				if(mHomeImageView != null){
-					mHomeImageView.setX(mHomeImageX - (arg1 * moveValue));
-				}
-			}
-
-			@Override
-			public void onDrawerOpened(View arg0) {
-				// TODO Auto-generated method stub
-				getActionBar().setTitle(R.string.app_name);
-				getActionBar().setSubtitle(null);
-			}
-
-			@Override
-			public void onDrawerClosed(View arg0) {
-				// TODO Auto-generated method stub
-				getActionBar().setTitle(getActionBarTitleName());
-				if(!TextUtils.isEmpty(getActionBarSubTitle())){
-					getActionBar().setSubtitle(getActionBarSubTitle());
-				}
-			}
-		};
-		mDrawerLayout.setDrawerListener(mDrawerToggle);
 	}
 	
 	private void initModels(){
@@ -185,12 +189,14 @@ abstract public class BaseActivity extends LocationActivity implements IRequestR
 		// Handle action bar item clicks here. The action bar will
 		// automatically handle clicks on the Home/Up button, so long
 		// as you specify a parent activity in AndroidManifest.xml.
-
-		
-		if(mDrawerToggle.onOptionsItemSelected(item)){
-	        return onSelectedActionBarItem(item);
-	    }
-		return super.onOptionsItemSelected(item);
+//		if(mDrawerToggle.onOptionsItemSelected(item)){
+//	        return onSelectedActionBarItem(item);
+//	    }
+		if(onSelectedActionBarItem(item)){
+			return false;
+		}else{
+			return super.onOptionsItemSelected(item);
+		}
 	}
 	
 	protected boolean onSelectedActionBarItem(MenuItem item){
@@ -202,27 +208,16 @@ abstract public class BaseActivity extends LocationActivity implements IRequestR
 //				NavUtils.navigateUpFromSameTask(this);
 				finish();
 			}else{
-//				if(mDrawerLayout.isDrawerOpen(mLayoutDrawer)){
-//					mDrawerLayout.closeDrawer(mLayoutDrawer);
-//				}else{
-//					mDrawerLayout.openDrawer(mLayoutDrawer);
-//				}
+				if(mDrawerLayout.isDrawerOpen(mLayoutDrawer)){
+					mDrawerLayout.closeDrawer(mLayoutDrawer);
+				}else{
+					mDrawerLayout.openDrawer(mLayoutDrawer);
+				}
 			}
 			return true;
 		}
 		
 		return false;
-	}
-	
-	protected void onPostCreate(Bundle savedInstanceState){
-	    super.onPostCreate(savedInstanceState);
-	    mDrawerToggle.syncState();
-	}
-	 
-	@Override
-	public void onConfigurationChanged(Configuration newConfig) {
-	    super.onConfigurationChanged(newConfig);
-	    mDrawerToggle.onConfigurationChanged(newConfig);
 	}
 	
 	public View getActionBarView() {
