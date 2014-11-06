@@ -5,6 +5,12 @@
         android:showAsAction="always"
         android:title="@string/actionbar_place"
         android:actionLayout="@layout/actionbar_menu_place"/>
+    
+    <item
+        android:showAsAction="always"
+        android:title="@string/actionbar_direction"
+        android:actionLayout="@layout/actionbar_menu_direction"/>
+    
     <item
         android:showAsAction="always"
         android:title="@string/action_settings"

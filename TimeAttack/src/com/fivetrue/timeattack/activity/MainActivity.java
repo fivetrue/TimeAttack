@@ -70,7 +70,7 @@ public class MainActivity extends BaseActivity{
 	@Override
 	int getActionBarMenuResource() {
 		// TODO Auto-generated method stub
-		return R.menu.actionbar_menu;
+		return R.menu.actionbar_main_menu;
 	}
 
 	@Override
