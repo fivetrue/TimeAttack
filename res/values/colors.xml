@@ -32,6 +32,11 @@
     <color name="list_sub_title_text_color_d">#66665643</color>
     <color name="list_item_under_line">#FF4E6B66</color> 
     
+    <!-- EditText Color -->
+    <color name="edit_text_color">#FF595643</color>
+    <color name="edit_text_hint_color">#66595643</color>
+    <color name="edit_text_background">#FFEBCC6E</color>
+    
     
      
     

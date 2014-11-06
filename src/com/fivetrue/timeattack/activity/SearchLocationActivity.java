@@ -6,13 +6,19 @@ import android.location.Location;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 
 public class SearchLocationActivity extends BaseActivity {
+	
+	private ViewGroup mContentView = null;
 
 	@Override
 	View onCreateView(LayoutInflater inflater) {
 		// TODO Auto-generated method stub
-		return null;
+		
+		mContentView = (ViewGroup) inflater.inflate(R.layout.activity_search, null);
+		
+		return mContentView;
 	}
 
 	@Override

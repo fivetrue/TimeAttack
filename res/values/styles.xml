@@ -99,5 +99,20 @@
         <item name="android:gravity">center</item>
         <item name="android:typeface">monospace</item>
     </style>
+    
+    
+    <style name="baseEditTextProperties" parent="@android:style/Widget.Holo.Light.EditText">
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:typeface">monospace</item>
+    </style>
+    
+    <style name="MySearchEditText" parent="baseEditTextProperties">
+        <item name="android:textSize">@dimen/edit_text_size</item>
+        <item name="android:textColor">@color/edit_text_color</item>
+        <item name="android:hint">@string/location_search</item>
+        <item name="android:textColorHint">@color/edit_text_hint_color</item>
+        <item name="android:padding">@dimen/edit_text_padding</item>
+    </style>
 
 </resources>
