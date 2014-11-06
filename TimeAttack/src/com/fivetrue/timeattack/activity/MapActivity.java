@@ -1,7 +1,7 @@
 package com.fivetrue.timeattack.activity;
 
 import com.api.common.BaseEntry;
-import com.api.google.geocoding.entry.GeocodingEntry;
+import com.api.google.geocoding.model.AddressResultVO;
 import com.fivetrue.timeattack.R;
 import com.fivetrue.timeattack.activity.manager.MapActivityManager;
 import com.google.android.gms.maps.GoogleMap;
@@ -9,7 +9,6 @@ import com.google.android.gms.maps.SupportMapFragment;
 
 import android.location.Location;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,7 +24,7 @@ public class MapActivity extends BaseActivity {
 	
 	//Model
 	private BaseEntry mEntry = null;
-	private String mType = null;
+	private int mType = INVALID_VALUE;
 	private MapActivityManager mMapManager = null;
 	
 	//Value
@@ -52,7 +51,7 @@ public class MapActivity extends BaseActivity {
 	private void initModels(){
 		if(mMapFragment != null){
 			mMap = mMapFragment.getMap();
-			mMap.setMyLocationEnabled(true);
+//			mMap.setMyLocationEnabled(true);
 			mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
 			mMap.getUiSettings().setRotateGesturesEnabled(false);
 			mMapManager = MapActivityManager.newInstance(this);
@@ -64,9 +63,9 @@ public class MapActivity extends BaseActivity {
 	private void getIntentData(){
 		Bundle b = getIntent().getExtras(); 
 		if(b != null){
-			mType = b.getString(MapActivityManager.MAP_DATA_TYPE);
+			mType = b.getInt(MapActivityManager.MAP_DATA_TYPE, INVALID_VALUE);
 			mEntry = b.getParcelable(MapActivityManager.MAP_DATA);
-			if(TextUtils.isEmpty(mType) || mEntry == null){
+			if(mType == INVALID_VALUE || mEntry == null){
 				log("entry or type is null");
 				return ;
 			}
@@ -75,12 +74,21 @@ public class MapActivity extends BaseActivity {
 	
 	private void initDatas(){
 		
-		if(!TextUtils.isEmpty(mType) && mEntry != null && mMap != null){
-			if(mType.equals(MapActivityManager.DATA_GEOCODING)){
-				mMapManager.drawPointToMap(mMap, (GeocodingEntry)mEntry, mZoomValue);
-			}else if(mType.equals(MapActivityManager.DATA_DIRECTION)){
-			}else if(mType.equals(MapActivityManager.DATA_PLACE)){
+		if(mType != INVALID_VALUE && mEntry != null && mMap != null){
+			
+			switch(mType){
+			case MapActivityManager.DATA_GEOCODING : 
+				mMapManager.drawPointToMap(mMap, (AddressResultVO)mEntry, mZoomValue);
+				break;
+				
+			case MapActivityManager.DATA_DIRECTION :
+				break;
+			
+			case MapActivityManager.DATA_PLACE :
+				
+				break;
 			}
+			
 		}
 	}
 
@@ -93,25 +101,38 @@ public class MapActivity extends BaseActivity {
 	@Override
 	String getActionBarSubTitle() {
 		// TODO Auto-generated method stub
-		String subTitle = null;
-		if(!TextUtils.isEmpty(mType)){
-			if(mType.equals(MapActivityManager.DATA_GEOCODING)){
-				subTitle = getString(R.string.location_infomation);
-			}else if(mType.equals(MapActivityManager.DATA_DIRECTION)){
-			}else if(mType.equals(MapActivityManager.DATA_PLACE)){
-			}
+		
+		switch(mType){
+		case MapActivityManager.DATA_GEOCODING : 
+			return getString(R.string.location_infomation);
+			
+		case MapActivityManager.DATA_DIRECTION :
+			break;
+		
+		case MapActivityManager.DATA_PLACE :
+			
+			break;
 		}
-		return subTitle;
+		
+		return null;
 	}
 
 	@Override
 	int getActionBarMenuResource() {
 		// TODO Auto-generated method stub
-		int menuRes = INVALID_VALUE;
-		if(TextUtils.isEmpty(mType)){
-			menuRes = R.menu.actionbar_map_menu;
+		
+		switch(mType){
+		case MapActivityManager.DATA_GEOCODING : 
+			return R.menu.actionbar_map_menu;
+			
+		case MapActivityManager.DATA_DIRECTION :
+			break;
+		
+		case MapActivityManager.DATA_PLACE :
+			
+			break;
 		}
-		return menuRes;
+		return INVALID_VALUE;
 	}
 
 	@Override

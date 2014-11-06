@@ -20,7 +20,7 @@ public class MainActivity extends BaseActivity{
 		// TODO Auto-generated method stub
 		mTapFragment = (TabFragment) createFragment(TabFragment.class, "");
 		mTapFragment.addFragment(new RecentlyUseFragment(), getString(R.string.recently_infomation));
-		mTapFragment.addFragment(new NearBySearchFragment(), "주변 찾기");
+//		mTapFragment.addFragment(new NearBySearchFragment(), "주변 찾기");
 		return null;
 	}
 

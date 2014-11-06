@@ -101,7 +101,7 @@ public class NearBySearchFragment extends BaseFragment {
 	}
 	
 	private void setSearchLocationResult(GeocodingEntry entry){
-		MapActivityManager.newInstance(getActivity()).goToMapActivity(entry);
+		MapActivityManager.newInstance(getActivity()).goToActivity(entry);
 		System.out.println("ojkwon : == > " + entry.toString());
 	}
 
