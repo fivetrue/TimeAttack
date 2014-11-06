@@ -76,7 +76,6 @@ abstract public class BaseActivity extends LocationActivity implements IRequestR
 		
 		getActionBar().setDisplayHomeAsUpEnabled(false);
         getActionBar().setHomeButtonEnabled(true);
-//        getActionBar().setIcon(new ColorDrawable(0x00000000));
         getActionBar().setIcon(isHomeAsUp() ? R.drawable.ic_action_previous_item : R.drawable.ic_drawer);
 		getActionBar().setTitle(getActionBarTitleName());
 		if(!TextUtils.isEmpty(getActionBarSubTitle())){
@@ -336,14 +335,14 @@ abstract public class BaseActivity extends LocationActivity implements IRequestR
 			case R.id.action_item_location_searching :
 			{
 				//위치 검색.
+				startActivity(SearchLocationActivity.class);
 				return;
 			}
 				
 			case R.id.action_item_map : 
 			{
 				//지도 이동.
-				Intent i = new Intent(getApplicationContext(), MapActivity.class);
-				startActivity(i);
+				startActivity(MapActivity.class);
 				return ;
 			}
 			
@@ -412,4 +411,22 @@ abstract public class BaseActivity extends LocationActivity implements IRequestR
 		Logger.e(getPackageName(), getClass().getName() + " = " + msg);
 	}
 	
+	protected void startActivity(Class<?> cls){
+		startActivity(cls, false, null);
+	}
+	
+	protected void startActivity(Class<?> cls , boolean bringToTop){
+		startActivity(cls, bringToTop, null);
+	}
+	
+	protected void startActivity (Class<?> cls , boolean bringToTop, Bundle b){
+		Intent intent = new Intent(getApplicationContext(), cls);
+		if(bringToTop){
+			intent.setFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
+		}
+		if(b != null){
+			intent.putExtras(b);
+		}
+		startActivity(intent);
+	}
 }
