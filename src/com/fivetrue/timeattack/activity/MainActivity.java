@@ -4,6 +4,7 @@ import com.fivetrue.timeattack.R;
 import com.fivetrue.timeattack.fragment.main.NearBySearchFragment;
 import com.fivetrue.timeattack.fragment.main.RecentlyUseFragment;
 import com.fivetrue.timeattack.fragment.tab.TabFragment;
+import com.google.android.gms.maps.GoogleMap;
 
 import android.location.Location;
 import android.os.Bundle;
@@ -85,4 +86,11 @@ public class MainActivity extends BaseActivity{
 			}
 		}
 	}
+
+	@Override
+	void onClickAcitionMenuLocationSearch(View view) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }
