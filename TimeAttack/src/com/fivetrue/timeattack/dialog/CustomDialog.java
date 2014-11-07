@@ -24,20 +24,35 @@ public class CustomDialog extends Dialog {
 	private TextView mTvCancel = null;
 	
 	private LayoutInflater mInflater = null;
+	
+	private View mChildView = null;
 
 	public CustomDialog(Context context) {
+		
 		super(context);
 		// TODO Auto-generated constructor stub
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         getWindow().clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
         setContentView(R.layout.dialog_custom);
-        
         mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        initView(mInflater);
+        mChildView = addChildView(mInflater, null);
+        initView();
 	}
 	
-	private void initView(LayoutInflater inflater){
+	public CustomDialog(Context context, Object obj) {
+		super(context);
+		requestWindowFeature(Window.FEATURE_NO_TITLE);
+        getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
+        setContentView(R.layout.dialog_custom);
+        mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        mChildView = addChildView(mInflater, obj);
+        initView();
+		
+	}
+	
+	private void initView(){
 		mLayoutContent = (ViewGroup) findViewById(R.id.layout_dialog_content);
 		mLayoutButton = (ViewGroup) findViewById(R.id.layout_dialog_button);
 		
@@ -46,9 +61,8 @@ public class CustomDialog extends Dialog {
 		mTvOk = (TextView) findViewById(R.id.tv_dialog_ok);
 		mTvCancel = (TextView) findViewById(R.id.tv_dialog_cancel);
 		
-		View addView = addChildView(mInflater);
-		if(addView != null){
-			mLayoutContent.addView(addView, 0);
+		if(mChildView != null){
+			mLayoutContent.addView(mChildView, 0);
 			mTvContent.setVisibility(View.GONE);
 		}
 		
@@ -64,7 +78,7 @@ public class CustomDialog extends Dialog {
 		});
 	}
 	
-	protected View addChildView(LayoutInflater inflater){
+	protected View addChildView(LayoutInflater inflater, Object obj){
 		return null;
 	}
 	

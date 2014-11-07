@@ -22,7 +22,6 @@ import com.fivetrue.timeattack.database.NetworkResultDBManager;
 import com.fivetrue.timeattack.fragment.DrawerFragment;
 import com.fivetrue.timeattack.fragment.DrawerFragment.OnDrawerMenuClickListener;
 import com.fivetrue.utils.Logger;
-import com.google.android.gms.maps.GoogleMap;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -50,7 +49,7 @@ import android.widget.Toast;
  */
 	
 abstract public class BaseActivity extends LocationActivity implements IRequestResult{
-	protected int INVALID_VALUE = -1;
+	protected final int INVALID_VALUE = -1;
 	private DrawerLayout mDrawerLayout = null;
 
 	private ViewGroup mContentView = null;

@@ -133,8 +133,12 @@
         <item name="android:paddingLeft">@dimen/dialog_text_padding</item>
         <item name="android:paddingRight">@dimen/dialog_text_padding</item>
     </style>
+    
+    <style name="MyDialog.Text" parent="MyDialog">
+        <item name="android:singleLine">true</item>
+    </style>
 
-    <style name="MyDialog.TitleText" parent="MyDialog">
+    <style name="MyDialog.TitleText" parent="MyDialog.Text">
         <item name="android:textSize">@dimen/dialog_title_text_size</item>
         <item name="android:textColor">@color/dialog_text_color</item>
         <item name="android:background">@color/dialog_title_background</item>
@@ -150,10 +154,17 @@
         <item name="android:gravity">center</item>
     </style>
 
-    <style name="MyDialog.Button" parent="MyDialog">
+    <style name="MyDialog.Button" parent="MyDialog.Text">
         <item name="android:textSize">@dimen/dialog_button_text_size</item>
         <item name="android:textColor">@color/selector_dialog_button_text</item>
         <item name="android:background">@drawable/selector_dialog_button</item>
+        <item name="android:gravity">center</item>
+    </style>
+    
+      <style name="MyDialog.MenuText" parent="MyDialog.Text">
+        <item name="android:textSize">@dimen/dialog_button_text_size</item>
+        <item name="android:textColor">@color/selector_dialog_menu_text</item>
+        <item name="android:background">@drawable/selector_dialog_content_menu</item>
         <item name="android:gravity">center</item>
     </style>
 
