@@ -1,10 +1,13 @@
 package com.fivetrue.timeattack.activity.manager;
 
 
+import java.util.ArrayList;
+
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.View;
 
 import com.api.common.BaseEntry;
 import com.api.google.directions.entry.DirectionsEntry;
@@ -19,6 +22,11 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 public class MapActivityManager extends BaseActivityManager{
+	
+	public interface OnMyLocationDialogSelectedListener{
+		public void onSelected(View view);
+	}
+	
 	public static String MAP_DATA  = "MAP_DATA";
 	public static String MAP_DATA_TYPE  = "MAP_DATA_TYPE";
 	
@@ -42,7 +50,7 @@ public class MapActivityManager extends BaseActivityManager{
 		}
 	}
 	
-	public void drawPointToMap(GoogleMap map, String title, LatLng latlng){
+	public MarkerOptions drawPointToMap(GoogleMap map, String title, LatLng latlng){
 		if(map != null && latlng != null){
 			MarkerOptions departrue = new MarkerOptions();
 		
@@ -52,44 +60,53 @@ public class MapActivityManager extends BaseActivityManager{
 				departrue.title(title);
 			}
 			map.addMarker(departrue);
+			return departrue;
 		}else{
 			error("map, latlng are invalid");
 		}
+		return null;
 	}
 	
-	public void drawPointToMap(final GoogleMap map, final AddressResultVO entry, final float zoom){
+	public MarkerOptions drawPointToMap(final GoogleMap map, final AddressResultVO entry, final float zoom){
 		if(entry != null && map != null){
 			
 			LatLng lat = new LatLng(Double.parseDouble(entry.getLatitude()), Double.parseDouble(entry.getLongitude()));
-			drawPointToMap(map, entry.getAddress(), lat);
 			zoomToPoint(map, lat, zoom);
+			return drawPointToMap(map, entry.getAddress(), lat);
 		}else{
 			error("Entry is null");
 		}
+		return null;
 	}
 	
-	public void drawPointToMap(GoogleMap map, PlacesEntry entry){
+	public ArrayList<MarkerOptions> drawPointToMap(GoogleMap map, PlacesEntry entry){
 		if(entry != null){
+			ArrayList<MarkerOptions> markers = new ArrayList<MarkerOptions>();
 			for(PlaceVO vo : entry.getPlaceList()){
 				LatLng lat = new LatLng(Double.parseDouble(vo.getLatitude()), Double.parseDouble(vo.getLongitude()));
-				drawPointToMap(map, vo.getName(), lat);
+				markers.add(drawPointToMap(map, vo.getName(), lat));
 			}
+			return markers;
 		}else{
 			error("Entry is null");
 		}
+		return null;
 	}
 
-	public void drawPointToMap(GoogleMap map, DirectionsEntry entry){
+	public ArrayList<MarkerOptions> drawPointToMap(GoogleMap map, DirectionsEntry entry){
 		if(entry != null){
 			for(RouteVO vo : entry.getRouteArray()){
+				ArrayList<MarkerOptions> markers = new ArrayList<MarkerOptions>();
 				LatLng arrival = new LatLng(Double.parseDouble(vo.getArrivalLatidute()), Double.parseDouble(vo.getArrivalLongitude()));
-				drawPointToMap(map, vo.getArrivalAddress(), arrival);
+				markers.add(drawPointToMap(map, vo.getArrivalAddress(), arrival));
 				LatLng departure = new LatLng(Double.parseDouble(vo.getDepartureLatidute()), Double.parseDouble(vo.getDepartureLongitude()));
-				drawPointToMap(map, vo.getDepartureAddress(), departure);
+				markers.add(drawPointToMap(map, vo.getDepartureAddress(), departure));
+				return markers;
 			}
 		}else{
 			error("Entry is null");
 		}
+		return null;
 	}
 
 	public void zoomToPoint(GoogleMap map,  LatLng latlng, float zoom){
@@ -109,5 +126,9 @@ public class MapActivityManager extends BaseActivityManager{
 		b.putParcelable(MAP_DATA, entry);
 		i.putExtras(b);
 		mContext.startActivity(i);
+	}
+	
+	public void showMyLocationDialog(OnMyLocationDialogSelectedListener listener){
+		
 	}
 }

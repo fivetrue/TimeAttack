@@ -22,6 +22,7 @@ import com.fivetrue.timeattack.database.NetworkResultDBManager;
 import com.fivetrue.timeattack.fragment.DrawerFragment;
 import com.fivetrue.timeattack.fragment.DrawerFragment.OnDrawerMenuClickListener;
 import com.fivetrue.utils.Logger;
+import com.google.android.gms.maps.GoogleMap;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -295,6 +296,8 @@ abstract public class BaseActivity extends LocationActivity implements IRequestR
 	
 	abstract void requsetNetworkResultSuccess();
 	
+	abstract void onClickAcitionMenuLocationSearch(View view);
+	
 	protected OnDrawerMenuClickListener  mDrawerMenuClickListener = new OnDrawerMenuClickListener() {
 		
 		@Override
@@ -351,10 +354,17 @@ abstract public class BaseActivity extends LocationActivity implements IRequestR
 				Toast.makeText(getApplicationContext(), "action_place", Toast.LENGTH_SHORT).show();
 				return ;
 			}
-			case R.id.action_item_location_searching :
+			
+			case R.id.action_item_searching :
 			{
 				//위치 검색.
 				startActivity(SearchLocationActivity.class);
+				return;
+			}
+			case R.id.action_item_location_searching :
+			{
+				//현재 위치 탐색.
+				onClickAcitionMenuLocationSearch(v);
 				return;
 			}
 				

@@ -5,9 +5,14 @@ import com.api.google.geocoding.model.AddressResultVO;
 import com.fivetrue.timeattack.R;
 import com.fivetrue.timeattack.activity.manager.MapActivityManager;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.GoogleMap.OnMarkerClickListener;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 import android.location.Location;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,9 +32,12 @@ public class MapActivity extends BaseActivity {
 	private int mType = INVALID_VALUE;
 	private MapActivityManager mMapManager = null;
 	
-	//Value
+	private MyLocationSearchAsycTask mMyLocationAyncTask= null;
+
 	
+	//Value
 	private float mZoomValue = 14;
+	private float mMyLocationZoomValue = 18;
 
 
 
@@ -91,6 +99,13 @@ public class MapActivity extends BaseActivity {
 			
 		}
 	}
+	
+	@Override
+	protected void onDestroy() {
+		// TODO Auto-generated method stub
+		super.onDestroy();
+		onPauseLocationService();
+	}
 
 	@Override
 	String getActionBarTitleName() {
@@ -123,7 +138,7 @@ public class MapActivity extends BaseActivity {
 		
 		switch(mType){
 		case MapActivityManager.DATA_GEOCODING : 
-			return R.menu.actionbar_map_menu;
+			return R.menu.actionbar_map_geocoding_menu;
 			
 		case MapActivityManager.DATA_DIRECTION :
 			break;
@@ -132,7 +147,7 @@ public class MapActivity extends BaseActivity {
 			
 			break;
 		}
-		return INVALID_VALUE;
+		return R.menu.actionbar_map_default_menu;
 	}
 
 	@Override
@@ -150,13 +165,12 @@ public class MapActivity extends BaseActivity {
 	@Override
 	protected void outOfService(String provider, int status, Bundle extras) {
 		// TODO Auto-generated method stub
-
+		makeToast(R.string.error_location_out_of_service);
 	}
 
 	@Override
 	protected void avaliableService(String provider, int status, Bundle extras) {
 		// TODO Auto-generated method stub
-
 	}
 
 	@Override
@@ -169,7 +183,99 @@ public class MapActivity extends BaseActivity {
 	@Override
 	protected void changeLocation(Location location) {
 		// TODO Auto-generated method stub
-
+		if(location != null){
+			mMap.clear();
+			LatLng latlng = new LatLng(location.getLatitude(), location.getLongitude());
+			mMapManager.drawPointToMap(mMap, "현재 위치", latlng);
+		}
 	}
-
+		
+	// 지도정보에서 현재위치 액션버튼 눌렀을 경우.
+	@Override
+	void onClickAcitionMenuLocationSearch(final View view) {
+	// TODO Auto-generated method stub
+		if(isGpsEnable()){
+			view.setSelected(!view.isSelected());
+			
+			if(mMyLocationAyncTask == null){
+				mMyLocationAyncTask = new MyLocationSearchAsycTask(mMap);
+			}
+			if(view.isSelected()){
+				mMyLocationAyncTask.execute();
+			}else{
+				mMyLocationAyncTask.cancel(true);
+				mMyLocationAyncTask = null;
+			}
+		}else{
+			makeToast(R.string.error_location_out_of_service);
+		}
+	}
+	
+	OnMarkerClickListener onMyLocationMarkerClickListener = new OnMarkerClickListener() {
+		
+		@Override
+		public boolean onMarkerClick(Marker marker) {
+			// TODO Auto-generated method stub
+			if(marker != null){
+				
+			}
+			return false;
+		}
+	};
+	
+	private class MyLocationSearchAsycTask extends AsyncTask<Void, Void, Location>{
+		
+		private boolean runLocationSearching = false;
+		private boolean isRunningNowLocation = false;
+		private GoogleMap mMap = null;
+		
+		public MyLocationSearchAsycTask(GoogleMap map) {
+			// TODO Auto-generated constructor stub
+			mMap = map;
+		}
+		@Override
+		protected void onPreExecute() {
+			// TODO Auto-generated method stub
+			super.onPreExecute();
+			isRunningNowLocation = true;
+			runLocationSearching = true;
+			onStartLocationService();
+		}
+		@Override
+		protected Location doInBackground(Void... params) {
+			// TODO Auto-generated method stub
+			while(runLocationSearching){
+				if(getCurrentLocation() != null){
+					runLocationSearching = false;
+				}
+				
+				if(isCancelled()){
+					isRunningNowLocation = false;
+					break;
+				}
+			}
+			return getCurrentLocation();
+		}
+		@Override
+		protected void onPostExecute(Location result) {
+			// TODO Auto-generated method stub
+			super.onPostExecute(result);
+			if(result != null && mMap != null){
+				LatLng latlng = new LatLng(result.getLatitude(), result.getLongitude());
+				MarkerOptions maker = mMapManager.drawPointToMap(mMap, "현재 위치", latlng);
+				mMapManager.zoomToPoint(mMap, latlng, mMyLocationZoomValue);
+				mMap.setOnMarkerClickListener(onMyLocationMarkerClickListener);
+			}
+			if(!isRunningNowLocation){
+				onPauseLocationService();
+			}
+		}
+		
+		@Override
+		protected void onCancelled(Location result) {
+			// TODO Auto-generated method stub
+			super.onCancelled(result);
+			onPauseLocationService();
+		}
+	}
 }

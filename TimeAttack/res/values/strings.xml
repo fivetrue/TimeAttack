@@ -14,6 +14,9 @@
     <string name="title">Title</string>
     <string name="description">Description</string>
     
+    <!-- Error Message -->
+    <string name="error_location_out_of_service">위치정보 서비스를 이용 할 수 없는 상태입니다.</string>
+    
     <!--Drawer Texts -->
     <string name="drawer_home">홈</string>
     <string name="drawer_near_by">주변 찾기</string>
@@ -28,14 +31,15 @@
     <string name="hide_map">지도 닫기</string>
     
     <!-- NearbyFragment -->
-    <string name="near_by_search_hint">위치 검색</string>
-    <string name="current_loaction">현재 위치</string>
+    <string name="near_by_search_hint">위치검색</string>
+    <string name="current_loaction">현재위치</string>
     
     <!-- Search Activity -->
     <string name="location_search">지역검색</string>
     
     <!-- ActionBar Items -->
     <string name="actionbar_search">검색</string>
+    <string name="actionbar_current_location">현재위치탐색</string>
     <string name="actionbar_map">지도</string>
     <string name="actionbar_place">주변찾기</string>
     <string name="actionbar_direction">경로검색</string>
