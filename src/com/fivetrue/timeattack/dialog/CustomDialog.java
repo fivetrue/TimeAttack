@@ -48,7 +48,7 @@ public class CustomDialog extends Dialog {
 		
 		View addView = addChildView(mInflater);
 		if(addView != null){
-			mLayoutContent.addView(addView);
+			mLayoutContent.addView(addView, 0);
 			mTvContent.setVisibility(View.GONE);
 		}
 		
