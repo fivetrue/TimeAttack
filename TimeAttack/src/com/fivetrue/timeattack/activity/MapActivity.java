@@ -202,8 +202,10 @@ public class MapActivity extends BaseActivity {
 				mMyLocationAyncTask = new MyLocationSearchAsycTask(mMap);
 			}
 			if(view.isSelected()){
+				onStartLocationService();
 				mMyLocationAyncTask.execute();
 			}else{
+				onPauseLocationService();
 				mMyLocationAyncTask.cancel(true);
 				mMyLocationAyncTask = null;
 			}
@@ -218,7 +220,7 @@ public class MapActivity extends BaseActivity {
 		public boolean onMarkerClick(Marker marker) {
 			// TODO Auto-generated method stub
 			if(marker != null){
-				CustomDialog dialog = new CustomDialog(getApplicationContext());
+				CustomDialog dialog = new CustomDialog(MapActivity.this);
 				dialog.setContentMessage(marker.getPosition().latitude + " / " + marker.getPosition().longitude);
 				dialog.setVisibleOkButton(false);
 				dialog.show();
@@ -230,7 +232,6 @@ public class MapActivity extends BaseActivity {
 	private class MyLocationSearchAsycTask extends AsyncTask<Void, Void, Location>{
 		
 		private boolean runLocationSearching = false;
-		private boolean isRunningNowLocation = false;
 		private GoogleMap mMap = null;
 		
 		public MyLocationSearchAsycTask(GoogleMap map) {
@@ -241,9 +242,7 @@ public class MapActivity extends BaseActivity {
 		protected void onPreExecute() {
 			// TODO Auto-generated method stub
 			super.onPreExecute();
-			isRunningNowLocation = true;
 			runLocationSearching = true;
-			onStartLocationService();
 		}
 		@Override
 		protected Location doInBackground(Void... params) {
@@ -254,7 +253,6 @@ public class MapActivity extends BaseActivity {
 				}
 				
 				if(isCancelled()){
-					isRunningNowLocation = false;
 					break;
 				}
 			}
@@ -270,16 +268,6 @@ public class MapActivity extends BaseActivity {
 				mMapManager.zoomToPoint(mMap, latlng, mMyLocationZoomValue);
 				mMap.setOnMarkerClickListener(onMyLocationMarkerClickListener);
 			}
-			if(!isRunningNowLocation){
-				onPauseLocationService();
-			}
-		}
-		
-		@Override
-		protected void onCancelled(Location result) {
-			// TODO Auto-generated method stub
-			super.onCancelled(result);
-			onPauseLocationService();
 		}
 	}
 }

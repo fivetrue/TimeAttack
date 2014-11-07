@@ -39,12 +39,13 @@
     
      <!-- Dialog Color -->
     <color name="dialog_title_background">#FF4E6B66</color>
-    <color name="dialog_title_text_color">#FFEBE1C5</color>
+    <color name="dialog_text_color">#FFEBE1C5</color>
     <color name="dialog_content_background">#FFFFFFFF</color>
     <color name="dialog_content_text_color">#FF4E6B66</color>
     <color name="dialog_button_background_n">#FF4E6B66</color>
     <color name="dialog_button_background_p">#FFEBE1C5</color>
-    <color name="dialog_button_text_color">#FFEBE1C5</color>
+    <color name="dialog_button_text_color_n">#FFEBE1C5</color>
+    <color name="dialog_button_text_color_p">#FF4E6B66</color>
     
     
     <!-- Drawer Layout -->
