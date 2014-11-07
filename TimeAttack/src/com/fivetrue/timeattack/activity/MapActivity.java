@@ -4,6 +4,7 @@ import com.api.common.BaseEntry;
 import com.api.google.geocoding.model.AddressResultVO;
 import com.fivetrue.timeattack.R;
 import com.fivetrue.timeattack.activity.manager.MapActivityManager;
+import com.fivetrue.timeattack.dialog.CustomDialog;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMap.OnMarkerClickListener;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -217,7 +218,10 @@ public class MapActivity extends BaseActivity {
 		public boolean onMarkerClick(Marker marker) {
 			// TODO Auto-generated method stub
 			if(marker != null){
-				
+				CustomDialog dialog = new CustomDialog(getApplicationContext());
+				dialog.setContentMessage(marker.getPosition().latitude + " / " + marker.getPosition().longitude);
+				dialog.setVisibleOkButton(false);
+				dialog.show();
 			}
 			return false;
 		}
