@@ -2,13 +2,13 @@
 
     <!--
         Base application theme, dependent on API level. This theme is replaced
-        by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
+        by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
     -->
     <style name="AppBaseTheme" parent="android:Theme.Light">
         <!--
             Theme customizations available in newer API levels can go in
             res/values-vXX/styles.xml, while customizations related to
-            backward-compatibility can go here.
+            backward-compatibility can go here.
         -->
     </style>
 
@@ -56,9 +56,9 @@
         <item name="android:singleLine">true</item>
         <item name="android:typeface">monospace</item>
     </style>
-    
+
     <!-- ListStyle -->
-     <style name="MyBaseList" >
+    <style name="MyBaseList">
         <item name="android:listSelector">@android:color/white</item>
         <item name="android:scrollingCache">false</item>
         <item name="android:dividerHeight">-1dp</item>
@@ -106,14 +106,13 @@
         <item name="android:gravity">center</item>
         <item name="android:typeface">monospace</item>
     </style>
-    
-    
+
     <style name="baseEditTextProperties" parent="@android:style/Widget.Holo.Light.EditText">
         <item name="android:gravity">center_vertical</item>
         <item name="android:singleLine">true</item>
         <item name="android:typeface">monospace</item>
     </style>
-    
+
     <style name="MySearchEditText" parent="baseEditTextProperties">
         <item name="android:textSize">@dimen/edit_text_size</item>
         <item name="android:textColor">@color/edit_text_color</item>
@@ -122,10 +121,40 @@
         <item name="android:padding">@dimen/edit_text_padding</item>
         <item name="android:background">@drawable/input_bg_n</item>
     </style>
-    
+
     <style name="MySearchEditText.Search" parent="MySearchEditText">
         <item name="android:drawableLeft">@drawable/ic_action_location_searching</item>
         <item name="android:drawablePadding">@dimen/edit_text_padding</item>
+    </style>
+
+    <!-- Dialog Style -->
+    <style name="MyDialog">
+        <item name="android:typeface">sans</item>
+        <item name="android:paddingLeft">@dimen/dialog_text_padding</item>
+        <item name="android:paddingRight">@dimen/dialog_text_padding</item>
+    </style>
+
+    <style name="MyDialog.TitleText" parent="MyDialog">
+        <item name="android:textSize">@dimen/dialog_title_text_size</item>
+        <item name="android:textColor">@color/dialog_title_text_color</item>
+        <item name="android:background">@color/dialog_title_background</item>
+        <item name="android:gravity">left|center_vertical</item>
+    </style>
+
+    <style name="MyDialog.ContentText" parent="MyDialog">
+        <item name="android:textSize">@dimen/dialog_content_text_size</item>
+        <item name="android:textColor">@color/dialog_content_text_color</item>
+        <item name="android:background">@color/dialog_content_background</item>
+        <item name="android:paddingTop">@dimen/dialog_text_padding</item>
+        <item name="android:paddingBottom">@dimen/dialog_text_padding</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+    <style name="MyDialog.Button" parent="MyDialog">
+        <item name="android:textSize">@dimen/dialog_button_text_size</item>
+        <item name="android:textColor">@color/dialog_button_text_color</item>
+        <item name="android:background">@drawable/selector_dialog_button</item>
+        <item name="android:gravity">center</item>
     </style>
 
 </resources>
