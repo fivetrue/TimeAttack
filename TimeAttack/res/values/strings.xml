@@ -22,6 +22,7 @@
     
     <!-- Error Message -->
     <string name="error_location_out_of_service">위치정보 서비스를 이용 할 수 없는 상태입니다.</string>
+    <string name="error_network_request_fail">네트워크 통신에 실패 하였습니다.</string>
     
     <!--Drawer Texts -->
     <string name="drawer_home">홈</string>

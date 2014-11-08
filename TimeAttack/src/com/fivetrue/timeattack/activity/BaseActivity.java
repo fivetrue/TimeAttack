@@ -49,6 +49,8 @@ import android.widget.Toast;
  */
 	
 abstract public class BaseActivity extends LocationActivity implements IRequestResult{
+	
+	protected boolean isRunningGps = false;
 	protected final int INVALID_VALUE = -1;
 	private DrawerLayout mDrawerLayout = null;
 
@@ -71,10 +73,28 @@ abstract public class BaseActivity extends LocationActivity implements IRequestR
 		initViews();
 		initActionBarSetting();
 		initModels();
-		
-		
 	}
 	
+	@Override
+	protected void onStart() {
+		// TODO Auto-generated method stub
+		super.onStart();
+		if(isRunningGps){
+			onStartLocationService();
+		}
+	}
+	
+	@Override
+	protected void onStop() {
+		// TODO Auto-generated method stub
+		super.onStop();
+		if(isLocationServiceRunning()){
+			isRunningGps = true;
+			onPauseLocationService();
+		}else{
+			isRunningGps = false;
+		}
+	}
 	/**
 	 * 기본적인 View를 초기화함.
 	 */
@@ -245,32 +265,63 @@ abstract public class BaseActivity extends LocationActivity implements IRequestR
 	    return v.findViewById(resId);
 	}
 	
-	public Fragment createFragment(Class<?> fragmentClass, String tag){
-		Fragment f = null;
-		try {
-			f = (Fragment) fragmentClass.newInstance();
-			FragmentTransaction trans =  getSupportFragmentManager().beginTransaction();
-			trans.add(R.id.layout_main_frame, f, tag);
-			trans.commit();
-			return f;
-		} catch (InstantiationException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IllegalAccessException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+	public void removeFragment(Fragment f, int transit){
+		if(transit == INVALID_VALUE){
+			transit = FragmentTransaction.TRANSIT_NONE;
 		}
-		return null;
+		FragmentTransaction trans =  getSupportFragmentManager().beginTransaction();
+		trans.remove(f);
+		trans.setTransition(transit);
+		trans.commit();
 	}
 	
-	public Fragment createFragment(int containLayoutId, Class<?> fragmentClass, String tag){
+	
+	
+	public void hideFragment(Fragment f, int transit){
+		if(transit == INVALID_VALUE){
+			transit = FragmentTransaction.TRANSIT_NONE;
+		}
+		FragmentTransaction trans =  getSupportFragmentManager().beginTransaction();
+		trans.hide(f);
+		trans.setTransition(transit);
+		trans.commit();
+	}
+	
+	public Fragment createFragment(Class<?> fragmentClass, String tag, Bundle argument){
+		return createFragment(INVALID_VALUE, fragmentClass, tag, INVALID_VALUE, argument);
+	}
+	
+	public Fragment createFragment(int containLayoutId, Class<?> fragmentClass, String tag, Bundle argument){
+		return createFragment(containLayoutId, fragmentClass, tag, INVALID_VALUE, argument);
+	}
+	
+	public Fragment createFragment(Class<?> fragmentClass, String tag, int transit, Bundle argument){
+		return createFragment(INVALID_VALUE, fragmentClass, tag, transit, argument);
+	}
+	
+	public Fragment createFragment(int containLayoutId, Class<?> fragmentClass, String tag , int transit, Bundle argument){
 		
+		
+		if(containLayoutId == INVALID_VALUE){
+			containLayoutId  = R.id.layout_main_frame;
+		}
+		
+		if(transit == INVALID_VALUE){
+			transit = FragmentTransaction.TRANSIT_NONE;
+		}
 		Fragment f = null;
 		try {
-			f = (Fragment) fragmentClass.newInstance();
+			f = getSupportFragmentManager().findFragmentByTag(tag);
 			FragmentTransaction trans =  getSupportFragmentManager().beginTransaction();
-			trans.add(containLayoutId, f, tag);
-			trans.commit();
+			if(f != null){
+				trans.show(f);
+			}else{
+				f = (Fragment) fragmentClass.newInstance();
+				f.setArguments(argument);
+				trans.add(containLayoutId, f, tag);
+				trans.setTransition(transit);
+				trans.commit();
+			}
 			return f;
 		} catch (InstantiationException e) {
 			// TODO Auto-generated catch block
@@ -463,5 +514,9 @@ abstract public class BaseActivity extends LocationActivity implements IRequestR
 	}
 	protected void makeToast(int resId){
 		Toast.makeText(getApplicationContext(), resId, Toast.LENGTH_SHORT).show();
+	}
+	
+	public void showNetworkFailToast(){
+		Toast.makeText(this, R.string.error_network_request_fail, Toast.LENGTH_SHORT).show();
 	}
 }

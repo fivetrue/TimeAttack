@@ -36,7 +36,7 @@
     
     <!-- EditText -->
     <dimen name="edit_text_padding">3dp</dimen>
-    <dimen name="edit_text_height">27dp</dimen>
+    <dimen name="edit_text_height">40dp</dimen>
     <dimen name="edit_text_size">17dp</dimen>
     
     
@@ -67,6 +67,9 @@
     <dimen name="map_margin_left">30dp</dimen>
     <dimen name="map_margin_right">30dp</dimen>
     <dimen name="map_margin_bottom">20dp</dimen>
+    <dimen name="map_control_margin_right">11dp</dimen>
+    <dimen name="map_control_margin_top">61dp</dimen>
+    <dimen name="map_control_size">39dp</dimen>
     
     <!-- NearByFragment -->
     <dimen name="nearby_layout_top_height">50dp</dimen>

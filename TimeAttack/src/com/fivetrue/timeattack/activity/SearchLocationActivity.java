@@ -10,7 +10,6 @@ import com.api.google.geocoding.model.AddressResultVO;
 import com.fivetrue.timeattack.R;
 import com.fivetrue.timeattack.activity.manager.SearchActivityManager;
 import com.fivetrue.timeattack.view.adapter.SearchLocationResultAdapter;
-import com.google.android.gms.maps.GoogleMap;
 
 import android.location.Location;
 import android.os.Bundle;
@@ -189,7 +188,10 @@ public class SearchLocationActivity extends BaseActivity {
 						setListData(response.getAddressList());
 					}else{
 						setEmptyLayout(true);
+						makeToast(response.getStatusMessgae());
 					}
+				}else{
+					showNetworkFailToast();
 				}
 			}
 		});
