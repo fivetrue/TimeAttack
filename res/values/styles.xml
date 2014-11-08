@@ -2,13 +2,13 @@
 
     <!--
         Base application theme, dependent on API level. This theme is replaced
-        by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
+        by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
     -->
     <style name="AppBaseTheme" parent="android:Theme.Light">
         <!--
             Theme customizations available in newer API levels can go in
             res/values-vXX/styles.xml, while customizations related to
-            backward-compatibility can go here.
+            backward-compatibility can go here.
         -->
     </style>
 
@@ -119,7 +119,7 @@
         <item name="android:hint">@string/location_search</item>
         <item name="android:textColorHint">@color/edit_text_hint_color</item>
         <item name="android:padding">@dimen/edit_text_padding</item>
-        <item name="android:background">@drawable/input_bg_n</item>
+        <item name="android:background">@android:drawable/editbox_background</item>
     </style>
 
     <style name="MySearchEditText.Search" parent="MySearchEditText">
@@ -133,7 +133,7 @@
         <item name="android:paddingLeft">@dimen/dialog_text_padding</item>
         <item name="android:paddingRight">@dimen/dialog_text_padding</item>
     </style>
-    
+
     <style name="MyDialog.Text" parent="MyDialog">
         <item name="android:singleLine">true</item>
     </style>
@@ -160,12 +160,20 @@
         <item name="android:background">@drawable/selector_dialog_button</item>
         <item name="android:gravity">center</item>
     </style>
-    
-      <style name="MyDialog.MenuText" parent="MyDialog.Text">
+
+    <style name="MyDialog.MenuText" parent="MyDialog.Text">
         <item name="android:textSize">@dimen/dialog_button_text_size</item>
         <item name="android:textColor">@color/selector_dialog_menu_text</item>
         <item name="android:background">@drawable/selector_dialog_content_menu</item>
         <item name="android:gravity">center</item>
+    </style>
+
+    <!-- Alpha White Button -->
+    <style name="AlphaWhiteButton">
+        <item name="android:background">@drawable/alpha_white_background</item>
+    </style>
+    <style name="AlphaWhiteButton.MapIcon" parent="AlphaWhiteButton">
+        <item name="android:scaleType">center</item>
     </style>
 
 </resources>

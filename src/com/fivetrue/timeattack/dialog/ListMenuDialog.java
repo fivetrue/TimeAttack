@@ -46,8 +46,10 @@ public class ListMenuDialog extends CustomDialog {
 					tv.setPadding((int) getContext().getResources().getDimension(R.dimen.dialog_text_padding),
 							0, (int) getContext().getResources().getDimension(R.dimen.dialog_text_padding), 0);
 					tv.setOnClickListener(item.getOnClickListener());
-					mLayoutMenuList.addView(tv, new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
+					tv.setBackground(getContext().getResources().getDrawable(R.drawable.selector_dialog_content_menu));
+					mLayoutMenuList.addView(tv, new LayoutParams(LayoutParams.MATCH_PARENT, (int) getContext().getResources().getDimension(R.dimen.dialog_button_height)));
 					View line = new View(getContext());
+					line.setBackground(getContext().getResources().getDrawable(R.color.dialog_title_background));
 					mLayoutMenuList.addView(line, new LayoutParams(LayoutParams.MATCH_PARENT, (int)getContext().getResources().getDimension(R.dimen.list_underline_height)));
 				}
 			}

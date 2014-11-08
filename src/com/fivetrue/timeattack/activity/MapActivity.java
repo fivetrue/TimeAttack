@@ -4,27 +4,31 @@ import java.util.ArrayList;
 
 import com.api.common.BaseEntry;
 import com.api.google.geocoding.model.AddressResultVO;
+import com.api.google.place.model.PlaceVO;
 import com.fivetrue.timeattack.R;
 import com.fivetrue.timeattack.activity.manager.MapActivityManager;
-import com.fivetrue.timeattack.dialog.CustomDialog;
-import com.fivetrue.timeattack.dialog.ListMenuDialog;
-import com.fivetrue.timeattack.model.DialogListMenuItem;
+import com.fivetrue.timeattack.fragment.main.NearBySearchFragment;
+import com.fivetrue.timeattack.preference.MapPreferenceManager;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.GoogleMap.OnMarkerClickListener;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
-import com.google.android.gms.maps.model.MarkerOptions;
 
 import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 
 public class MapActivity extends BaseActivity {
+	
+	class ViewHolder{
+		public View ivPlace = null;
+		public View ivDirection = null;
+		public ViewGroup layoutMyControl = null;
+	}
 
 	//View
 	private ViewGroup mContentView = null;
@@ -33,16 +37,18 @@ public class MapActivity extends BaseActivity {
 	private SupportMapFragment mMapFragment = null;
 	private GoogleMap mMap = null;
 	
+	//Fragment
+	private NearBySearchFragment mNearBySearchFragment = null;
+	
 	//Model
 	private BaseEntry mEntry = null;
 	private int mType = INVALID_VALUE;
 	private MapActivityManager mMapManager = null;
+	private ViewHolder mMyControlView = null;
+	private MyLocationSearchAsycTask mMyLocationAyncTask = null;
 	
-	private MyLocationSearchAsycTask mMyLocationAyncTask= null;
-	
-	private ArrayList<DialogListMenuItem> mArrMenuItem = null;
+	private Location mMyLocation = null;
 
-	
 	//Value
 	private float mZoomValue = 14;
 	private float mMyLocationZoomValue = 18;
@@ -73,15 +79,29 @@ public class MapActivity extends BaseActivity {
 	}
 	
 	private void initViews(){
+		mMyControlView = new ViewHolder();
+		
 		mMapFragment = (SupportMapFragment)getSupportFragmentManager().findFragmentById(R.id.fragment_map);
+		
+		mMyControlView.layoutMyControl = (ViewGroup) mContentView.findViewById(R.id.layout_map_my_control);
+		mMyControlView.ivDirection = mContentView.findViewById(R.id.iv_map_direction);
+		mMyControlView.ivPlace = mContentView.findViewById(R.id.iv_map_place);
+		
+		mMyControlView.layoutMyControl.setVisibility(View.GONE);
+		mMyControlView.ivPlace.setOnClickListener(onClickFindSubwayNearBy);
+		mMyControlView.ivDirection.setOnClickListener(onClickFindDirection);
 	}
 	
 	private void initModels(){
 		
 		if(mMapFragment != null){
+			MapPreferenceManager pref = MapPreferenceManager.newInstance(this);
 			mMap = mMapFragment.getMap();
-			mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
-			mMap.getUiSettings().setRotateGesturesEnabled(false);
+			mMap.setMapType(pref.getMapType());
+			mMap.getUiSettings().setRotateGesturesEnabled(pref.isRotateEnable());
+			mMap.getUiSettings().setZoomControlsEnabled(pref.isZoomButtonEnable());
+			mMap.setBuildingsEnabled(pref.isBuildingEnable());
+			mMap.setIndoorEnabled(pref.isIndoorEnable());
 			mMapManager = MapActivityManager.newInstance(this);
 		}else{
 			log("map fragment is null");
@@ -103,14 +123,7 @@ public class MapActivity extends BaseActivity {
 			case MapActivityManager.DATA_PLACE :
 				
 				return;
-				
-			default :
-				mArrMenuItem = new ArrayList<DialogListMenuItem>();
-				mArrMenuItem.add(new DialogListMenuItem(getString(R.string.find_subway_nearby), onClickFindSubwayNearByMenu));
-				mArrMenuItem.add(new DialogListMenuItem(getString(R.string.find_direction), onClickFindDirectionMenu));
-				return ;
 			}
-			
 		}
 	}
 	
@@ -198,9 +211,9 @@ public class MapActivity extends BaseActivity {
 	protected void changeLocation(Location location) {
 		// TODO Auto-generated method stub
 		if(location != null){
-			mMap.clear();
-			LatLng latlng = new LatLng(location.getLatitude(), location.getLongitude());
-			mMapManager.drawPointToMap(mMap, "현재 위치", latlng);
+			mMyLocation = location;
+//			LatLng latlng = new LatLng(location.getLatitude(), location.getLongitude());
+//			mMapManager.drawPointToMap(mMap, "현재 위치", null, latlng);
 		}
 	}
 		
@@ -219,35 +232,38 @@ public class MapActivity extends BaseActivity {
 				mMyLocationAyncTask.execute();
 			}else{
 				onPauseLocationService();
+				mMyControlView.layoutMyControl.setVisibility(View.GONE);
 				mMyLocationAyncTask.cancel(true);
 				mMyLocationAyncTask = null;
 			}
+			mMap.setMyLocationEnabled(view.isSelected());
 		}else{
 			makeToast(R.string.error_location_out_of_service);
 		}
 	}
 	
-	OnMarkerClickListener onMyLocationMarkerClickListener = new OnMarkerClickListener() {
-		
-		@Override
-		public boolean onMarkerClick(Marker marker) {
-			// TODO Auto-generated method stub
-			if(marker != null){
-				ListMenuDialog dialog = new ListMenuDialog(MapActivity.this, mArrMenuItem);
-				dialog.show();
-//				CustomDialog dialog = new CustomDialog(MapActivity.this);
-//				dialog.setContentMessage(marker.getPosition().latitude + " / " + marker.getPosition().longitude);
-//				dialog.setVisibleOkButton(false);
-//				dialog.setCanceledOnTouchOutside(false);
-//				dialog.show();
-			}
-			return false;
-		}
-	};
+//	OnMarkerClickListener onMyLocationMarkerClickListener = new OnMarkerClickListener() {
+//		
+//		@Override
+//		public boolean onMarkerClick(Marker marker) {
+//			// TODO Auto-generated method stub
+//			if(marker != null){
+//				if(mListItemDialog != null && !mListItemDialog.isShowing()){
+//					mListItemDialog.show();
+//				}
+//			}
+//			return false;
+//		}
+//	};
 	
+	
+	
+	/**
+	 * @author Fivetrue
+	 * My Location Search Async
+	 */
 	private class MyLocationSearchAsycTask extends AsyncTask<Void, Void, Location>{
 		
-		private boolean runLocationSearching = false;
 		private GoogleMap mMap = null;
 		
 		public MyLocationSearchAsycTask(GoogleMap map) {
@@ -258,50 +274,85 @@ public class MapActivity extends BaseActivity {
 		protected void onPreExecute() {
 			// TODO Auto-generated method stub
 			super.onPreExecute();
-			runLocationSearching = true;
 		}
 		@Override
 		protected Location doInBackground(Void... params) {
 			// TODO Auto-generated method stub
-			while(runLocationSearching){
-				if(getCurrentLocation() != null){
-					runLocationSearching = false;
-				}
-				
+			Location location = null;
+			while(location == null){
+				location = getCurrentLocation();
 				if(isCancelled()){
 					break;
 				}
 			}
-			return getCurrentLocation();
+			return location;
 		}
 		@Override
 		protected void onPostExecute(Location result) {
 			// TODO Auto-generated method stub
 			super.onPostExecute(result);
 			if(result != null && mMap != null){
+				mMyLocation = result;
 				LatLng latlng = new LatLng(result.getLatitude(), result.getLongitude());
-				MarkerOptions maker = mMapManager.drawPointToMap(mMap, getString(R.string.current_loaction), latlng);
 				mMapManager.zoomToPoint(mMap, latlng, mMyLocationZoomValue);
-				mMap.setOnMarkerClickListener(onMyLocationMarkerClickListener);
+				mMyControlView.layoutMyControl.setVisibility(View.VISIBLE);
 			}
 		}
 	}
 	
-	private OnClickListener onClickFindSubwayNearByMenu = new OnClickListener() {
+	private OnClickListener onClickFindSubwayNearBy = new OnClickListener() {
 		
 		@Override
 		public void onClick(View v) {
 			// TODO Auto-generated method stub
-			makeToast("onClickFindSubwayNearByMenu");
+			Bundle argument = new Bundle();
+			argument.putParcelable(MapActivityManager.MAP_DATA, mMyLocation);
+			mNearBySearchFragment = (NearBySearchFragment) createFragment(NearBySearchFragment.class, 
+					"nearby", FragmentTransaction.TRANSIT_ENTER_MASK, argument);
+
+			new AsyncTask<NearBySearchFragment, Void, ArrayList<PlaceVO>>(){
+
+				@Override
+				protected ArrayList<PlaceVO> doInBackground(
+						NearBySearchFragment... params) {
+					// TODO Auto-generated method stub
+					NearBySearchFragment f = params[0];
+					ArrayList<PlaceVO> arr = null;
+					
+					while(true){
+						if(f != null){
+							arr = f.getPlaceList();
+							if(arr != null){
+								break;
+							}
+						}else{
+							break;
+						}
+					}
+					return arr;
+				}
+				
+				protected void onPostExecute(java.util.ArrayList<PlaceVO> result) {
+					MapActivityManager.newInstance(MapActivity.this).drawPointToMap(mMap, result);
+				};
+			}.execute(mNearBySearchFragment);
 		}
 	};
 	
-	private OnClickListener onClickFindDirectionMenu = new OnClickListener() {
+	private OnClickListener onClickFindDirection = new OnClickListener() {
 		
 		@Override
 		public void onClick(View v) {
 			// TODO Auto-generated method stub
-			makeToast("onClickFindDirectionMenu");
+		}
+	};
+	
+	public void onBackPressed(){
+		if(mNearBySearchFragment != null){
+			removeFragment(mNearBySearchFragment, FragmentTransaction.TRANSIT_EXIT_MASK);
+			mNearBySearchFragment = null;
+		}else{
+			super.onBackPressed();
 		}
 	};
 }

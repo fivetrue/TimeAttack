@@ -19,7 +19,7 @@ public class MainActivity extends BaseActivity{
 	@Override
 	View onCreateView(LayoutInflater inflater) {
 		// TODO Auto-generated method stub
-		mTapFragment = (TabFragment) createFragment(TabFragment.class, "");
+		mTapFragment = (TabFragment) createFragment(TabFragment.class, "", null);
 		mTapFragment.addFragment(new RecentlyUseFragment(), getString(R.string.recently_infomation));
 //		mTapFragment.addFragment(new NearBySearchFragment(), "주변 찾기");
 		return null;
@@ -92,5 +92,4 @@ public class MainActivity extends BaseActivity{
 		// TODO Auto-generated method stub
 		
 	}
-
 }
