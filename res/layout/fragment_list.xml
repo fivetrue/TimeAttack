@@ -1,7 +1,8 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/common_background" >
+    android:background="@color/common_background"
+    android:orientation="vertical" >
 
     <ListView
         android:id="@+id/lv_base_list"
@@ -42,9 +43,8 @@
         android:id="@+id/shadow"
         android:layout_width="match_parent"
         android:layout_height="@dimen/common_margin"
-        android:layout_alignParentBottom="true"
         android:layout_marginLeft="@dimen/common_margin"
         android:layout_marginRight="@dimen/common_margin"
         android:background="@drawable/tab_img_shadow_pattern" />
 
-</RelativeLayout>
+</LinearLayout>

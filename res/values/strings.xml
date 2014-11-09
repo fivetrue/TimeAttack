@@ -17,7 +17,7 @@
     <string name="cancel">취소</string>
     <string name="alert">알림</string>
     
-    <string name="find_subway_nearby">주변 지하철역 찾기</string>
+    <string name="find_subway_nearby">주변 지하철역</string>
     <string name="find_direction">대중교통 길 찾기</string>
     
     <!-- Error Message -->

@@ -74,6 +74,11 @@
         <item name="android:textSize">@dimen/actionbar_sub_title_text_size</item>
         <item name="android:textColor">@color/actionbar_sub_title</item>
     </style>
+    
+     <style name="dismissTitleText" parent="baseListTextProperties">
+        <item name="android:textSize">@dimen/actionbar_sub_title_text_size</item>
+        <item name="android:textColor">@color/actionbar_sub_title</item>
+    </style>
 
     <style name="listTitleText" parent="baseListTextProperties">
         <item name="android:textSize">@dimen/list_item_title_text_size</item>
