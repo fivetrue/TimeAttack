@@ -1,8 +1,8 @@
 package com.fivetrue.timeattack.activity;
 
 import com.fivetrue.timeattack.R;
-import com.fivetrue.timeattack.fragment.main.NearBySearchFragment;
 import com.fivetrue.timeattack.fragment.main.RecentlyUseFragment;
+import com.fivetrue.timeattack.fragment.map.NearBySearchFragment;
 import com.fivetrue.timeattack.fragment.tab.TabFragment;
 import com.google.android.gms.maps.GoogleMap;
 

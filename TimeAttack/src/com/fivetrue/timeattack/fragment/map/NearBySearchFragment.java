@@ -1,4 +1,4 @@
-package com.fivetrue.timeattack.fragment.main;
+package com.fivetrue.timeattack.fragment.map;
 
 
 import java.util.ArrayList;
@@ -6,10 +6,14 @@ import java.util.ArrayList;
 
 import android.location.Location;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.api.common.BaseResponseListener;
 import com.api.google.place.PlaceAPIHelper;
@@ -93,8 +97,9 @@ public class NearBySearchFragment extends BaseListFragment<PlaceVO> {
 	}
 
 	@Override
-	protected void configListView(ListView listview) {
+	protected void configView(ListView listview, LayoutInflater inflater) {
 		// TODO Auto-generated method stub
+		getContentView().addView(initTopView(inflater), 0);
 		
 	}
 
@@ -123,6 +128,25 @@ public class NearBySearchFragment extends BaseListFragment<PlaceVO> {
 			return adapter.getArrayList();
 		}
 		return null;
+	}
+	
+	private View initTopView(LayoutInflater inflater){
+		ViewGroup topContent = (ViewGroup) inflater.inflate(R.layout.include_dismiss_top_layout, null);
+		TextView title = (TextView) topContent.findViewById(R.id.tv_dismiss_title);
+		View close = topContent.findViewById(R.id.iv_dismiss_close);
+		title.setText(R.string.find_subway_nearby);
+		close.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				if(getActivity() != null){
+					getActivity().onBackPressed();
+				}
+			}
+		});
+	
+		return topContent;
 	}
 }
 

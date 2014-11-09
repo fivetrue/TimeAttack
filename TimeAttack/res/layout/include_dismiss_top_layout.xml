@@ -1,0 +1,29 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/action_item_location_searching"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical" >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dismiss_layout_height"
+        android:background="@color/dismiss_layout_background"
+        android:paddingLeft="@dimen/dismiss_layout_padding"
+        android:paddingRight="@dimen/dismiss_layout_padding" >
+
+        <TextView
+            android:id="@+id/tv_dismiss_title"
+            style="@style/actionBarSubTitleText"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent" />
+
+        <ImageView
+            android:id="@+id/iv_dismiss_close"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:background="@drawable/selector_dismiss_button"
+            android:src="@android:drawable/ic_menu_close_clear_cancel" />
+    </RelativeLayout>
+
+</LinearLayout>

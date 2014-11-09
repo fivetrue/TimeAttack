@@ -4,6 +4,7 @@ package com.fivetrue.timeattack.fragment.main;
 import java.util.ArrayList;
 
 
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
@@ -51,7 +52,7 @@ public class RecentlyUseFragment extends BaseListFragment<NetworkResult> {
 	}
 
 	@Override
-	protected void configListView(ListView listview) {
+	protected void configView(ListView listview, LayoutInflater inflater) {
 		// TODO Auto-generated method stub
 		
 	}

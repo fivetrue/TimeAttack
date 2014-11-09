@@ -63,7 +63,7 @@ abstract public class BaseListFragment <T> extends BaseFragment implements OnIte
 			listView.addFooterView(listFooter, null, false);
 		}
 		
-		configListView(listView);
+		configView(listView, inflater);
 	}
 	
 	protected void setEmptyLayout(boolean isShowing){
@@ -88,7 +88,7 @@ abstract public class BaseListFragment <T> extends BaseFragment implements OnIte
 	
 	abstract public void onLoadListData();
 	
-	abstract protected void configListView(ListView listview);
+	abstract protected void configView(ListView listview, LayoutInflater inflater);
 	
 	abstract protected void onListItemClick(AdapterView<?> parent, View view, int position,	long id);
 	

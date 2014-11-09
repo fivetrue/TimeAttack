@@ -265,42 +265,44 @@ abstract public class BaseActivity extends LocationActivity implements IRequestR
 	    return v.findViewById(resId);
 	}
 	
-	public void removeFragment(Fragment f, int transit){
-		if(transit == INVALID_VALUE){
-			transit = FragmentTransaction.TRANSIT_NONE;
-		}
+	public void removeFragment(Fragment f, int startAni, int endAni){
 		FragmentTransaction trans =  getSupportFragmentManager().beginTransaction();
+		if(startAni != INVALID_VALUE && endAni != INVALID_VALUE){
+			trans.setCustomAnimations(startAni, endAni);
+		}
 		trans.remove(f);
-		trans.setTransition(transit);
 		trans.commit();
 	}
 	
 	
 	
-	public void hideFragment(Fragment f, int transit){
-		if(transit == INVALID_VALUE){
-			transit = FragmentTransaction.TRANSIT_NONE;
-		}
+	public void hideFragment(Fragment f,  int startAni, int endAni){
 		FragmentTransaction trans =  getSupportFragmentManager().beginTransaction();
+		if(startAni != INVALID_VALUE && endAni != INVALID_VALUE){
+			trans.setCustomAnimations(startAni, endAni);
+		}
 		trans.hide(f);
-		trans.setTransition(transit);
 		trans.commit();
 	}
 	
 	public Fragment createFragment(Class<?> fragmentClass, String tag, Bundle argument){
-		return createFragment(INVALID_VALUE, fragmentClass, tag, INVALID_VALUE, argument);
+		return createFragment(INVALID_VALUE, fragmentClass, tag, INVALID_VALUE, argument , INVALID_VALUE, INVALID_VALUE);
 	}
 	
 	public Fragment createFragment(int containLayoutId, Class<?> fragmentClass, String tag, Bundle argument){
-		return createFragment(containLayoutId, fragmentClass, tag, INVALID_VALUE, argument);
+		return createFragment(containLayoutId, fragmentClass, tag, INVALID_VALUE, argument , INVALID_VALUE, INVALID_VALUE);
 	}
 	
 	public Fragment createFragment(Class<?> fragmentClass, String tag, int transit, Bundle argument){
-		return createFragment(INVALID_VALUE, fragmentClass, tag, transit, argument);
+		return createFragment(INVALID_VALUE, fragmentClass, tag, transit, argument , INVALID_VALUE, INVALID_VALUE);
 	}
 	
-	public Fragment createFragment(int containLayoutId, Class<?> fragmentClass, String tag , int transit, Bundle argument){
-		
+	public Fragment createFragment(Class<?> fragmentClass, String tag, int transit, Bundle argument, int startAni, int endAni){
+		return createFragment(INVALID_VALUE, fragmentClass, tag, transit, argument , startAni, endAni);
+	}
+	
+	public Fragment createFragment(int containLayoutId, Class<?> fragmentClass
+			, String tag , int transit, Bundle argument, int aniStart, int aniEnd){
 		
 		if(containLayoutId == INVALID_VALUE){
 			containLayoutId  = R.id.layout_main_frame;
@@ -318,7 +320,10 @@ abstract public class BaseActivity extends LocationActivity implements IRequestR
 			}else{
 				f = (Fragment) fragmentClass.newInstance();
 				f.setArguments(argument);
-				trans.add(containLayoutId, f, tag);
+				if(aniStart != INVALID_VALUE && aniEnd != INVALID_VALUE){
+					trans.setCustomAnimations(aniStart, aniEnd);
+				}
+				trans.replace(containLayoutId, f, tag);
 				trans.setTransition(transit);
 				trans.commit();
 			}

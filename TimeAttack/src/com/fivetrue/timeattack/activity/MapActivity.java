@@ -7,7 +7,7 @@ import com.api.google.geocoding.model.AddressResultVO;
 import com.api.google.place.model.PlaceVO;
 import com.fivetrue.timeattack.R;
 import com.fivetrue.timeattack.activity.manager.MapActivityManager;
-import com.fivetrue.timeattack.fragment.main.NearBySearchFragment;
+import com.fivetrue.timeattack.fragment.map.NearBySearchFragment;
 import com.fivetrue.timeattack.preference.MapPreferenceManager;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -211,9 +211,7 @@ public class MapActivity extends BaseActivity {
 	protected void changeLocation(Location location) {
 		// TODO Auto-generated method stub
 		if(location != null){
-			mMyLocation = location;
-//			LatLng latlng = new LatLng(location.getLatitude(), location.getLongitude());
-//			mMapManager.drawPointToMap(mMap, "현재 위치", null, latlng);
+//			mMyLocation = location;
 		}
 	}
 		
@@ -235,27 +233,12 @@ public class MapActivity extends BaseActivity {
 				mMyControlView.layoutMyControl.setVisibility(View.GONE);
 				mMyLocationAyncTask.cancel(true);
 				mMyLocationAyncTask = null;
+				mMap.setMyLocationEnabled(false);
 			}
-			mMap.setMyLocationEnabled(view.isSelected());
 		}else{
 			makeToast(R.string.error_location_out_of_service);
 		}
 	}
-	
-//	OnMarkerClickListener onMyLocationMarkerClickListener = new OnMarkerClickListener() {
-//		
-//		@Override
-//		public boolean onMarkerClick(Marker marker) {
-//			// TODO Auto-generated method stub
-//			if(marker != null){
-//				if(mListItemDialog != null && !mListItemDialog.isShowing()){
-//					mListItemDialog.show();
-//				}
-//			}
-//			return false;
-//		}
-//	};
-	
 	
 	
 	/**
@@ -296,6 +279,7 @@ public class MapActivity extends BaseActivity {
 				LatLng latlng = new LatLng(result.getLatitude(), result.getLongitude());
 				mMapManager.zoomToPoint(mMap, latlng, mMyLocationZoomValue);
 				mMyControlView.layoutMyControl.setVisibility(View.VISIBLE);
+				mMap.setMyLocationEnabled(true);
 			}
 		}
 	}
@@ -308,7 +292,8 @@ public class MapActivity extends BaseActivity {
 			Bundle argument = new Bundle();
 			argument.putParcelable(MapActivityManager.MAP_DATA, mMyLocation);
 			mNearBySearchFragment = (NearBySearchFragment) createFragment(NearBySearchFragment.class, 
-					"nearby", FragmentTransaction.TRANSIT_ENTER_MASK, argument);
+					"nearby", FragmentTransaction.TRANSIT_ENTER_MASK, argument
+					, R.anim.slide_in_top, R.anim.slide_in_top);
 
 			new AsyncTask<NearBySearchFragment, Void, ArrayList<PlaceVO>>(){
 
@@ -349,7 +334,7 @@ public class MapActivity extends BaseActivity {
 	
 	public void onBackPressed(){
 		if(mNearBySearchFragment != null){
-			removeFragment(mNearBySearchFragment, FragmentTransaction.TRANSIT_EXIT_MASK);
+			removeFragment(mNearBySearchFragment, R.anim.slide_out_bottom, R.anim.slide_out_bottom);
 			mNearBySearchFragment = null;
 		}else{
 			super.onBackPressed();
