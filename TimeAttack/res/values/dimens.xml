@@ -11,6 +11,12 @@
     <dimen name="empty_image_size">100dp</dimen>
     <dimen name="empty_image_margin">20dp</dimen>
     
+    <!-- Pager Fragment -->
+    <dimen name="horizontal_scroll_height">3dp</dimen>
+    <dimen name="index_dot_corners">3dp</dimen>
+    <dimen name="index_dot_size">6dp</dimen>
+    <dimen name="index_dot_margin">3dp</dimen>
+    
     <!-- Dismiss Top Layout -->
     <dimen name="dismiss_layout_height">40dp</dimen>
     <dimen name="dismiss_layout_padding">10dp</dimen>
