@@ -244,7 +244,7 @@ abstract public class BaseActivity extends LocationActivity implements IRequestR
 		case android.R.id.home :
 			if(isHomeAsUp()){
 //				NavUtils.navigateUpFromSameTask(this);
-				finish();
+				onBackPressed();
 			}else{
 				if(mDrawerLayout.isDrawerOpen(mLayoutDrawer)){
 					mDrawerLayout.closeDrawer(mLayoutDrawer);

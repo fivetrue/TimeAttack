@@ -4,7 +4,6 @@ package com.fivetrue.timeattack.fragment.map;
 import java.util.ArrayList;
 
 
-import android.location.Location;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,10 +25,12 @@ import com.fivetrue.timeattack.activity.BaseActivity;
 import com.fivetrue.timeattack.activity.manager.MapActivityManager;
 import com.fivetrue.timeattack.fragment.BaseListFragment;
 import com.fivetrue.timeattack.view.adapter.NearBySearchResultAdapter;
+import com.google.android.gms.maps.model.LatLng;
 
 public class NearBySearchFragment extends BaseListFragment<PlaceVO> {
 
-	private Location mLocation = null;
+	private LatLng mLocation = null;
+
 	@Override
 	public View initHeader() {
 		// TODO Auto-generated method stub
@@ -54,14 +55,14 @@ public class NearBySearchFragment extends BaseListFragment<PlaceVO> {
 	private void initData(){
 		Bundle b = getArguments();
 		if(b != null){
-			mLocation = (Location) b.getParcelable(MapActivityManager.MAP_DATA);
+			mLocation = (LatLng) b.getParcelable(MapActivityManager.MAP_DATA);
 		}
 	}
 	
 	private void loadData(){
 		if(mLocation != null){
 			new PlaceAPIHelper(getActivity(), API_TYPE.NEAR_BY_SEARCH, ((BaseActivity)getActivity()))
-			.requestNearBySearchSubway(mLocation.getLatitude(), mLocation.getLongitude(), 1000, new BaseResponseListener<PlacesEntry>() {
+			.requestNearBySearchSubway(mLocation.latitude, mLocation.longitude, 1000, new BaseResponseListener<PlacesEntry>() {
 				
 				@Override
 				public void onResponse(PlacesEntry response) {

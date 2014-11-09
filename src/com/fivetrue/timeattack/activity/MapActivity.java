@@ -87,9 +87,25 @@ public class MapActivity extends BaseActivity {
 		mMyControlView.ivDirection = mContentView.findViewById(R.id.iv_map_direction);
 		mMyControlView.ivPlace = mContentView.findViewById(R.id.iv_map_place);
 		
-		mMyControlView.layoutMyControl.setVisibility(View.GONE);
 		mMyControlView.ivPlace.setOnClickListener(onClickFindSubwayNearBy);
 		mMyControlView.ivDirection.setOnClickListener(onClickFindDirection);
+		
+		switch(mType){
+		case MapActivityManager.DATA_GEOCODING :
+			mMyControlView.layoutMyControl.setVisibility(View.VISIBLE);
+			break;
+
+		case MapActivityManager.DATA_DIRECTION :
+			break;
+
+		case MapActivityManager.DATA_PLACE :
+
+			break;
+			
+		default :
+			mMyControlView.layoutMyControl.setVisibility(View.GONE);
+			break;
+		}
 	}
 	
 	private void initModels(){
@@ -164,8 +180,8 @@ public class MapActivity extends BaseActivity {
 		// TODO Auto-generated method stub
 		
 		switch(mType){
-		case MapActivityManager.DATA_GEOCODING : 
-			return R.menu.actionbar_map_geocoding_menu;
+//		case MapActivityManager.DATA_GEOCODING : 
+//			return R.menu.actionbar_map_geocoding_menu;
 			
 		case MapActivityManager.DATA_DIRECTION :
 			break;
@@ -230,10 +246,25 @@ public class MapActivity extends BaseActivity {
 				mMyLocationAyncTask.execute();
 			}else{
 				onPauseLocationService();
-				mMyControlView.layoutMyControl.setVisibility(View.GONE);
 				mMyLocationAyncTask.cancel(true);
 				mMyLocationAyncTask = null;
 				mMap.setMyLocationEnabled(false);
+				
+				switch(mType){
+				case MapActivityManager.DATA_GEOCODING :
+					break;
+
+				case MapActivityManager.DATA_DIRECTION :
+					break;
+
+				case MapActivityManager.DATA_PLACE :
+
+					break;
+					
+				default :
+					mMyControlView.layoutMyControl.setVisibility(View.GONE);
+					break;
+				}
 			}
 		}else{
 			makeToast(R.string.error_location_out_of_service);
@@ -290,7 +321,43 @@ public class MapActivity extends BaseActivity {
 		public void onClick(View v) {
 			// TODO Auto-generated method stub
 			Bundle argument = new Bundle();
-			argument.putParcelable(MapActivityManager.MAP_DATA, mMyLocation);
+			
+			double latitude = INVALID_VALUE;
+			double longitude = INVALID_VALUE;
+			
+			switch(mType){
+			case MapActivityManager.DATA_GEOCODING :
+				if(mEntry != null){
+					latitude = Double.parseDouble(((AddressResultVO)mEntry).getLatitude());
+					longitude = Double.parseDouble(((AddressResultVO)mEntry).getLongitude());
+				}
+				break;
+
+			case MapActivityManager.DATA_DIRECTION :
+				if(mEntry != null){
+				}
+				break;
+
+			case MapActivityManager.DATA_PLACE :
+				if(mEntry != null){
+				}
+				break;
+				
+			default :
+				if(mMyLocation != null){
+					latitude = mMyLocation.getLatitude();
+					longitude = mMyLocation.getLongitude();
+				}
+				break;
+			}
+			
+			if(latitude == INVALID_VALUE || longitude == INVALID_VALUE)
+				return;
+			
+			LatLng location = new LatLng(latitude, longitude);
+			
+			argument.putParcelable(MapActivityManager.MAP_DATA, location);
+			
 			mNearBySearchFragment = (NearBySearchFragment) createFragment(NearBySearchFragment.class, 
 					"nearby", FragmentTransaction.TRANSIT_ENTER_MASK, argument
 					, R.anim.slide_in_top, R.anim.slide_in_top);
@@ -318,7 +385,7 @@ public class MapActivity extends BaseActivity {
 				}
 				
 				protected void onPostExecute(java.util.ArrayList<PlaceVO> result) {
-					MapActivityManager.newInstance(MapActivity.this).drawPointToMap(mMap, result);
+					mMapManager.drawPointToMap(mMap, result);
 				};
 			}.execute(mNearBySearchFragment);
 		}
