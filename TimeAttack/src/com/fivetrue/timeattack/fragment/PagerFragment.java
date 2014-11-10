@@ -10,13 +10,13 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.View.OnTouchListener;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
 
 import com.fivetrue.timeattack.R;
 import com.fivetrue.timeattack.fragment.BaseFragment;
 import com.fivetrue.timeattack.view.pager.CustomViewPager;
+import com.fivetrue.timeattack.view.pager.CustomViewPager.OnSwipeDirectionListener;
 import com.fivetrue.timeattack.view.pager.adapter.CustomFragmentPagerAdapter;
 
 public class PagerFragment extends BaseFragment {
@@ -49,7 +49,7 @@ public class PagerFragment extends BaseFragment {
 	private int mLayoutWidth = INVALID_VALUE;
 	private int mIndex = INVALID_VALUE;
 	private int mResHorizontalColor = R.color.gorditas_blue;
-
+	
 	private OnSelectedFragmentNameListener mOnSelectedFragmentName = null;
 
 	public PagerFragment(){
@@ -109,12 +109,12 @@ public class PagerFragment extends BaseFragment {
 				mIndexViewGroup.addView(v, params);
 			}
 
-			int index = mIndex == INVALID_VALUE ? 0 : mIndex;
+			mIndex = mIndex == INVALID_VALUE ? 0 : mIndex;
 
-			mIndexViewGroup.getChildAt(index).setSelected(true);
+			mIndexViewGroup.getChildAt(mIndex).setSelected(true);
 
 			if(mOnSelectedFragmentName != null && mTitleList != null){
-				mOnSelectedFragmentName.onReceiveFragmentName(mTitleList.get(index));
+				mOnSelectedFragmentName.onReceiveFragmentName(mTitleList.get(mIndex));
 			}
 
 			mHorizontalScroll = new View(getActivity());
@@ -129,7 +129,7 @@ public class PagerFragment extends BaseFragment {
 		mPagerAdapter = new CustomFragmentPagerAdapter(getFragmentManager(), mFragmentList);
 		mViewPager.setAdapter(mPagerAdapter);
 		mViewPager.setOnPageChangeListener(mPageChangeListener);
-		mContentViewGroup.setOnTouchListener(mPagerTouchListener);
+		mViewPager.setOnSwipeDirectionListener(mSwipeDirectionListener);
 	}
 
 	public void addFragment(Fragment f, String title){
@@ -140,7 +140,6 @@ public class PagerFragment extends BaseFragment {
 
 	private OnPageChangeListener mPageChangeListener = new OnPageChangeListener() {
 
-		
 
 		@Override
 		public void onPageSelected(int position) {
@@ -156,12 +155,13 @@ public class PagerFragment extends BaseFragment {
 			if(mOnSelectedFragmentName != null && mTitleList != null){
 				mOnSelectedFragmentName.onReceiveFragmentName(mTitleList.get(position));
 			}
+			
+			mIndex = position;
 		}
 
 		@Override
 		public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 			// TODO Auto-generated method stub
-			
 		}
 
 
@@ -182,56 +182,55 @@ public class PagerFragment extends BaseFragment {
 		}
 	};
 	
-	private OnTouchListener mPagerTouchListener = new OnTouchListener() {
-		private boolean isTouch = false;
-		private float touchX = INVALID_VALUE;
+	private OnSwipeDirectionListener mSwipeDirectionListener = new OnSwipeDirectionListener() {
 		
 		@Override
-		public boolean onTouch(View v, MotionEvent event) {
+		public void onSwipeRight(MotionEvent event) {
 			// TODO Auto-generated method stub
 			
-			if(mFragmentList == null || mFragmentList.size() <= 0){
-				return false;
+			if(mFragmentList == null || mFragmentList.size() <= 0 || mHorizontalScroll == null){
+				return;
 			}
 			
-			if(mHorizontalScroll != null && mHorizontalScroll.getX() >= 0 && (mHorizontalScroll.getX() <= mLayoutWidth - mHorizontalScroll.getWidth())){
-				return false;
+			if(mHorizontalScroll.getX() >= 0){
+				mHorizontalScroll.setX(mHorizontalScroll.getX() - 1);
 			}
+		}
+		
+		@Override
+		public void onSwipeLeft(MotionEvent event) {
+			// TODO Auto-generated method stub
+			
+			if(mFragmentList == null || mFragmentList.size() <= 0 || mHorizontalScroll == null){
+				return;
+			}
+			
+			if(mHorizontalScroll.getX() <= mLayoutWidth - mHorizontalScroll.getWidth()){
+				mHorizontalScroll.setX(mHorizontalScroll.getX() + 1);
+			}
+		}
 
+		@Override
+		public void onSwipeComplete(MotionEvent event) {
+			// TODO Auto-generated method stub
+			mContentView.post(new Runnable() {
 				
-			
-			switch(event.getAction()){
-			case MotionEvent.ACTION_DOWN :
-				isTouch = true;
-				touchX = event.getX();
-				return true;
-				
-			case MotionEvent.ACTION_MOVE :
-				//Right
-				if(isTouch){
-					if(touchX > event.getX()){
-						mHorizontalScroll.setX(mHorizontalScroll.getX() -  
-								1);
+				@Override
+				public void run() {
+					// TODO Auto-generated method stub
+					float destination = mHorizontalScroll.getWidth() * mViewPager.getCurrentItem();
+					while(destination != mHorizontalScroll.getX()){
+						if(destination > mHorizontalScroll.getX()){
+							mHorizontalScroll.setX(mHorizontalScroll.getX() + 1);
+						}else{
+							mHorizontalScroll.setX(mHorizontalScroll.getX() - 1);
+						}
 					}
-					//Left
-					else{
-						mHorizontalScroll.setX(mHorizontalScroll.getX() +  
-								1);
-					}
-					return true;
 				}
-				return false;
-				
-			case MotionEvent.ACTION_UP :
-				isTouch = false;
-				return true;
-			
-			}
-			
-			return false;
+			});
 		}
 	};
-
+	
 	public int getStatusBarHeight() { 
 		int result = 0;
 		int resourceId = getResources().getIdentifier("status_bar_height", "dimen", "android");
@@ -253,6 +252,5 @@ public class PagerFragment extends BaseFragment {
 			OnSelectedFragmentNameListener ll) {
 		this.mOnSelectedFragmentName = ll;
 	} 
-
 }
 
