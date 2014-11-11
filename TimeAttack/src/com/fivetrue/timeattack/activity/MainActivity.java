@@ -17,7 +17,7 @@ public class MainActivity extends BaseActivity{
 	private PagerFragment mPagerFragment = null;
 
 	@Override
-	View onCreateView(LayoutInflater inflater) {
+	public View onCreateView(LayoutInflater inflater) {
 		// TODO Auto-generated method stub
 		mPagerFragment = (PagerFragment) createFragment(PagerFragment.class, "pager", null);
 		mPagerFragment.setOnSelectedFragmentName(new OnSelectedFragmentNameListener() {
@@ -26,7 +26,7 @@ public class MainActivity extends BaseActivity{
 			public void onReceiveFragmentName(String name) {
 				// TODO Auto-generated method stub
 				if(!TextUtils.isEmpty(name)){
-					getActionBarLayout().getHomeTitle().setText(name);
+					getCustomActionBar().setTitle(name);
 				}
 			}
 		});
@@ -38,19 +38,19 @@ public class MainActivity extends BaseActivity{
 	}
 
 	@Override
-	String getActionBarTitleName() {
+	public String getActionBarTitleName() {
 		// TODO Auto-generated method stub
 		return getString(R.string.activity_home);
 	}
 
 	@Override
-	String getActionBarSubTitle() {
+	public String getActionBarSubTitle() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	boolean isHomeAsUp() {
+	public boolean isHomeAsUp() {
 		// TODO Auto-generated method stub
 		return false;
 	}
@@ -81,13 +81,13 @@ public class MainActivity extends BaseActivity{
 	}
 
 	@Override
-	int getActionBarMenuResource() {
+	public int getActionBarMenuResource() {
 		// TODO Auto-generated method stub
 		return R.menu.actionbar_main_menu;
 	}
 
 	@Override
-	void requsetNetworkResultSuccess() {
+	public void requsetNetworkResultSuccess() {
 		// TODO Auto-generated method stub
 
 		if(mPagerFragment != null){
@@ -100,13 +100,13 @@ public class MainActivity extends BaseActivity{
 	}
 
 	@Override
-	void onClickAcitionMenuLocationSearch(View view) {
+	public void onClickAcitionMenuLocationSearch(View view) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	boolean isActionBarBlending() {
+	public boolean isActionBarBlending() {
 		// TODO Auto-generated method stub
 		return false ;
 	}

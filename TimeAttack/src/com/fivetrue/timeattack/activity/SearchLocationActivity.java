@@ -47,7 +47,7 @@ public class SearchLocationActivity extends BaseActivity {
 	private GeocodingEntry mEntry = null;
 
 	@Override
-	View onCreateView(LayoutInflater inflater) {
+	public View onCreateView(LayoutInflater inflater) {
 		// TODO Auto-generated method stub
 
 		mContentView = (ViewGroup) inflater.inflate(R.layout.activity_search, null);
@@ -91,7 +91,7 @@ public class SearchLocationActivity extends BaseActivity {
 	}
 
 	@Override
-	String getActionBarTitleName() {
+	public String getActionBarTitleName() {
 		// TODO Auto-generated method stub
 		if(mEntry != null){
 			return getString(R.string.location_infomation);
@@ -100,7 +100,7 @@ public class SearchLocationActivity extends BaseActivity {
 	}
 
 	@Override
-	String getActionBarSubTitle() {
+	public String getActionBarSubTitle() {
 		// TODO Auto-generated method stub
 		if(mEntry != null){
 			if(mEntry.getAddressList().size() > 0){
@@ -111,19 +111,19 @@ public class SearchLocationActivity extends BaseActivity {
 	}
 
 	@Override
-	int getActionBarMenuResource() {
+	public int getActionBarMenuResource() {
 		// TODO Auto-generated method stub
 		return INVALID_VALUE;
 	}
 
 	@Override
-	boolean isHomeAsUp() {
+	public boolean isHomeAsUp() {
 		// TODO Auto-generated method stub
 		return true;
 	}
 
 	@Override
-	void requsetNetworkResultSuccess() {
+	public void requsetNetworkResultSuccess() {
 		// TODO Auto-generated method stub
 
 	}
@@ -228,13 +228,13 @@ public class SearchLocationActivity extends BaseActivity {
 	}
 
 	@Override
-	void onClickAcitionMenuLocationSearch(View view) {
+	public void onClickAcitionMenuLocationSearch(View view) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	boolean isActionBarBlending() {
+	public boolean isActionBarBlending() {
 		// TODO Auto-generated method stub
 		return true;
 	}

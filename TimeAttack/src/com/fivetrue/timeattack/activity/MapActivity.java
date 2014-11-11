@@ -55,7 +55,7 @@ public class MapActivity extends BaseActivity {
 	
 
 	@Override
-	View onCreateView(LayoutInflater inflater) {
+	public View onCreateView(LayoutInflater inflater) {
 		// TODO Auto-generated method stub
 		mContentView = (ViewGroup) inflater.inflate(R.layout.activity_map, null);
 		
@@ -151,13 +151,13 @@ public class MapActivity extends BaseActivity {
 	}
 
 	@Override
-	String getActionBarTitleName() {
+	public String getActionBarTitleName() {
 		// TODO Auto-generated method stub
 		return getString(R.string.activity_map);
 	}
 
 	@Override
-	String getActionBarSubTitle() {
+	public String getActionBarSubTitle() {
 		// TODO Auto-generated method stub
 		
 		switch(mType){
@@ -176,7 +176,7 @@ public class MapActivity extends BaseActivity {
 	}
 
 	@Override
-	int getActionBarMenuResource() {
+	public int getActionBarMenuResource() {
 		// TODO Auto-generated method stub
 		
 		switch(mType){
@@ -194,13 +194,13 @@ public class MapActivity extends BaseActivity {
 	}
 
 	@Override
-	boolean isHomeAsUp() {
+	public boolean isHomeAsUp() {
 		// TODO Auto-generated method stub
 		return true;
 	}
 
 	@Override
-	void requsetNetworkResultSuccess() {
+	public void requsetNetworkResultSuccess() {
 		// TODO Auto-generated method stub
 
 	}
@@ -233,7 +233,7 @@ public class MapActivity extends BaseActivity {
 		
 	// 지도정보에서 현재위치 액션버튼 눌렀을 경우.
 	@Override
-	void onClickAcitionMenuLocationSearch(final View view) {
+	public void onClickAcitionMenuLocationSearch(final View view) {
 	// TODO Auto-generated method stub
 		if(isGpsEnable()){
 			view.setSelected(!view.isSelected());
@@ -409,7 +409,7 @@ public class MapActivity extends BaseActivity {
 	}
 
 	@Override
-	boolean isActionBarBlending() {
+	public boolean isActionBarBlending() {
 		// TODO Auto-generated method stub
 		return true;
 	};
