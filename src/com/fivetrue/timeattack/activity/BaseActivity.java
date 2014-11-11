@@ -21,17 +21,15 @@ import com.fivetrue.timeattack.R;
 import com.fivetrue.timeattack.database.NetworkResultDBManager;
 import com.fivetrue.timeattack.fragment.DrawerFragment;
 import com.fivetrue.timeattack.fragment.DrawerFragment.OnDrawerMenuClickListener;
-import com.fivetrue.timeattack.view.HomeButtonView;
+import com.fivetrue.timeattack.view.actionbar.CustomActionBar;
 import com.fivetrue.utils.Logger;
 
-import android.R.integer;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.DrawerLayout.DrawerListener;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -50,46 +48,6 @@ import android.widget.Toast;
 
 abstract public class BaseActivity extends LocationActivity implements IRequestResult{
 
-	class ActionBarLayout{
-		protected ViewGroup mActionBar = null;
-		protected ViewGroup mActionBarLayout = null;
-		protected ViewGroup mActionBarHomeButtonGroup = null;
-		protected ViewGroup mActionBarHomeViewGroup = null;
-
-		protected TextView mTvHomeTitle = null;
-		protected TextView mTvHomeSubtitle = null;
-		protected HomeButtonView mIvHomeButton = null;
-		protected View mShadow = null;
-
-		public ViewGroup getActionBarLayout() {
-			return mActionBarLayout;
-		}
-		public ViewGroup getActionBarHomeViewGroup() {
-			return mActionBarHomeViewGroup;
-		}
-		public TextView getHomeTitle() {
-			return mTvHomeTitle;
-		}
-		public void setHomeTitle(TextView mTvHomeTitle) {
-			this.mTvHomeTitle = mTvHomeTitle;
-		}
-		public TextView getHomeSubtitle() {
-			return mTvHomeSubtitle;
-		}
-		public void setHomeSubtitle(TextView mTvHomeSubtitle) {
-			this.mTvHomeSubtitle = mTvHomeSubtitle;
-		}
-		public HomeButtonView getHomeButton() {
-			return mIvHomeButton;
-		}
-		public ViewGroup getActionBarHomeButtonGroup(){
-			return mActionBarHomeButtonGroup;
-		}
-	}
-	
-	protected int[] PRIMARY_COLOR = {0xF, 0x4, 0x4, 0x3, 0x3, 0x6};//0xFFF44336
-	protected int[] PRIMARY_DARK_COLOR = {0xB, 0x7, 0x1, 0xC, 0x1, 0xC};//0xFFB71C1C;
-	
 	protected boolean isRunningGps = false;
 	protected final int INVALID_VALUE = -1;
 	private DrawerLayout mDrawerLayout = null;
@@ -99,7 +57,7 @@ abstract public class BaseActivity extends LocationActivity implements IRequestR
 	static protected DrawerFragment mFragmentDrawer = null;
 	private NetworkResultDBManager mNetworkResultDBM = null;
 
-	private ActionBarLayout mActionbarLayout = new ActionBarLayout();
+	private CustomActionBar mCustomActionBar = null;
 
 	private LayoutInflater mInflater = null;
 
@@ -110,8 +68,8 @@ abstract public class BaseActivity extends LocationActivity implements IRequestR
 		setContentView(R.layout.activity_base);
 		mInflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
 
-		initActionBar(mInflater);
 		initViews(mInflater);
+		initActionBar(mInflater);
 		initActionBarSetting();
 		initModels();
 	}
@@ -137,23 +95,6 @@ abstract public class BaseActivity extends LocationActivity implements IRequestR
 		}
 	}
 
-	public void initActionBar(LayoutInflater inflater){
-		mActionbarLayout.mActionBar = (ViewGroup) inflater.inflate(R.layout.layout_action_bar, null);
-		mActionbarLayout.mActionBarLayout = (ViewGroup) mActionbarLayout.mActionBar.findViewById(R.id.layout_actionbar);
-		mActionbarLayout.mActionBarHomeViewGroup = (ViewGroup) mActionbarLayout.mActionBar.findViewById(R.id.layout_actionbar_home);
-		mActionbarLayout.mActionBarHomeButtonGroup = (ViewGroup) mActionbarLayout.mActionBar.findViewById(R.id.layout_actionbar_home_icon);
-		mActionbarLayout.mIvHomeButton = (HomeButtonView) mActionbarLayout.mActionBar.findViewById(R.id.home_button) ;
-		mActionbarLayout.mTvHomeTitle = (TextView) mActionbarLayout.mActionBar.findViewById(R.id.tv_actionbar_home_title);
-		mActionbarLayout.mTvHomeSubtitle = (TextView) mActionbarLayout.mActionBar.findViewById(R.id.tv_actionbar_home_subtitle);
-		mActionbarLayout.mShadow = mActionbarLayout.mActionBar.findViewById(R.id.actionbar_shadow);
-
-		mActionbarLayout.mActionBarHomeButtonGroup.setOnClickListener(onClickActionBarItem);
-
-		int shadowVisible = isActionBarBlending() ? View.GONE : View.VISIBLE;
-		mActionbarLayout.mShadow.setVisibility(shadowVisible);
-	}
-
-
 	/**
 	 * 기본적인 View를 초기화함.
 	 */
@@ -172,7 +113,16 @@ abstract public class BaseActivity extends LocationActivity implements IRequestR
 		if(contentView != null){
 			mContentView.addView(contentView);
 		}
+		mDrawerLayout.setDrawerListener(onDrawerListener);
+	}
 
+	/**
+	 * Actionbar Setting Area Start
+	 */
+	
+	public void initActionBar(LayoutInflater inflater){
+		mCustomActionBar = new CustomActionBar(this);
+		
 		ViewGroup actionbar = null;
 
 		if(isActionBarBlending()){
@@ -182,28 +132,23 @@ abstract public class BaseActivity extends LocationActivity implements IRequestR
 		}
 		if(actionbar != null){
 			if(isActionBarBlending()){
-				actionbar.addView(mActionbarLayout.mActionBar);
+				actionbar.addView(mCustomActionBar.getContentView());
 			}else{
-				actionbar.addView(mActionbarLayout.mActionBar, 0);
+				actionbar.addView(mCustomActionBar.getContentView(), 0);
 			}
 		}
 	}
 
-	/**
-	 * Actionbar Setting Area Start
-	 */
+	
 	public void initActionBarSetting(){
 
-		if(mActionbarLayout.getHomeButton() == null)
+		if(mCustomActionBar == null)
 			return ;
-
-		mActionbarLayout.getHomeButton().setHomeAsUp(isHomeAsUp());
-		mActionbarLayout.getHomeTitle().setText(getActionBarTitleName());
-		if(!TextUtils.isEmpty(getActionBarSubTitle())){
-			mActionbarLayout.getHomeSubtitle().setText(getActionBarSubTitle());
-			mActionbarLayout.getHomeSubtitle().setVisibility(View.VISIBLE);
-		}
-		mDrawerLayout.setDrawerListener(onDrawerListener);
+		mCustomActionBar.setHomeAsUp(isHomeAsUp());
+		mCustomActionBar.setTitle(getActionBarTitleName());
+		mCustomActionBar.setSubTitle(getActionBarSubTitle());
+		mCustomActionBar.setDrawerLayout(mDrawerLayout);
+		mCustomActionBar.setLayoutDrawer(mLayoutDrawer);
 	}
 
 
@@ -228,64 +173,29 @@ abstract public class BaseActivity extends LocationActivity implements IRequestR
 		@Override
 		public void onDrawerSlide(View arg0, float arg1) {
 			// TODO Auto-generated method stub
-			mActionbarLayout.getHomeButton().setAnimaitonValue(arg1);
-			changeColor(mActionbarLayout.getActionBarLayout(), PRIMARY_COLOR, PRIMARY_DARK_COLOR, arg1 * 0xF);
+			if(mCustomActionBar != null){
+				mCustomActionBar.getDrawerListener().onDrawerSlide(arg0, arg1);
+			}
 		}
 
 		@Override
 		public void onDrawerOpened(View arg0) {
 			// TODO Auto-generated method stub
-			mActionbarLayout.getHomeTitle().setText(R.string.app_name);
-			mActionbarLayout.getHomeSubtitle().setText(null);
-			mActionbarLayout.getHomeButton().setRevert(true);
+			if(mCustomActionBar != null){
+				mCustomActionBar.getDrawerListener().onDrawerOpened(arg0);
+			}
 		}
 
 
 		@Override
 		public void onDrawerClosed(View arg0) {
 			// TODO Auto-generated method stub
-			mActionbarLayout.getHomeTitle().setText(getActionBarTitleName());
-			mActionbarLayout.getHomeSubtitle().setText(getActionBarSubTitle());
-			mActionbarLayout.getHomeButton().setRevert(false);
+			if(mCustomActionBar != null){
+				mCustomActionBar.getDrawerListener().onDrawerClosed(arg0);
+			}
 		}
 	};
 	
-	public void changeColor(View view, final int[] arrColorFrom, final int[] arrColorTo, float value){
-		if(view == null || arrColorFrom == null || arrColorTo == null
-				|| arrColorFrom.length <= 0 || arrColorTo.length <= 0 )
-			return;
-			
-		System.out.println("ojkwon : value = " + value);
-		int color[] = new int[arrColorFrom.length];
-		
-		for(int i = 0 ; i < arrColorFrom.length ; i ++){
-			if(arrColorFrom[i] > arrColorTo[i]){
-				float val = arrColorFrom[i] - value;
-				if(arrColorTo[i] <= val && val >= 0xF){
-					color[i] = (int)val;
-				}else{
-					color[i] = arrColorTo[i];
-				}
-			}else{
-				float val = arrColorFrom[i] - value;
-				if(arrColorTo[i] >= val && val >= 0){
-					color[i] = (int)val;
-				}else{
-					color[i] = arrColorTo[i];
-				}
-			}
-		}
-		String backround = new String();
-		backround += Integer.toHexString(15);
-		backround += Integer.toHexString(15);
-		for(int val : color){
-			backround += Integer.toHexString(val);
-		}
-		
-		long setColor = Long.valueOf(backround, 16);
-		view.setBackgroundColor((int)setColor);
-	}
-
 	/**
 	 * Actionbar Setting Area End
 	 */
@@ -318,6 +228,10 @@ abstract public class BaseActivity extends LocationActivity implements IRequestR
 	//	    int resId = getResources().getIdentifier("action_bar_container", "id", "android");
 	//	    return (ViewGroup) v.findViewById(resId);
 	//	}
+	
+	public CustomActionBar getCustomActionBar(){
+		return mCustomActionBar;
+	}
 
 	public void removeFragment(Fragment f, int startAni, int endAni){
 		FragmentTransaction trans =  getSupportFragmentManager().beginTransaction();
@@ -393,21 +307,21 @@ abstract public class BaseActivity extends LocationActivity implements IRequestR
 	}
 
 
-	abstract View onCreateView(LayoutInflater inflater);
+	abstract public View onCreateView(LayoutInflater inflater);
 
-	abstract String getActionBarTitleName();
+	abstract public String getActionBarTitleName();
 
-	abstract String getActionBarSubTitle();
+	abstract public String getActionBarSubTitle();
 
-	abstract int getActionBarMenuResource();
+	abstract public int getActionBarMenuResource();
 
-	abstract boolean isHomeAsUp();
+	abstract public boolean isHomeAsUp();
 
-	abstract void requsetNetworkResultSuccess();
+	abstract public void requsetNetworkResultSuccess();
 
-	abstract void onClickAcitionMenuLocationSearch(View view);
+	abstract public void onClickAcitionMenuLocationSearch(View view);
 
-	abstract boolean isActionBarBlending();
+	abstract public boolean isActionBarBlending();
 	
 	protected OnDrawerMenuClickListener  mDrawerMenuClickListener = new OnDrawerMenuClickListener() {
 
@@ -451,23 +365,6 @@ abstract public class BaseActivity extends LocationActivity implements IRequestR
 		public void onClick(View v) {
 			// TODO Auto-generated method stub
 			switch(v.getId()){
-
-			case R.id.layout_actionbar_home_icon :
-			{
-				if(mDrawerLayout == null || mLayoutDrawer == null)
-					return ;
-
-				if(isHomeAsUp()){
-					onBackPressed();
-				}else{
-					if(mDrawerLayout.isDrawerOpen(mLayoutDrawer)){
-						mDrawerLayout.closeDrawer(mLayoutDrawer);
-					}else{
-						mDrawerLayout.openDrawer(mLayoutDrawer);
-					}
-				}
-				return;
-			}
 
 			case R.id.action_item_setting :
 			{
@@ -522,10 +419,6 @@ abstract public class BaseActivity extends LocationActivity implements IRequestR
 			}
 		}
 	};
-
-	public ActionBarLayout getActionBarLayout(){
-		return mActionbarLayout;
-	}
 
 	public void onSuccessRequest(String url, org.json.JSONObject request) {
 		boolean isResultOK = false;
