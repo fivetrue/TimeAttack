@@ -406,5 +406,11 @@ public class MapActivity extends BaseActivity {
 		}else{
 			super.onBackPressed();
 		}
+	}
+
+	@Override
+	boolean isActionBarBlending() {
+		// TODO Auto-generated method stub
+		return true;
 	};
 }

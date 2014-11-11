@@ -38,7 +38,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.view.Window;
+import android.view.ViewGroup.LayoutParams;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -50,6 +50,37 @@ import android.widget.Toast;
 	
 abstract public class BaseActivity extends LocationActivity implements IRequestResult{
 	
+	class ActionBarLayout{
+		protected ViewGroup mActionBar = null;
+		protected ViewGroup mActionBarLayout = null;
+		protected ViewGroup mActionBarHomeViewGroup = null;
+		
+		protected TextView mTvHomeTitle = null;
+		protected TextView mTvHomeSubtitle = null;
+		protected ImageView mIvHomeButton = null;
+		
+		public ViewGroup getActionBarLayout() {
+			return mActionBarLayout;
+		}
+		public ViewGroup getActionBarHomeViewGroup() {
+			return mActionBarHomeViewGroup;
+		}
+		public TextView getHomeTitle() {
+			return mTvHomeTitle;
+		}
+		public void setHomeTitle(TextView mTvHomeTitle) {
+			this.mTvHomeTitle = mTvHomeTitle;
+		}
+		public TextView getHomeSubtitle() {
+			return mTvHomeSubtitle;
+		}
+		public void setHomeSubtitle(TextView mTvHomeSubtitle) {
+			this.mTvHomeSubtitle = mTvHomeSubtitle;
+		}
+		public ImageView getHomeButton() {
+			return mIvHomeButton;
+		}
+	}
 	protected boolean isRunningGps = false;
 	protected final int INVALID_VALUE = -1;
 	private DrawerLayout mDrawerLayout = null;
@@ -59,9 +90,8 @@ abstract public class BaseActivity extends LocationActivity implements IRequestR
 	static protected DrawerFragment mFragmentDrawer = null;
 	private NetworkResultDBManager mNetworkResultDBM = null;
 	
-	private ViewGroup mHomeViewGroup = null;
+	private ActionBarLayout mActionbarLayout = new ActionBarLayout();
 	private float mHomeImageX = 0;
-	private int mActionBarBackgroundSelectorRes = 0;
 	
 	private LayoutInflater mInflater = null;
 	
@@ -70,7 +100,10 @@ abstract public class BaseActivity extends LocationActivity implements IRequestR
 		// TODO Auto-generated method stub
 		super.onCreate(arg0);
 		setContentView(R.layout.activity_base);
-		initViews();
+		mInflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
+		
+		initActionBar(mInflater);
+		initViews(mInflater);
 		initActionBarSetting();
 		initModels();
 	}
@@ -95,11 +128,22 @@ abstract public class BaseActivity extends LocationActivity implements IRequestR
 			isRunningGps = false;
 		}
 	}
+	
+	public void initActionBar(LayoutInflater inflater){
+		mActionbarLayout.mActionBar = (ViewGroup) inflater.inflate(R.layout.layout_action_bar, null);
+		mActionbarLayout.mActionBarLayout = (ViewGroup) mActionbarLayout.mActionBar.findViewById(R.id.layout_actionbar);
+		mActionbarLayout.mActionBarHomeViewGroup = (ViewGroup) mActionbarLayout.mActionBar.findViewById(R.id.layout_actionbar_home);
+		mActionbarLayout.mIvHomeButton = (ImageView) mActionbarLayout.mActionBar.findViewById(R.id.iv_actionbar_home_icon) ;
+		mActionbarLayout.mTvHomeTitle = (TextView) mActionbarLayout.mActionBar.findViewById(R.id.tv_actionbar_home_title);
+		mActionbarLayout.mTvHomeSubtitle = (TextView) mActionbarLayout.mActionBar.findViewById(R.id.tv_actionbar_home_subtitle);
+	}
+	
+	
 	/**
 	 * 기본적인 View를 초기화함.
 	 */
-	private void initViews(){
-		mInflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
+	private void initViews(LayoutInflater inflater){
+		
 		mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 		mContentView = (ViewGroup) findViewById(R.id.layout_main_frame);
 		mLayoutDrawer = (ViewGroup) findViewById(R.id.layout_drawer);
@@ -108,9 +152,21 @@ abstract public class BaseActivity extends LocationActivity implements IRequestR
 			mFragmentDrawer = (DrawerFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_drawer);
 			mFragmentDrawer.setOnClickDrawerMenuClickListener(mDrawerMenuClickListener);
 		}
-		View contentView = onCreateView(mInflater);
+		
+		View contentView = onCreateView(inflater);
 		if(contentView != null){
 			mContentView.addView(contentView);
+		}
+		
+		ViewGroup actionbar = null;
+		
+		if(isActionBarBlending()){
+			actionbar =  (ViewGroup) findViewById(R.id.layout_main);
+		}else{
+			actionbar = (ViewGroup) findViewById(R.id.layout_content);
+		}
+		if(actionbar != null){
+			actionbar.addView(mActionbarLayout.mActionBar);
 		}
 	}
 	
@@ -119,42 +175,26 @@ abstract public class BaseActivity extends LocationActivity implements IRequestR
 	 */
 	public void initActionBarSetting(){
 		
-		mActionBarBackgroundSelectorRes = R.drawable.selector_common_alpha_raleway_yellow;
+		if(mActionbarLayout.getHomeButton() == null)
+			return ;
 		
-		getActionBar().setDisplayHomeAsUpEnabled(true);
-        getActionBar().setHomeButtonEnabled(true);
-		getActionBar().setTitle(getActionBarTitleName());
-		if(!TextUtils.isEmpty(getActionBarSubTitle())){
-			getActionBar().setSubtitle(getActionBarSubTitle());
+		mHomeImageX = mActionbarLayout.getHomeButton().getX();
+		
+		if(isHomeAsUp()){
+			mActionbarLayout.getHomeButton().setImageResource(R.drawable.ic_action_previous_item);
+		}else{
+			mActionbarLayout.getHomeButton().setImageResource(R.drawable.ic_drawer);
 		}
-		initActionBarHomeView();
+		
+		
+		mActionbarLayout.getHomeTitle().setText(getActionBarTitleName());
+		if(!TextUtils.isEmpty(getActionBarSubTitle())){
+			mActionbarLayout.getHomeSubtitle().setText(getActionBarSubTitle());
+			mActionbarLayout.getHomeSubtitle().setVisibility(View.VISIBLE);
+		}
 		mDrawerLayout.setDrawerListener(onDrawerListener);
 	}
 	
-	private void initActionBarHomeView(){
-		ViewGroup actionBar = (ViewGroup) getActionBarView();
-		
-		if(actionBar != null){
-			ViewGroup homeViewGroup = (ViewGroup) actionBar.getChildAt(0);
-			if(homeViewGroup != null){
-				homeViewGroup.setBackgroundResource(mActionBarBackgroundSelectorRes);
-				mHomeViewGroup = (ViewGroup) homeViewGroup.getChildAt(0);
-				if(mHomeViewGroup != null){
-					mHomeImageX = mHomeViewGroup.getX();
-					View homeImage = mHomeViewGroup.getChildAt(0);
-					
-					if(homeImage != null && homeImage instanceof ImageView){
-						((ImageView)homeImage).setImageResource(isHomeAsUp() ? R.drawable.ic_action_previous_item : R.drawable.ic_drawer);
-					}
-				
-					View homeIcon = mHomeViewGroup.getChildAt(1);
-					if(homeIcon != null){
-						homeIcon.setVisibility(View.GONE);
-					}
-				}
-			}
-		}
-	}
 	
 	private void initActionBarButtons(Menu menu){
 		if(menu != null){
@@ -181,18 +221,16 @@ abstract public class BaseActivity extends LocationActivity implements IRequestR
 		@Override
 		public void onDrawerSlide(View arg0, float arg1) {
 			// TODO Auto-generated method stub
-			if(mHomeViewGroup != null){
-				mHomeViewGroup.setRotation(mHomeImageX - ((arg1 * rotateValue) * reverseInt));
-				mHomeViewGroup.setX(mHomeImageX - (arg1 * moveValue));
-			}
+			mActionbarLayout.getHomeButton().setRotation(mHomeImageX - ((arg1 * rotateValue) * reverseInt));
+			mActionbarLayout.getHomeButton().setX(mHomeImageX - (arg1 * moveValue));
 		}
 
 		@Override
 		public void onDrawerOpened(View arg0) {
 			// TODO Auto-generated method stub
 			reverseInt = -1;
-			getActionBar().setTitle(R.string.app_name);
-			getActionBar().setSubtitle(null);
+			mActionbarLayout.getHomeTitle().setText(R.string.app_name);
+			mActionbarLayout.getHomeSubtitle().setText(null);
 		}
 
 
@@ -200,10 +238,8 @@ abstract public class BaseActivity extends LocationActivity implements IRequestR
 		public void onDrawerClosed(View arg0) {
 			// TODO Auto-generated method stub
 			reverseInt = 1;
-			getActionBar().setTitle(getActionBarTitleName());
-			if(!TextUtils.isEmpty(getActionBarSubTitle())){
-				getActionBar().setSubtitle(getActionBarSubTitle());
-			}
+			mActionbarLayout.getHomeTitle().setText(getActionBarTitleName());
+			mActionbarLayout.getHomeSubtitle().setText(getActionBarSubTitle());
 		}
 	};
 	
@@ -258,12 +294,12 @@ abstract public class BaseActivity extends LocationActivity implements IRequestR
 		return false;
 	}
 	
-	public View getActionBarView() {
-	    Window window = getWindow();
-	    View v = window.getDecorView();
-	    int resId = getResources().getIdentifier("action_bar", "id", "android");
-	    return v.findViewById(resId);
-	}
+//	public ViewGroup getActionBarView() {
+//	    Window window = getWindow();
+//	    View v = window.getDecorView();
+//	    int resId = getResources().getIdentifier("action_bar_container", "id", "android");
+//	    return (ViewGroup) v.findViewById(resId);
+//	}
 	
 	public void removeFragment(Fragment f, int startAni, int endAni){
 		FragmentTransaction trans =  getSupportFragmentManager().beginTransaction();
@@ -352,6 +388,8 @@ abstract public class BaseActivity extends LocationActivity implements IRequestR
 	abstract void requsetNetworkResultSuccess();
 	
 	abstract void onClickAcitionMenuLocationSearch(View view);
+	
+	abstract boolean isActionBarBlending();
 	
 	protected OnDrawerMenuClickListener  mDrawerMenuClickListener = new OnDrawerMenuClickListener() {
 		
@@ -449,6 +487,10 @@ abstract public class BaseActivity extends LocationActivity implements IRequestR
 		}
 	};
 	
+	public ActionBarLayout getActionBarLayout(){
+		return mActionbarLayout;
+	}
+	
 	public void onSuccessRequest(String url, org.json.JSONObject request) {
 		boolean isResultOK = false;
 		if(url.contains(Constants.GoogleDirectionsAPI.DIRECTION_API_HOST)){
@@ -524,4 +566,5 @@ abstract public class BaseActivity extends LocationActivity implements IRequestR
 	public void showNetworkFailToast(){
 		Toast.makeText(this, R.string.error_network_request_fail, Toast.LENGTH_SHORT).show();
 	}
+	
 }

@@ -233,4 +233,10 @@ public class SearchLocationActivity extends BaseActivity {
 		
 	}
 
+	@Override
+	boolean isActionBarBlending() {
+		// TODO Auto-generated method stub
+		return true;
+	}
+
 }

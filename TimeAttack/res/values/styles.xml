@@ -2,13 +2,13 @@
 
     <!--
         Base application theme, dependent on API level. This theme is replaced
-        by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
+        by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
     -->
     <style name="AppBaseTheme" parent="android:Theme.Light">
         <!--
             Theme customizations available in newer API levels can go in
             res/values-vXX/styles.xml, while customizations related to
-            backward-compatibility can go here.
+            backward-compatibility can go here.
         -->
     </style>
 
@@ -20,23 +20,19 @@
     <style name="TimeAttackBaseTheme" parent="AppTheme">
 
         <!-- ActionBar Custom -->
-        <item name="android:actionBarStyle">@style/MyActionBar</item>
+        <item name="android:windowActionBar">false</item>
+        <item name="android:windowNoTitle">true</item>
 
         <!-- ActionBar Custom -->
     </style>
 
     <!-- Fivetrue Custom ActionBar -->
-    <style name="MyActionBar" parent="@android:style/Widget.Holo.Light.ActionBar">
+    <style name="MyActionBar" >
         <item name="android:background">@color/actionbar_background</item>
-        <item name="android:titleTextStyle">@style/actionBarTitleText</item>
-        <item name="android:height">@dimen/actionbar_height</item>
-        <item name="android:subtitleTextStyle">@style/actionBarSubTitleText</item>
-        <item name="android:itemPadding">0dp</item>
     </style>
 
     <style name="MyActionBarButton">
         <item name="android:background">@drawable/selector_common_alpha_raleway_yellow</item>
-        <item name="android:scaleType">center</item>
     </style>
     <!-- Fivetrue Custom ActionBar -->
 
@@ -68,14 +64,16 @@
     <style name="actionBarTitleText" parent="baseListTextProperties">
         <item name="android:textSize">@dimen/actionbar_title_text_size</item>
         <item name="android:textColor">@color/actionbar_title</item>
+          <item name="android:gravity">center</item>
     </style>
 
     <style name="actionBarSubTitleText" parent="baseListTextProperties">
         <item name="android:textSize">@dimen/actionbar_sub_title_text_size</item>
         <item name="android:textColor">@color/actionbar_sub_title</item>
+          <item name="android:gravity">center</item>
     </style>
-    
-     <style name="dismissTitleText" parent="baseListTextProperties">
+
+    <style name="dismissTitleText" parent="baseListTextProperties">
         <item name="android:textSize">@dimen/actionbar_sub_title_text_size</item>
         <item name="android:textColor">@color/actionbar_sub_title</item>
     </style>
@@ -177,6 +175,7 @@
     <style name="AlphaWhiteButton">
         <item name="android:background">@drawable/alpha_white_background</item>
     </style>
+
     <style name="AlphaWhiteButton.MapIcon" parent="AlphaWhiteButton">
         <item name="android:scaleType">center</item>
     </style>
