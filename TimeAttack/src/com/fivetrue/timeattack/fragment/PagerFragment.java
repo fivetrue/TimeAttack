@@ -2,6 +2,7 @@ package com.fivetrue.timeattack.fragment;
 
 import java.util.ArrayList;
 
+import android.animation.ObjectAnimator;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -157,6 +158,13 @@ public class PagerFragment extends BaseFragment {
 			}
 			
 			mIndex = position;
+			
+			if(mHorizontalScroll != null){
+				float destination = mHorizontalScroll.getWidth() * position;
+				ObjectAnimator objectAnimator= ObjectAnimator.ofFloat(mHorizontalScroll, "translationX", mHorizontalScroll.getX(), destination);
+				objectAnimator.setDuration(200);
+				objectAnimator.start();
+			}
 		}
 
 		@Override
@@ -177,6 +185,10 @@ public class PagerFragment extends BaseFragment {
 				break;
 
 			case CustomViewPager.SCROLL_STATE_SETTLING :
+				float destination = mHorizontalScroll.getWidth() * mViewPager.getCurrentItem();
+				ObjectAnimator objectAnimator= ObjectAnimator.ofFloat(mHorizontalScroll, "translationX", mHorizontalScroll.getX(), destination);
+				objectAnimator.setDuration(200);
+				objectAnimator.start();
 				break;
 			}
 		}
@@ -193,7 +205,7 @@ public class PagerFragment extends BaseFragment {
 			}
 			
 			if(mHorizontalScroll.getX() >= 0){
-				mHorizontalScroll.setX(mHorizontalScroll.getX() - 1);
+				mHorizontalScroll.setX(mHorizontalScroll.getX() - getResources().getDisplayMetrics().density);
 			}
 		}
 		
@@ -206,28 +218,13 @@ public class PagerFragment extends BaseFragment {
 			}
 			
 			if(mHorizontalScroll.getX() <= mLayoutWidth - mHorizontalScroll.getWidth()){
-				mHorizontalScroll.setX(mHorizontalScroll.getX() + 1);
+				mHorizontalScroll.setX(mHorizontalScroll.getX() + getResources().getDisplayMetrics().density);
 			}
 		}
 
 		@Override
 		public void onSwipeComplete(MotionEvent event) {
 			// TODO Auto-generated method stub
-			mContentView.post(new Runnable() {
-				
-				@Override
-				public void run() {
-					// TODO Auto-generated method stub
-					float destination = mHorizontalScroll.getWidth() * mViewPager.getCurrentItem();
-					while(destination != mHorizontalScroll.getX()){
-						if(destination > mHorizontalScroll.getX()){
-							mHorizontalScroll.setX(mHorizontalScroll.getX() + 1);
-						}else{
-							mHorizontalScroll.setX(mHorizontalScroll.getX() - 1);
-						}
-					}
-				}
-			});
 		}
 	};
 	

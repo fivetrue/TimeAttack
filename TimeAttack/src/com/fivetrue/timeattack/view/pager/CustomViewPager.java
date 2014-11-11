@@ -43,6 +43,8 @@ public class CustomViewPager extends ViewPager {
 				}else{
 					mOnSwipeDirectionListener.onSwipeLeft(event);
 				}
+				mLastTouchPoint.x = (int) event.getX();
+				mLastTouchPoint.y = (int) event.getY();
 			}
 			break;
 			
