@@ -21,6 +21,7 @@ import com.fivetrue.timeattack.R;
 import com.fivetrue.timeattack.database.NetworkResultDBManager;
 import com.fivetrue.timeattack.fragment.DrawerFragment;
 import com.fivetrue.timeattack.fragment.DrawerFragment.OnDrawerMenuClickListener;
+import com.fivetrue.timeattack.view.HomeButtonView;
 import com.fivetrue.utils.Logger;
 
 import android.content.Intent;
@@ -38,8 +39,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.view.ViewGroup.LayoutParams;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -57,7 +56,8 @@ abstract public class BaseActivity extends LocationActivity implements IRequestR
 		
 		protected TextView mTvHomeTitle = null;
 		protected TextView mTvHomeSubtitle = null;
-		protected ImageView mIvHomeButton = null;
+		protected HomeButtonView mIvHomeButton = null;
+		protected View mShadow = null;
 		
 		public ViewGroup getActionBarLayout() {
 			return mActionBarLayout;
@@ -77,7 +77,7 @@ abstract public class BaseActivity extends LocationActivity implements IRequestR
 		public void setHomeSubtitle(TextView mTvHomeSubtitle) {
 			this.mTvHomeSubtitle = mTvHomeSubtitle;
 		}
-		public ImageView getHomeButton() {
+		public HomeButtonView getHomeButton() {
 			return mIvHomeButton;
 		}
 	}
@@ -91,7 +91,6 @@ abstract public class BaseActivity extends LocationActivity implements IRequestR
 	private NetworkResultDBManager mNetworkResultDBM = null;
 	
 	private ActionBarLayout mActionbarLayout = new ActionBarLayout();
-	private float mHomeImageX = 0;
 	
 	private LayoutInflater mInflater = null;
 	
@@ -133,9 +132,13 @@ abstract public class BaseActivity extends LocationActivity implements IRequestR
 		mActionbarLayout.mActionBar = (ViewGroup) inflater.inflate(R.layout.layout_action_bar, null);
 		mActionbarLayout.mActionBarLayout = (ViewGroup) mActionbarLayout.mActionBar.findViewById(R.id.layout_actionbar);
 		mActionbarLayout.mActionBarHomeViewGroup = (ViewGroup) mActionbarLayout.mActionBar.findViewById(R.id.layout_actionbar_home);
-		mActionbarLayout.mIvHomeButton = (ImageView) mActionbarLayout.mActionBar.findViewById(R.id.iv_actionbar_home_icon) ;
+		mActionbarLayout.mIvHomeButton = (HomeButtonView) mActionbarLayout.mActionBar.findViewById(R.id.home_button) ;
 		mActionbarLayout.mTvHomeTitle = (TextView) mActionbarLayout.mActionBar.findViewById(R.id.tv_actionbar_home_title);
 		mActionbarLayout.mTvHomeSubtitle = (TextView) mActionbarLayout.mActionBar.findViewById(R.id.tv_actionbar_home_subtitle);
+		mActionbarLayout.mShadow = mActionbarLayout.mActionBar.findViewById(R.id.actionbar_shadow);
+		
+		int shadowVisible = isActionBarBlending() ? View.GONE : View.VISIBLE;
+		mActionbarLayout.mShadow.setVisibility(shadowVisible);
 	}
 	
 	
@@ -166,7 +169,11 @@ abstract public class BaseActivity extends LocationActivity implements IRequestR
 			actionbar = (ViewGroup) findViewById(R.id.layout_content);
 		}
 		if(actionbar != null){
-			actionbar.addView(mActionbarLayout.mActionBar);
+			if(isActionBarBlending()){
+				actionbar.addView(mActionbarLayout.mActionBar);
+			}else{
+				actionbar.addView(mActionbarLayout.mActionBar, 0);
+			}
 		}
 	}
 	
@@ -178,15 +185,7 @@ abstract public class BaseActivity extends LocationActivity implements IRequestR
 		if(mActionbarLayout.getHomeButton() == null)
 			return ;
 		
-		mHomeImageX = mActionbarLayout.getHomeButton().getX();
-		
-		if(isHomeAsUp()){
-			mActionbarLayout.getHomeButton().setImageResource(R.drawable.ic_action_previous_item);
-		}else{
-			mActionbarLayout.getHomeButton().setImageResource(R.drawable.ic_drawer);
-		}
-		
-		
+		mActionbarLayout.getHomeButton().setHomeAsUp(isHomeAsUp());
 		mActionbarLayout.getHomeTitle().setText(getActionBarTitleName());
 		if(!TextUtils.isEmpty(getActionBarSubTitle())){
 			mActionbarLayout.getHomeSubtitle().setText(getActionBarSubTitle());
@@ -209,10 +208,6 @@ abstract public class BaseActivity extends LocationActivity implements IRequestR
 	
 	DrawerListener onDrawerListener = new DrawerListener() {
 
-		private int rotateValue = 180;
-		private int moveValue = 10;
-		private int reverseInt = 1;
-
 		@Override
 		public void onDrawerStateChanged(int arg0) {
 			// TODO Auto-generated method stub
@@ -221,25 +216,24 @@ abstract public class BaseActivity extends LocationActivity implements IRequestR
 		@Override
 		public void onDrawerSlide(View arg0, float arg1) {
 			// TODO Auto-generated method stub
-			mActionbarLayout.getHomeButton().setRotation(mHomeImageX - ((arg1 * rotateValue) * reverseInt));
-			mActionbarLayout.getHomeButton().setX(mHomeImageX - (arg1 * moveValue));
+			mActionbarLayout.getHomeButton().setAnimaitonValue(arg1);
 		}
 
 		@Override
 		public void onDrawerOpened(View arg0) {
 			// TODO Auto-generated method stub
-			reverseInt = -1;
 			mActionbarLayout.getHomeTitle().setText(R.string.app_name);
 			mActionbarLayout.getHomeSubtitle().setText(null);
+			mActionbarLayout.getHomeButton().setRevert(true);
 		}
 
 
 		@Override
 		public void onDrawerClosed(View arg0) {
 			// TODO Auto-generated method stub
-			reverseInt = 1;
 			mActionbarLayout.getHomeTitle().setText(getActionBarTitleName());
 			mActionbarLayout.getHomeSubtitle().setText(getActionBarSubTitle());
+			mActionbarLayout.getHomeButton().setRevert(false);
 		}
 	};
 	

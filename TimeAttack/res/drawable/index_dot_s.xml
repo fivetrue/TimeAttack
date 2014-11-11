@@ -4,7 +4,7 @@
     <!-- Background -->
     <item>
         <shape>
-            <solid android:color="@color/gorditas_blue" />
+            <solid android:color="@color/primary_color" />
             <corners android:radius="@dimen/index_dot_corners" />
         </shape>
     </item>
