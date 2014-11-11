@@ -26,7 +26,7 @@ public class MainActivity extends BaseActivity{
 			public void onReceiveFragmentName(String name) {
 				// TODO Auto-generated method stub
 				if(!TextUtils.isEmpty(name)){
-					getActionBar().setTitle(name);
+					getActionBarLayout().getHomeTitle().setText(name);
 				}
 			}
 		});
@@ -34,7 +34,7 @@ public class MainActivity extends BaseActivity{
 		mPagerFragment.addFragment(new RecentlyUseFragment(), "주변 찾기 !!!!");
 		mPagerFragment.addFragment(new RecentlyUseFragment(), "주변 찾기 222");
 		mPagerFragment.addFragment(new RecentlyUseFragment(), "주변 찾기33333 ");
-//		mTapFragment.addFragment(new NearBySearchFragment(), "주변 찾기");
+		getActionBarLayout().getActionBarLayout().setBackground(getResources().getDrawable((android.R.color.transparent)));
 		return null;
 	}
 
@@ -104,5 +104,11 @@ public class MainActivity extends BaseActivity{
 	void onClickAcitionMenuLocationSearch(View view) {
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	boolean isActionBarBlending() {
+		// TODO Auto-generated method stub
+		return true ;
 	}
 }
