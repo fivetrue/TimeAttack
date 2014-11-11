@@ -49,7 +49,7 @@ public class PagerFragment extends BaseFragment {
 
 	private int mLayoutWidth = INVALID_VALUE;
 	private int mIndex = INVALID_VALUE;
-	private int mResHorizontalColor = R.color.gorditas_blue;
+	private int mResHorizontalColor = R.color.primary_dark_color;
 	
 	private OnSelectedFragmentNameListener mOnSelectedFragmentName = null;
 

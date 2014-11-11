@@ -34,7 +34,6 @@ public class MainActivity extends BaseActivity{
 		mPagerFragment.addFragment(new RecentlyUseFragment(), "주변 찾기 !!!!");
 		mPagerFragment.addFragment(new RecentlyUseFragment(), "주변 찾기 222");
 		mPagerFragment.addFragment(new RecentlyUseFragment(), "주변 찾기33333 ");
-		getActionBarLayout().getActionBarLayout().setBackground(getResources().getDrawable((android.R.color.transparent)));
 		return null;
 	}
 
@@ -109,6 +108,6 @@ public class MainActivity extends BaseActivity{
 	@Override
 	boolean isActionBarBlending() {
 		// TODO Auto-generated method stub
-		return true ;
+		return false ;
 	}
 }

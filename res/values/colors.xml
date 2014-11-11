@@ -50,24 +50,23 @@
     <color name="dialog_button_text_color_p">#FF4E6B66</color>
 
     <!-- Drawer Layout -->
-    <!-- <color name="drawer_item_under_line">#FF353535</color> -->
-    <!-- raleway_yellow -->
-
-
-    <!-- <color name="drawer_item_background_n">#FFBDBDBD</color> -->
-    <!-- <color name="drawer_item_background_d">#66BDBDBD</color> -->
-    <!-- muli_brown -->
-    <!-- <color name="drawer_item_background_n">#FF595643</color> -->
     <color name="drawer_item_background_n">#FFEBCC6E</color>
     <color name="drawer_item_background_p">#FFEBE1C5</color>
     <color name="drawer_item_background_s">#FFEBE1C5</color>
     <color name="drawer_item_background_d">#66EBCC6E</color>
 
     <!-- Awsome Colors -->
-    <color name="muli_brown">#FF595643</color>
+    <color name="primary_color">#F44336</color>
+    <color name="primary_light_color">#FFEBEE</color>
+    <color name="primary_soft_color">#FFCDD2</color>
+    <color name="primary_dark_color">#B71C1C</color>
+    <color name="accent_color">#000000</color>
+    
+    <color name="actionbar_font_color">#FFFFFF</color>
+   <!--  <color name="muli_brown">#FF595643</color>
     <color name="gorditas_blue">#FF4E6B66</color>
     <color name="raleway_orange">#FFED834E</color>
     <color name="raleway_yellow">#FFEBCC6E</color>
-    <color name="another_gray">#FFEBE1C5</color>
+    <color name="another_gray">#FFEBE1C5</color> -->
 
 </resources>
