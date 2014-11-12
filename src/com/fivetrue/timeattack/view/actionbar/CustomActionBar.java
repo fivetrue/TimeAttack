@@ -4,6 +4,7 @@ import com.fivetrue.timeattack.R;
 import com.fivetrue.timeattack.view.actionbar.view.HomeButtonView;
 import com.fivetrue.utils.ColorUtil;
 
+import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.widget.DrawerLayout;
@@ -24,10 +25,17 @@ public class CustomActionBar {
 
 		public void onDrawerClosed(View view, String openTitle, String subtitle);
 	}
+	
+	public interface OnScrollListener{
+		public void onScrollUp(float value);
+		public void onScrollDown(float value);
+		public void onScrollComplete();
+	}
 
 	private int[] PRIMARY_COLOR = {0xF4, 0x43, 0x36};//0xFFF44336
 	private int[] PRIMARY_DARK_COLOR = {0x93, 0x00, 0x00};//0xFF930000
 	private int COLOR_VALUE = 0xFF;
+	private long ANIMATION_DURATION = 100L;
 
 	private LayoutInflater mInfalter = null;
 	private Context mContext = null;
@@ -42,7 +50,6 @@ public class CustomActionBar {
 
 	private TextView mTvHomeTitle = null;
 	private TextView mTvHomeSubtitle = null;
-	private View mShadow = null;
 
 	private DrawerLayout mDrawerLayout = null;
 	private View mLayoutDrawer = null;
@@ -50,6 +57,7 @@ public class CustomActionBar {
 
 	//Models
 	private boolean isHomeAsUp = false;
+	private boolean isActionBarBlending = false;
 
 
 	public CustomActionBar(Context context) {
@@ -78,7 +86,6 @@ public class CustomActionBar {
 		mHomeButton = (HomeButtonView) mContentView.findViewById(R.id.home_button) ;
 		mTvHomeTitle = (TextView) mContentView.findViewById(R.id.tv_actionbar_home_title);
 		mTvHomeSubtitle = (TextView) mContentView.findViewById(R.id.tv_actionbar_home_subtitle);
-		mShadow = mContentView.findViewById(R.id.actionbar_shadow);
 
 		mActionBarHomeButtonGroup.setOnClickListener(new OnClickListener() {
 
@@ -105,6 +112,53 @@ public class CustomActionBar {
 			}
 		});
 	}
+	
+	private OnScrollListener mOnScrollListener = new OnScrollListener() {
+		
+		@Override
+		public void onScrollUp(float value) {
+			// TODO Auto-generated method stub
+			if(mContentView == null || !isActionBarBlending){
+				return;
+			}
+			if(mContentView.getY() < 0){
+				mContentView.setY(mContentView.getY() + value < 0 
+						? mContentView.getY() + value : 0);
+			}
+		}
+		
+		@Override
+		public void onScrollDown(float value) {
+			// TODO Auto-generated method stub
+			if(mContentView == null || !isActionBarBlending){
+				return;
+			}
+			
+			if(mContentView.getY() >= -mContentView.getHeight()){
+				mContentView.setY(mContentView.getY() - value > -mContentView.getHeight()
+						? mContentView.getY() - value : -mContentView.getHeight());
+			}
+		}
+
+		@Override
+		public void onScrollComplete() {
+			// TODO Auto-generated method stub
+			if(mContentView == null || mDrawerLayout == null || !isActionBarBlending){
+				return;
+			}
+			
+			//Hide
+			if(- mContentView.getHeight() / 2 > mContentView.getY()){
+				ObjectAnimator objectAnimator= ObjectAnimator.ofFloat(mContentView, "translationY", mContentView.getY(), - mContentView.getHeight());
+				objectAnimator.setDuration(ANIMATION_DURATION);
+				objectAnimator.start();
+			}else{
+				ObjectAnimator objectAnimator = ObjectAnimator.ofFloat(mContentView, "translationY", mContentView.getY(), 0);
+				objectAnimator.setDuration(ANIMATION_DURATION);
+				objectAnimator.start();
+			}
+		}
+	};
 	
 	
 	private OnDrawerValueListener mDrawerListener = new OnDrawerValueListener() {
@@ -140,6 +194,7 @@ public class CustomActionBar {
 			}
 		}
 	};
+	
 
 	public ViewGroup getContentView(){
 		return mContentView;
@@ -201,15 +256,13 @@ public class CustomActionBar {
 
 	public void setHomeAsUp(boolean isHomeAsUp) {
 		this.isHomeAsUp = isHomeAsUp;
-
-		int shadowVisible = isHomeAsUp ? View.GONE : View.VISIBLE;
-		if(mShadow != null){
-			mShadow.setVisibility(shadowVisible);
-		}
-
 		if(mHomeButton != null){
 			mHomeButton.setHomeAsUp(isHomeAsUp);
 		}
+	}
+	
+	public void setActionBarBlending(boolean isActionBarBlending) {
+		this.isActionBarBlending = isActionBarBlending;
 	}
 
 	public DrawerLayout getDrawerLayout() {
@@ -226,6 +279,15 @@ public class CustomActionBar {
 
 	public void setDrawerListener(OnDrawerValueListener drawerListener) {
 		this.mDrawerListener = drawerListener;
+	}
+	
+	
+	public OnScrollListener getOnScrollListener() {
+		return mOnScrollListener;
+	}
+
+	public void setOnScrollListener(OnScrollListener ll) {
+		this.mOnScrollListener = ll;
 	}
 
 	public View getLayoutDrawer() {

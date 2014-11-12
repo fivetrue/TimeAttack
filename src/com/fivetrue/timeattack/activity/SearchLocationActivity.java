@@ -1,14 +1,13 @@
 package com.fivetrue.timeattack.activity;
 
-import java.util.ArrayList;
 
 import com.api.common.BaseResponseListener;
 import com.api.google.geocoding.GeocodingAPIHelper;
 import com.api.google.geocoding.GeocodingConstants;
 import com.api.google.geocoding.entry.GeocodingEntry;
-import com.api.google.geocoding.model.AddressResultVO;
 import com.fivetrue.timeattack.R;
 import com.fivetrue.timeattack.activity.manager.SearchActivityManager;
+import com.fivetrue.timeattack.fragment.search.AddressSearchResultFragment;
 import com.fivetrue.timeattack.view.adapter.SearchLocationResultAdapter;
 
 import android.location.Location;
@@ -21,7 +20,6 @@ import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
 
@@ -30,10 +28,7 @@ public class SearchLocationActivity extends BaseActivity {
 	private class ViewHolder{
 		public ViewGroup layout_top = null;
 		public ViewGroup layout_bottom = null;
-		public ViewGroup layout_empty = null;
 		public EditText et_input = null;
-		public TextView tv_empty = null;
-		public ListView lv_search = null;
 		public View shadow_top = null;
 		public View shadow_bottom = null;
 	}
@@ -45,6 +40,8 @@ public class SearchLocationActivity extends BaseActivity {
 	private InputMethodManager mImeManager = null;
 	private SearchLocationResultAdapter adapter = null;
 	private GeocodingEntry mEntry = null;
+	
+	private AddressSearchResultFragment mSearchFragment = null;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater) {
@@ -61,15 +58,13 @@ public class SearchLocationActivity extends BaseActivity {
 	private void initViews(){
 		mViewHolder.layout_top = (ViewGroup) mContentView.findViewById(R.id.layout_search_top);
 		mViewHolder.layout_bottom = (ViewGroup) mContentView.findViewById(R.id.layout_search_bottom);
-		mViewHolder.layout_empty = (ViewGroup) mContentView.findViewById(R.id.layout_search_empty);
-		mViewHolder.tv_empty = (TextView) mContentView.findViewById(R.id.tv_search_map);
 		mViewHolder.et_input = (EditText) mContentView.findViewById(R.id.et_search_top);
-		mViewHolder.lv_search = (ListView) mContentView.findViewById(R.id.lv_search_list);
 		mViewHolder.shadow_top = mContentView.findViewById(R.id.shadow_search_top);
 		mViewHolder.shadow_bottom = mContentView.findViewById(R.id.shadow_search_bottom);
 
 		mViewHolder.et_input.setImeOptions(EditorInfo.IME_ACTION_SEARCH);
 		mViewHolder.et_input.setOnEditorActionListener(onEditorActionListener);
+		
 	}
 
 	private void initModels(){
@@ -81,7 +76,7 @@ public class SearchLocationActivity extends BaseActivity {
 		if(b != null){
 			mEntry = b.getParcelable(SearchActivityManager.SEARCH_DATA);
 			if(mEntry != null){
-				setListData(mEntry.getAddressList());
+				setListData(mEntry);
 				if(mViewHolder.layout_top != null){
 					mViewHolder.layout_top.setVisibility(View.GONE);
 					mViewHolder.shadow_top.setVisibility(View.GONE);
@@ -185,9 +180,9 @@ public class SearchLocationActivity extends BaseActivity {
 				// TODO Auto-generated method stub
 				if(response != null){
 					if(response.getStatus().equals(GeocodingConstants.Status.OK.toString())){
-						setListData(response.getAddressList());
+						setListData(response);
 					}else{
-						setEmptyLayout(true);
+//						setEmptyLayout(true);
 						makeToast(response.getStatusMessgae());
 					}
 				}else{
@@ -197,36 +192,17 @@ public class SearchLocationActivity extends BaseActivity {
 		});
 	}
 	
-	private void setListData(ArrayList<AddressResultVO> entry){
-		if(adapter == null){
-			adapter = new SearchLocationResultAdapter(getApplicationContext(), R.layout.item_recently_use, entry);	
-			mViewHolder.lv_search.setAdapter(adapter);
+	private void setListData(GeocodingEntry entry){
+		if(mSearchFragment == null){
+			Bundle argument = new Bundle();
+			argument.putParcelable(AddressSearchResultFragment.ADDRESS_DATA_KEY, entry);
+			mSearchFragment = (AddressSearchResultFragment) createFragment(mViewHolder.layout_bottom.getId(), AddressSearchResultFragment.class,
+					"search_result", INVALID_VALUE, argument, R.anim.slide_out_bottom, R.anim.slide_in_top);
 		}else{
-			adapter.setArrayList(entry);
-			adapter.notifyDataSetChanged();
+			mSearchFragment.onLoadListData(entry.getAddressList());
 		}
-		
-		setEmptyLayout(!(entry.size()>0));
 	}
 	
-	private void setEmptyLayout(boolean enable){
-		if(mViewHolder != null && mViewHolder.layout_empty != null
-				&& mViewHolder.lv_search != null && mViewHolder.tv_empty != null){
-			if(enable){
-				mViewHolder.tv_empty.setText(R.string.invalid_location_place_message);
-				mViewHolder.layout_empty.setVisibility(View.VISIBLE);
-				mViewHolder.shadow_bottom.setVisibility(View.VISIBLE);
-				mViewHolder.lv_search.setVisibility(View.GONE);
-				
-			}else{
-				mViewHolder.tv_empty.setText(R.string.input_location_place_message);
-				mViewHolder.layout_empty.setVisibility(View.GONE);
-				mViewHolder.shadow_bottom.setVisibility(View.GONE);
-				mViewHolder.lv_search.setVisibility(View.VISIBLE);
-			}
-		}
-	}
-
 	@Override
 	public void onClickAcitionMenuLocationSearch(View view) {
 		// TODO Auto-generated method stub

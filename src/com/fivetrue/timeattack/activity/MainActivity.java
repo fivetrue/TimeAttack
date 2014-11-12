@@ -30,6 +30,7 @@ public class MainActivity extends BaseActivity{
 				}
 			}
 		});
+		
 		mPagerFragment.addFragment(new RecentlyUseFragment(), getString(R.string.recently_infomation));
 		mPagerFragment.addFragment(new RecentlyUseFragment(), "주변 찾기 !!!!");
 		mPagerFragment.addFragment(new RecentlyUseFragment(), "주변 찾기 222");

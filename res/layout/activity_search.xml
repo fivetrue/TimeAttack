@@ -54,7 +54,7 @@
         android:layout_marginLeft="@dimen/common_margin"
         android:layout_marginRight="@dimen/common_margin">
 
-        <RelativeLayout
+       <!--  <RelativeLayout
             android:id="@+id/layout_search_empty"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -79,15 +79,15 @@
                 android:scaleType="fitXY"
                 android:src="@drawable/map_point" />
              
-        </RelativeLayout>
+        </RelativeLayout> -->
         
-        <ListView 
+      <!--   <ListView 
             android:id="@+id/lv_search_list"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:visibility="gone"
             style="@style/MyBaseList"
-             />
+             /> -->
     </RelativeLayout>
 
 </RelativeLayout>

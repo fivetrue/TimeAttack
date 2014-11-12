@@ -33,7 +33,7 @@
             android:layout_width="match_parent"
             android:layout_height="0.5dp"
             android:layout_alignParentBottom="true"
-            android:background="@color/drawer_item_under_line" />
+            android:background="@color/main_primary_light_color" />
     </RelativeLayout>
 
     <RelativeLayout
@@ -63,7 +63,7 @@
             android:layout_width="match_parent"
             android:layout_height="0.5dp"
             android:layout_alignParentBottom="true"
-            android:background="@color/drawer_item_under_line" />
+            android:background="@color/main_primary_light_color" />
     </RelativeLayout>
 
     <RelativeLayout
@@ -93,7 +93,7 @@
             android:layout_width="match_parent"
             android:layout_height="0.5dp"
             android:layout_alignParentBottom="true"
-            android:background="@color/drawer_item_under_line" />
+            android:background="@color/main_primary_light_color" />
     </RelativeLayout>
 
 </LinearLayout>

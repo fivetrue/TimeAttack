@@ -28,11 +28,11 @@
 
     <!-- Fivetrue Custom ActionBar -->
     <style name="MyActionBar" >
-        <item name="android:background">@color/primary_color</item>
+        <item name="android:background">@color/main_primary_color</item>
     </style>
 
     <style name="MyActionBarButton">
-        <item name="android:background">@drawable/selector_primary_color</item>
+        <item name="android:background">@drawable/selector_main_primary_color</item>
     </style>
     <!-- Fivetrue Custom ActionBar -->
 
@@ -63,13 +63,13 @@
     <!-- TextStyles -->
     <style name="actionBarTitleText" parent="baseListTextProperties">
         <item name="android:textSize">@dimen/actionbar_title_text_size</item>
-        <item name="android:textColor">@color/primary_light_color</item>
+        <item name="android:textColor">@color/main_primary_light_color</item>
           <item name="android:gravity">center</item>
     </style>
 
     <style name="actionBarSubTitleText" parent="baseListTextProperties">
         <item name="android:textSize">@dimen/actionbar_sub_title_text_size</item>
-        <item name="android:textColor">@color/primary_light_color</item>
+        <item name="android:textColor">@color/main_primary_light_color</item>
           <item name="android:gravity">center</item>
     </style>
 
@@ -104,7 +104,7 @@
 
     <style name="EmptyText">
         <item name="android:textSize">@dimen/empty_text_size</item>
-        <item name="android:textColor">@color/accent_color</item>
+        <item name="android:textColor">@color/main_accent_color</item>
         <item name="android:background">@android:color/transparent</item>
         <item name="android:gravity">center</item>
         <item name="android:typeface">monospace</item>
