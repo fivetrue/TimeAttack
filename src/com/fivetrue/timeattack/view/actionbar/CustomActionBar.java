@@ -31,6 +31,7 @@ public class CustomActionBar {
 	public interface OnScrollListener{
 		public void onScrollUp(float value);
 		public void onScrollDown(float value);
+		public void onScrollFling(boolean isUp);
 		public void onScrollComplete();
 	}
 
@@ -49,6 +50,8 @@ public class CustomActionBar {
 	private ViewGroup mActionBarHomeButtonGroup = null;
 	private ViewGroup mActionBarHomeViewGroup = null;
 	private HomeButtonView mHomeButton = null;
+	
+	private View mShadow = null;
 
 	private TextView mTvHomeTitle = null;
 	private TextView mTvHomeSubtitle = null;
@@ -89,7 +92,7 @@ public class CustomActionBar {
 		mHomeButton = (HomeButtonView) mContentView.findViewById(R.id.home_button) ;
 		mTvHomeTitle = (TextView) mContentView.findViewById(R.id.tv_actionbar_home_title);
 		mTvHomeSubtitle = (TextView) mContentView.findViewById(R.id.tv_actionbar_home_subtitle);
-
+		mShadow = mContentView.findViewById(R.id.actionbar_shadow);
 		mActionBarHomeButtonGroup.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -121,6 +124,7 @@ public class CustomActionBar {
 	private OnScrollListener mOnScrollListener = new OnScrollListener() {
 		ObjectAnimator mActionBarAnimator = null;
 		float mPreValue = 0;
+		boolean isFling = false;
 		@Override
 		public void onScrollUp(float value) {
 			// TODO Auto-generated method stub
@@ -140,6 +144,7 @@ public class CustomActionBar {
 				mContentView.setY( y >= 0 ? 0 : y);
 				mPreValue = y;
 			}
+			isFling = false;
 		}
 
 		@Override
@@ -160,6 +165,7 @@ public class CustomActionBar {
 				mContentView.setY(y >= -mContentView.getHeight() ? y : -mContentView.getHeight());
 				mPreValue = y;
 			}
+			isFling = false;
 		}
 
 		@Override
@@ -182,6 +188,24 @@ public class CustomActionBar {
 				mActionBarAnimator = ObjectAnimator.ofFloat(mContentView, "translationY", mContentView.getY(), 0);
 				mActionBarAnimator.setDuration(ANIMATION_DURATION);
 				mActionBarAnimator.start();
+			}
+		}
+
+		@Override
+		public void onScrollFling(boolean isUp) {
+			// TODO Auto-generated method stub
+			if(mContentView == null || !isActionBarBlending || !isFling){
+				return;
+			}
+			isFling = true;
+			if(isUp){
+				mActionBarAnimator = ObjectAnimator.ofFloat(mContentView, "translationY", mContentView.getY(), 0);
+				mActionBarAnimator.setDuration(ANIMATION_DURATION);
+				mActionBarAnimator.start();
+			}else{
+				mActionBarAnimator = ObjectAnimator.ofFloat(mContentView, "translationY", mContentView.getY(), - mContentView.getHeight());
+				mActionBarAnimator.setDuration(ANIMATION_DURATION);
+				mActionBarAnimator.start();	
 			}
 		}
 	};
@@ -289,6 +313,10 @@ public class CustomActionBar {
 
 	public void setActionBarBlending(boolean isActionBarBlending) {
 		this.isActionBarBlending = isActionBarBlending;
+		if(mShadow != null){
+			int visible  = isActionBarBlending ? View.VISIBLE : View.GONE;
+			mShadow.setVisibility(visible);
+		}
 	}
 
 	public DrawerLayout getDrawerLayout() {
