@@ -1,4 +1,4 @@
-package com.fivetrue.timeattack.view;
+package com.fivetrue.timeattack.view.actionbar.view;
 
 import com.fivetrue.timeattack.R;
 

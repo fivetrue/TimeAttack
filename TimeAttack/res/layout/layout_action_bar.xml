@@ -28,7 +28,7 @@
                 android:layout_marginRight="@dimen/activity_horizontal_margin"
                	android:background="@drawable/selector_primary_color" >
                	
-                <com.fivetrue.timeattack.view.HomeButtonView
+                <com.fivetrue.timeattack.view.actionbar.view.HomeButtonView
                     android:id="@+id/home_button"
                     android:layout_width="@dimen/home_button_size"
                     android:layout_height="@dimen/home_button_size"

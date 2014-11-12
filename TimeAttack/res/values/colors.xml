@@ -56,10 +56,11 @@
     <color name="drawer_item_background_d">#66EBCC6E</color>
 
     <!-- Awsome Colors -->
-    <color name="primary_color">#F44336</color>
-    <color name="primary_light_color">#FFEBEE</color>
-    <color name="primary_soft_color">#FFCDD2</color>
-    <color name="primary_dark_color">#B71C1C</color>
+    <color name="primary_color">#FFF44336</color>
+    <color name="primary_light_color">#FFFFEBEE</color>
+    <color name="primary_soft_color">#FFFFCDD2</color>
+    <color name="primary_dark_color">#FF930000</color>
+<!--     <color name="primary_dark_color">#FFB71C1C</color> -->
     <color name="accent_color">#000000</color>
     
     <color name="actionbar_font_color">#FFFFFF</color>
