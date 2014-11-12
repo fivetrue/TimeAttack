@@ -174,7 +174,7 @@ abstract public class BaseActivity extends LocationActivity implements IRequestR
 		public void onDrawerSlide(View arg0, float arg1) {
 			// TODO Auto-generated method stub
 			if(mCustomActionBar != null){
-				mCustomActionBar.getDrawerListener().onDrawerSlide(arg0, arg1);
+				mCustomActionBar.getDrawerListener().onDrawerSlide(arg1);
 			}
 		}
 
@@ -182,7 +182,7 @@ abstract public class BaseActivity extends LocationActivity implements IRequestR
 		public void onDrawerOpened(View arg0) {
 			// TODO Auto-generated method stub
 			if(mCustomActionBar != null){
-				mCustomActionBar.getDrawerListener().onDrawerOpened(arg0);
+				mCustomActionBar.getDrawerListener().onDrawerOpened(arg0, getString(R.string.app_name), null);
 			}
 		}
 
@@ -191,7 +191,7 @@ abstract public class BaseActivity extends LocationActivity implements IRequestR
 		public void onDrawerClosed(View arg0) {
 			// TODO Auto-generated method stub
 			if(mCustomActionBar != null){
-				mCustomActionBar.getDrawerListener().onDrawerClosed(arg0);
+				mCustomActionBar.getDrawerListener().onDrawerClosed(arg0, getActionBarTitleName(), getActionBarSubTitle());
 			}
 		}
 	};
@@ -222,13 +222,6 @@ abstract public class BaseActivity extends LocationActivity implements IRequestR
 		return super.onOptionsItemSelected(item);
 	}
 
-	//	public ViewGroup getActionBarView() {
-	//	    Window window = getWindow();
-	//	    View v = window.getDecorView();
-	//	    int resId = getResources().getIdentifier("action_bar_container", "id", "android");
-	//	    return (ViewGroup) v.findViewById(resId);
-	//	}
-	
 	public CustomActionBar getCustomActionBar(){
 		return mCustomActionBar;
 	}
