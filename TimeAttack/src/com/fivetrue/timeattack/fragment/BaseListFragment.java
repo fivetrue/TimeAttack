@@ -29,6 +29,8 @@ abstract public class BaseListFragment <T> extends BaseFragment implements OnIte
 	
 	private int mPreScrollY = 0;
 	
+	private boolean isListFling = false;
+	
 	
 	public BaseListFragment(){};
 	
@@ -117,16 +119,16 @@ abstract public class BaseListFragment <T> extends BaseFragment implements OnIte
 		if(getCustomActionBar() != null){
 			View topChild = view.getChildAt(0);
 
-			if (topChild == null) {
+			if (topChild == null || isListFling) {
 				return;
 			}
 
 			int scrollY = -topChild.getTop() + firstVisibleItem	* topChild.getHeight();
 
 			if(mPreScrollY > scrollY){
-				getCustomActionBar().getOnScrollListener().onScrollDown(mPreScrollY - scrollY);
+				getCustomActionBar().getOnScrollListener().onScrollUp(mPreScrollY - scrollY);
 			}else{
-				getCustomActionBar().getOnScrollListener().onScrollUp(scrollY - mPreScrollY);
+				getCustomActionBar().getOnScrollListener().onScrollDown(scrollY - mPreScrollY);
 			}
 			mPreScrollY = scrollY;
 		}
@@ -139,9 +141,18 @@ abstract public class BaseListFragment <T> extends BaseFragment implements OnIte
 		
 		switch(scrollState){
 		case OnScrollListener.SCROLL_STATE_IDLE :
+			isListFling = false;
 			if(getCustomActionBar() != null){
 				getCustomActionBar().getOnScrollListener().onScrollComplete();
 			}
+			break;
+			
+		case OnScrollListener.SCROLL_STATE_TOUCH_SCROLL :
+			isListFling = false;
+			break;
+			
+		case OnScrollListener.SCROLL_STATE_FLING :
+			isListFling = true;
 			break;
 		}
 	}
