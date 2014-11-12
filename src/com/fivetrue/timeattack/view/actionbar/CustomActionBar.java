@@ -4,6 +4,8 @@ import com.fivetrue.timeattack.R;
 import com.fivetrue.timeattack.view.actionbar.view.HomeButtonView;
 import com.fivetrue.utils.ColorUtil;
 
+import android.animation.Animator;
+import android.animation.Animator.AnimatorListener;
 import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.support.v4.app.FragmentActivity;
@@ -16,7 +18,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 public class CustomActionBar {
-	
+
 	public interface OnDrawerValueListener{
 
 		public void onDrawerSlide(float offset) ;
@@ -25,7 +27,7 @@ public class CustomActionBar {
 
 		public void onDrawerClosed(View view, String openTitle, String subtitle);
 	}
-	
+
 	public interface OnScrollListener{
 		public void onScrollUp(float value);
 		public void onScrollDown(float value);
@@ -53,6 +55,7 @@ public class CustomActionBar {
 
 	private DrawerLayout mDrawerLayout = null;
 	private View mLayoutDrawer = null;
+	private float mDensity = 0;
 
 
 	//Models
@@ -111,32 +114,51 @@ public class CustomActionBar {
 				}
 			}
 		});
+
+		mDensity = mContext.getResources().getDisplayMetrics().density;
 	}
-	
+
 	private OnScrollListener mOnScrollListener = new OnScrollListener() {
-		
+		ObjectAnimator mActionBarAnimator = null;
+		float mPreValue = 0;
 		@Override
 		public void onScrollUp(float value) {
 			// TODO Auto-generated method stub
 			if(mContentView == null || !isActionBarBlending){
 				return;
 			}
-			if(mContentView.getY() < 0){
-				mContentView.setY(mContentView.getY() + value < 0 
-						? mContentView.getY() + value : 0);
+
+			if(mActionBarAnimator != null){
+				if(mActionBarAnimator.isRunning()){
+					mActionBarAnimator.cancel();
+				}
+			}
+			float y = (mContentView.getY()) + (value);
+			
+			if(y > mPreValue && y > mContentView.getY()){
+				
+				mContentView.setY( y >= 0 ? 0 : y);
+				mPreValue = y;
 			}
 		}
-		
+
 		@Override
 		public void onScrollDown(float value) {
 			// TODO Auto-generated method stub
 			if(mContentView == null || !isActionBarBlending){
 				return;
 			}
+			if(mActionBarAnimator != null){
+				if(mActionBarAnimator.isRunning()){
+					mActionBarAnimator.cancel();
+				}
+			}
 			
-			if(mContentView.getY() >= -mContentView.getHeight()){
-				mContentView.setY(mContentView.getY() - value > -mContentView.getHeight()
-						? mContentView.getY() - value : -mContentView.getHeight());
+			float y = (mContentView.getY()) - (value);
+			
+			if(mPreValue > y && y < mContentView.getY()){
+				mContentView.setY(y >= -mContentView.getHeight() ? y : -mContentView.getHeight());
+				mPreValue = y;
 			}
 		}
 
@@ -146,23 +168,27 @@ public class CustomActionBar {
 			if(mContentView == null || mDrawerLayout == null || !isActionBarBlending){
 				return;
 			}
-			
+			if(mActionBarAnimator != null){
+				if(mActionBarAnimator.isRunning()){
+					mActionBarAnimator.cancel();
+				}
+			}
 			//Hide
-			if(- mContentView.getHeight() / 2 > mContentView.getY()){
-				ObjectAnimator objectAnimator= ObjectAnimator.ofFloat(mContentView, "translationY", mContentView.getY(), - mContentView.getHeight());
-				objectAnimator.setDuration(ANIMATION_DURATION);
-				objectAnimator.start();
+			if(- mContentView.getHeight() / 2 >= mContentView.getY()){
+				mActionBarAnimator = ObjectAnimator.ofFloat(mContentView, "translationY", mContentView.getY(), - mContentView.getHeight());
+				mActionBarAnimator.setDuration(ANIMATION_DURATION);
+				mActionBarAnimator.start();
 			}else{
-				ObjectAnimator objectAnimator = ObjectAnimator.ofFloat(mContentView, "translationY", mContentView.getY(), 0);
-				objectAnimator.setDuration(ANIMATION_DURATION);
-				objectAnimator.start();
+				mActionBarAnimator = ObjectAnimator.ofFloat(mContentView, "translationY", mContentView.getY(), 0);
+				mActionBarAnimator.setDuration(ANIMATION_DURATION);
+				mActionBarAnimator.start();
 			}
 		}
 	};
-	
-	
+
+
 	private OnDrawerValueListener mDrawerListener = new OnDrawerValueListener() {
-		
+
 		@Override
 		public void onDrawerSlide(float offset) {
 			// TODO Auto-generated method stub
@@ -173,7 +199,7 @@ public class CustomActionBar {
 				mActionBarLayout.setBackgroundColor(ColorUtil.changeColor(PRIMARY_COLOR, PRIMARY_DARK_COLOR, offset * COLOR_VALUE));
 			}
 		}
-		
+
 		@Override
 		public void onDrawerOpened(View view, String openTitle, String subtitle) {
 			// TODO Auto-generated method stub
@@ -183,7 +209,7 @@ public class CustomActionBar {
 				mHomeButton.setRevert(true);
 			}
 		}
-		
+
 		@Override
 		public void onDrawerClosed(View view, String openTitle, String subtitle) {
 			// TODO Auto-generated method stub
@@ -194,7 +220,7 @@ public class CustomActionBar {
 			}
 		}
 	};
-	
+
 
 	public ViewGroup getContentView(){
 		return mContentView;
@@ -260,7 +286,7 @@ public class CustomActionBar {
 			mHomeButton.setHomeAsUp(isHomeAsUp);
 		}
 	}
-	
+
 	public void setActionBarBlending(boolean isActionBarBlending) {
 		this.isActionBarBlending = isActionBarBlending;
 	}
@@ -280,8 +306,8 @@ public class CustomActionBar {
 	public void setDrawerListener(OnDrawerValueListener drawerListener) {
 		this.mDrawerListener = drawerListener;
 	}
-	
-	
+
+
 	public OnScrollListener getOnScrollListener() {
 		return mOnScrollListener;
 	}
