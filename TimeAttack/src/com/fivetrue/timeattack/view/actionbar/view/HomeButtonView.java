@@ -57,7 +57,7 @@ public class HomeButtonView extends View {
 		
 		mPaint = new Paint();
 		mPaint.setAntiAlias(true);
-		mPaint.setColor(getContext().getResources().getColor(R.color.primary_light_color));
+		mPaint.setColor(getContext().getResources().getColor(R.color.main_primary_light_color));
 		mPaint.setStrokeWidth(mStrokWidth * mDensity);
 	}
 
@@ -74,6 +74,17 @@ public class HomeButtonView extends View {
 	}
 
 	private void onDrawBack(Canvas canvas){
+		
+		float moveValue = ((mValue * MOVING_VALUE) / getWidth()) * mDensity;
+	
+		canvas.drawLine(getWidth() - mDensity, mDensity,
+				(getWidth() / 2) - moveValue , (getHeight() / 2) + moveValue + 1, mPaint);
+		canvas.drawLine(getWidth() - mDensity , getHeight() - mDensity,
+				getWidth() / 2 - moveValue, (getHeight() / 2) - moveValue - 1, mPaint);
+		
+		float rotateValue = mValue * CIRCLE_HALF_DEGREE;
+		rotateValue = rotateValue * (isRevert ? -1 : 1);
+		setRotation(rotateValue);
 
 	}
 

@@ -411,6 +411,6 @@ public class MapActivity extends BaseActivity {
 	@Override
 	public boolean isActionBarBlending() {
 		// TODO Auto-generated method stub
-		return true;
+		return false;
 	};
 }

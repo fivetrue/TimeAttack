@@ -27,6 +27,9 @@ abstract public class BaseListFragment <T> extends BaseFragment implements OnIte
 	private View listHeader = null;
 	private View listFooter = null;
 	
+	private int mPreScrollY = 0;
+	
+	
 	public BaseListFragment(){};
 	
 	@Override
@@ -51,7 +54,7 @@ abstract public class BaseListFragment <T> extends BaseFragment implements OnIte
 		tvEmpty = (TextView) contentView.findViewById(R.id.tv_empty);
 		shadow = contentView.findViewById(R.id.shadow);
 		listView.setOnItemClickListener(this);
-		
+		listView.setOnScrollListener(this);
 		listFooter = initFooter();
 		listHeader = initHeader();
 		
@@ -110,14 +113,39 @@ abstract public class BaseListFragment <T> extends BaseFragment implements OnIte
 			int visibleItemCount, int totalItemCount) {
 		// TODO Auto-generated method stub
 		onListScroll(view, firstVisibleItem, visibleItemCount, totalItemCount);
+		
+		if(getCustomActionBar() != null){
+			View topChild = view.getChildAt(0);
+
+			if (topChild == null) {
+				return;
+			}
+
+			int scrollY = -topChild.getTop() + firstVisibleItem	* topChild.getHeight();
+
+			if(mPreScrollY > scrollY){
+				getCustomActionBar().getOnScrollListener().onScrollDown(mPreScrollY - scrollY);
+			}else{
+				getCustomActionBar().getOnScrollListener().onScrollUp(scrollY - mPreScrollY);
+			}
+			mPreScrollY = scrollY;
+		}
 	}
 	
 	@Override
 	public void onScrollStateChanged(AbsListView view, int scrollState) {
 		// TODO Auto-generated method stub
 		onListScrollStateChanged(view, scrollState);
+		
+		switch(scrollState){
+		case OnScrollListener.SCROLL_STATE_IDLE :
+			if(getCustomActionBar() != null){
+				getCustomActionBar().getOnScrollListener().onScrollComplete();
+			}
+			break;
+		}
 	}
-
+	
 	public ListView getListView() {
 		return listView;
 	}

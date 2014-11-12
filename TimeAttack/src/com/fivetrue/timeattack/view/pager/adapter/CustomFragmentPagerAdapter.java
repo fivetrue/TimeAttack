@@ -2,14 +2,15 @@ package com.fivetrue.timeattack.view.pager.adapter;
 
 import java.util.ArrayList;
 
-import android.support.v4.app.Fragment;
+import com.fivetrue.timeattack.fragment.BaseFragment;
+
 import android.support.v4.app.FragmentManager;
 
 public class CustomFragmentPagerAdapter extends android.support.v4.app.FragmentPagerAdapter {
 	
-	private ArrayList<Fragment> mFragmentList = new ArrayList<Fragment>();
+	private ArrayList<BaseFragment> mFragmentList = new ArrayList<BaseFragment>();
 	
-	public CustomFragmentPagerAdapter(FragmentManager fm, ArrayList<Fragment> list) {
+	public CustomFragmentPagerAdapter(FragmentManager fm, ArrayList<BaseFragment> list) {
 		super(fm);
 		// TODO Auto-generated constructor stub
 		mFragmentList = list;

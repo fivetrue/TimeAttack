@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import android.animation.ObjectAnimator;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -41,7 +40,7 @@ public class PagerFragment extends BaseFragment {
 	private CustomViewPager mViewPager = null;
 	private CustomFragmentPagerAdapter mPagerAdapter = null;
 
-	private ArrayList<Fragment> mFragmentList = new ArrayList<Fragment>();
+	private ArrayList<BaseFragment> mFragmentList = new ArrayList<BaseFragment>();
 	private ArrayList<String> mTitleList = new ArrayList<String>();
 
 	private Typeface roboto_bold = null;
@@ -49,7 +48,7 @@ public class PagerFragment extends BaseFragment {
 
 	private int mLayoutWidth = INVALID_VALUE;
 	private int mIndex = INVALID_VALUE;
-	private int mResHorizontalColor = R.color.primary_dark_color;
+	private int mResHorizontalColor = R.color.main_primary_dark_color;
 	
 	private OnSelectedFragmentNameListener mOnSelectedFragmentName = null;
 
@@ -100,7 +99,7 @@ public class PagerFragment extends BaseFragment {
 				android.view.ViewGroup.LayoutParams.MATCH_PARENT));
 
 		if(mFragmentList != null && mFragmentList.size() > 0){
-			for(int i = 0 ; i < mFragmentList.size() ; i ++){
+			for(BaseFragment f : mFragmentList){
 				View v = new View(getActivity());
 				v.setBackground(getResources().getDrawable(R.drawable.index_dot));
 				LinearLayout.LayoutParams params = new LayoutParams((int) getResources().getDimension(R.dimen.index_dot_size)
@@ -108,6 +107,7 @@ public class PagerFragment extends BaseFragment {
 				params.leftMargin = (int) getResources().getDimension(R.dimen.index_dot_margin);
 				params.rightMargin = (int) getResources().getDimension(R.dimen.index_dot_margin);
 				mIndexViewGroup.addView(v, params);
+				f.setCustomActionBar(getCustomActionBar());
 			}
 
 			mIndex = mIndex == INVALID_VALUE ? 0 : mIndex;
@@ -133,7 +133,7 @@ public class PagerFragment extends BaseFragment {
 		mViewPager.setOnSwipeDirectionListener(mSwipeDirectionListener);
 	}
 
-	public void addFragment(Fragment f, String title){
+	public void addFragment(BaseFragment f, String title){
 		mTitleList.add(title);
 		mFragmentList.add(f);
 	}
@@ -237,7 +237,7 @@ public class PagerFragment extends BaseFragment {
 		return result;
 	}
 
-	public ArrayList<Fragment> getFragmentList() {
+	public ArrayList<BaseFragment> getFragmentList() {
 		return mFragmentList;
 	}
 

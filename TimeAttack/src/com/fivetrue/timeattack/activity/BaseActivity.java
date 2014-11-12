@@ -19,6 +19,7 @@ import com.api.seoul.subway.entry.SubwayInfoEntry;
 import com.fivetrue.location.activity.LocationActivity;
 import com.fivetrue.timeattack.R;
 import com.fivetrue.timeattack.database.NetworkResultDBManager;
+import com.fivetrue.timeattack.fragment.BaseFragment;
 import com.fivetrue.timeattack.fragment.DrawerFragment;
 import com.fivetrue.timeattack.fragment.DrawerFragment.OnDrawerMenuClickListener;
 import com.fivetrue.timeattack.view.actionbar.CustomActionBar;
@@ -38,6 +39,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -100,12 +102,15 @@ abstract public class BaseActivity extends LocationActivity implements IRequestR
 	 */
 	private void initViews(LayoutInflater inflater){
 
+		mCustomActionBar = new CustomActionBar(this);
 		mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 		mContentView = (ViewGroup) findViewById(R.id.layout_main_frame);
 		mLayoutDrawer = (ViewGroup) findViewById(R.id.layout_drawer);
 
 		if(mFragmentDrawer == null){
 			mFragmentDrawer = (DrawerFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_drawer);
+			mFragmentDrawer.setOnClickDrawerMenuClickListener(mDrawerMenuClickListener);
+		}else{
 			mFragmentDrawer.setOnClickDrawerMenuClickListener(mDrawerMenuClickListener);
 		}
 
@@ -121,10 +126,9 @@ abstract public class BaseActivity extends LocationActivity implements IRequestR
 	 */
 	
 	public void initActionBar(LayoutInflater inflater){
-		mCustomActionBar = new CustomActionBar(this);
 		
 		ViewGroup actionbar = null;
-
+		
 		if(isActionBarBlending()){
 			actionbar =  (ViewGroup) findViewById(R.id.layout_main);
 		}else{
@@ -145,6 +149,7 @@ abstract public class BaseActivity extends LocationActivity implements IRequestR
 		if(mCustomActionBar == null)
 			return ;
 		mCustomActionBar.setHomeAsUp(isHomeAsUp());
+		mCustomActionBar.setActionBarBlending(isActionBarBlending());
 		mCustomActionBar.setTitle(getActionBarTitleName());
 		mCustomActionBar.setSubTitle(getActionBarSubTitle());
 		mCustomActionBar.setDrawerLayout(mDrawerLayout);
@@ -246,23 +251,23 @@ abstract public class BaseActivity extends LocationActivity implements IRequestR
 		trans.commit();
 	}
 
-	public Fragment createFragment(Class<?> fragmentClass, String tag, Bundle argument){
+	public BaseFragment createFragment(Class<?> fragmentClass, String tag, Bundle argument){
 		return createFragment(INVALID_VALUE, fragmentClass, tag, INVALID_VALUE, argument , INVALID_VALUE, INVALID_VALUE);
 	}
 
-	public Fragment createFragment(int containLayoutId, Class<?> fragmentClass, String tag, Bundle argument){
+	public BaseFragment createFragment(int containLayoutId, Class<?> fragmentClass, String tag, Bundle argument){
 		return createFragment(containLayoutId, fragmentClass, tag, INVALID_VALUE, argument , INVALID_VALUE, INVALID_VALUE);
 	}
 
-	public Fragment createFragment(Class<?> fragmentClass, String tag, int transit, Bundle argument){
+	public BaseFragment createFragment(Class<?> fragmentClass, String tag, int transit, Bundle argument){
 		return createFragment(INVALID_VALUE, fragmentClass, tag, transit, argument , INVALID_VALUE, INVALID_VALUE);
 	}
 
-	public Fragment createFragment(Class<?> fragmentClass, String tag, int transit, Bundle argument, int startAni, int endAni){
+	public BaseFragment createFragment(Class<?> fragmentClass, String tag, int transit, Bundle argument, int startAni, int endAni){
 		return createFragment(INVALID_VALUE, fragmentClass, tag, transit, argument , startAni, endAni);
 	}
 
-	public Fragment createFragment(int containLayoutId, Class<?> fragmentClass
+	public BaseFragment createFragment(int containLayoutId, Class<?> fragmentClass
 			, String tag , int transit, Bundle argument, int aniStart, int aniEnd){
 
 		if(containLayoutId == INVALID_VALUE){
@@ -272,15 +277,16 @@ abstract public class BaseActivity extends LocationActivity implements IRequestR
 		if(transit == INVALID_VALUE){
 			transit = FragmentTransaction.TRANSIT_NONE;
 		}
-		Fragment f = null;
+		BaseFragment f = null;
 		try {
-			f = getSupportFragmentManager().findFragmentByTag(tag);
+			f = (BaseFragment) getSupportFragmentManager().findFragmentByTag(tag);
 			FragmentTransaction trans =  getSupportFragmentManager().beginTransaction();
 			if(f != null){
 				trans.show(f);
 			}else{
-				f = (Fragment) fragmentClass.newInstance();
+				f = (BaseFragment) fragmentClass.newInstance();
 				f.setArguments(argument);
+				f.setCustomActionBar(getCustomActionBar());
 				if(aniStart != INVALID_VALUE && aniEnd != INVALID_VALUE){
 					trans.setCustomAnimations(aniStart, aniEnd);
 				}
@@ -337,10 +343,24 @@ abstract public class BaseActivity extends LocationActivity implements IRequestR
 					}
 				}
 			}
-
-			if(itemText == null && itemLayout == null){
-				Log.e(getPackageName(), "Drawer layout item is null");
-				return;
+			
+			switch(itemLayout.getId()){
+			
+			case R.id.layout_drawer_home :
+				if(!(BaseActivity.this instanceof MainActivity)){
+					Intent i = new Intent(BaseActivity.this, MainActivity.class);
+					i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+					startActivity(i);
+				}
+				break;
+				
+			case R.id.layout_drawer_near_by :
+				startActivity(MapActivity.class);
+				break;
+				
+			case R.id.layout_drawer_direction :
+				startActivity(SearchLocationActivity.class);
+				break;
 			}
 
 			itemText.setSelected(true);
