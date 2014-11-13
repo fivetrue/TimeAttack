@@ -25,8 +25,7 @@
                 style="@style/MyActionBarButton"
                 android:layout_width="@dimen/actionbar_height"
                 android:layout_height="match_parent"
-                android:layout_marginRight="@dimen/activity_horizontal_margin"
-               	android:background="@drawable/selector_main_primary_color" >
+                android:layout_marginRight="@dimen/activity_horizontal_margin">
                	
                 <com.fivetrue.timeattack.view.actionbar.view.HomeButtonView
                     android:id="@+id/home_button"
@@ -61,11 +60,6 @@
             </LinearLayout>
         </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal" >
-        </LinearLayout>
     </LinearLayout>
     
     <View

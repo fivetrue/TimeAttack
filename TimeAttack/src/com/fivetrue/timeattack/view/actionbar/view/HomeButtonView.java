@@ -24,6 +24,8 @@ public class HomeButtonView extends View {
 	
 	private int mMovingValue = INVALID_VALUE;
 	private Paint mPaint = null;
+	
+	private int mLineColorRes = R.color.main_primary_light_color;
 
 	public HomeButtonView(Context context, AttributeSet attrs) {
 		super(context, attrs);
@@ -62,7 +64,7 @@ public class HomeButtonView extends View {
 		
 		mPaint = new Paint();
 		mPaint.setAntiAlias(true);
-		mPaint.setColor(getContext().getResources().getColor(R.color.main_primary_light_color));
+		mPaint.setColor(getContext().getResources().getColor(mLineColorRes));
 		mPaint.setStrokeWidth(mStrokWidth * mDensity);
 	}
 
@@ -105,6 +107,11 @@ public class HomeButtonView extends View {
 
 	public void setRevert(boolean isRevert) {
 		this.isRevert = isRevert;
+	}
+	
+	public void setLineColorRes(int res){
+		mLineColorRes = res;
+		initPaint();
 	}
 	
 	

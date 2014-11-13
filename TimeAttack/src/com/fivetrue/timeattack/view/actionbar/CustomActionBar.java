@@ -33,8 +33,10 @@ public class CustomActionBar {
 		public void onScrollVisibleFirstItem();
 	}
 
-	private int[] PRIMARY_COLOR = {0xF4, 0x43, 0x36};//0xFFF44336
-	private int[] PRIMARY_DARK_COLOR = {0x93, 0x00, 0x00};//0xFF930000
+//	private int[] PRIMARY_COLOR = {0xF4, 0x43, 0x36};//0xFFF44336
+//	private int[] PRIMARY_DARK_COLOR = {0x93, 0x00, 0x00};//0xFF930000
+	private long[] PRIMARY_COLOR = new long[3];
+	private long[] PRIMARY_DARK_COLOR = new long[3];
 	private int COLOR_VALUE = 0xFF;
 	private long ANIMATION_DURATION = 100L;
 
@@ -57,6 +59,10 @@ public class CustomActionBar {
 	private DrawerLayout mDrawerLayout = null;
 	private View mLayoutDrawer = null;
 	private float mDensity = 0;
+	private int mPrimaryColorRes = R.color.main_primary_color;
+	private int mPrimaryDarkColorRes = R.color.main_primary_dark_color;
+	private int mIconSelector = R.drawable.selector_main_primary_color;
+	private int mColorSubstringIndex = 3;
 
 
 	//Models
@@ -70,6 +76,7 @@ public class CustomActionBar {
 		mInfalter = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		mContentView = (ViewGroup) mInfalter.inflate(R.layout.layout_action_bar, null);
 		initView();
+		initData();
 	}
 
 	public CustomActionBar(Context context, DrawerLayout drawerLayout, View layoutDrawer) {
@@ -77,10 +84,10 @@ public class CustomActionBar {
 		mContext = context;
 		mInfalter = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		mContentView = (ViewGroup) mInfalter.inflate(R.layout.layout_action_bar, null);
-
 		mDrawerLayout = drawerLayout;
 		mLayoutDrawer = layoutDrawer;
 		initView();
+		initData();
 	}
 
 	private void initView(){
@@ -91,6 +98,7 @@ public class CustomActionBar {
 		mTvHomeTitle = (TextView) mContentView.findViewById(R.id.tv_actionbar_home_title);
 		mTvHomeSubtitle = (TextView) mContentView.findViewById(R.id.tv_actionbar_home_subtitle);
 		mShadow = mContentView.findViewById(R.id.actionbar_shadow);
+		mActionBarHomeButtonGroup.setBackground(mContext.getResources().getDrawable(mIconSelector));
 		mActionBarHomeButtonGroup.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -115,8 +123,23 @@ public class CustomActionBar {
 				}
 			}
 		});
-
+	}
+	
+	private void initData(){
 		mDensity = mContext.getResources().getDisplayMetrics().density;
+		
+		String primary =  mContext.getResources().getString(mPrimaryColorRes).substring(mColorSubstringIndex);
+		String primaryDark =  mContext.getResources().getString(mPrimaryDarkColorRes).substring(mColorSubstringIndex);
+		for(int i = 0 ; i < PRIMARY_COLOR.length ; i++){
+			String primaryColor = primary.substring(i * 2, (i + 1) * 2);
+			String primaryDarkColor = primaryDark.substring(i * 2, (i + 1) * 2);
+			PRIMARY_COLOR[i] = Long.valueOf(primaryColor, 16);
+			PRIMARY_DARK_COLOR[i] = Long.valueOf(primaryDarkColor, 16);
+		}
+		
+		if(mActionBarLayout != null){
+			mActionBarLayout.setBackgroundColor(mContext.getResources().getColor(mPrimaryColorRes));
+		}
 	}
 
 	private OnScrollListener mOnScrollListener = new OnScrollListener() {
@@ -347,5 +370,30 @@ public class CustomActionBar {
 
 	public void setLayoutDrawer(View layoutDrawer) {
 		this.mLayoutDrawer = layoutDrawer;
+	}
+	
+	public void addActionBarButtonLayout(View view){
+		if(mActionBarLayout != null){
+			mActionBarLayout.addView(view);
+		}
+	}
+
+	public void setBackGroundColorRes(int PrimaryColorRes, int PrimaryDarkColorRes) {
+		this.mPrimaryColorRes = PrimaryColorRes;
+		this.mPrimaryDarkColorRes = PrimaryDarkColorRes;
+		initData();
+	}
+	
+	public void setIconSelector(int selectorRes){
+		mIconSelector = selectorRes;
+		if(mActionBarHomeButtonGroup != null){
+			mActionBarHomeButtonGroup.setBackground(mContext.getResources().getDrawable(mIconSelector));
+		}
+	}
+	
+	public void setHomeIconLineColor(int res){
+		if(mHomeButton != null){
+			mHomeButton.setLineColorRes(res);
+		}
 	}
 }

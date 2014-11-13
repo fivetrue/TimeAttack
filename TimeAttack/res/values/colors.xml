@@ -55,11 +55,19 @@
     <color name="drawer_item_background_d">#FFFFCDD2</color>
 
     <!-- Main Color -->
-    <color name="main_primary_color">#FFF44336</color>
-    <color name="main_primary_light_color">#FFFFEBEE</color>
-    <color name="main_primary_soft_color">#FFFFCDD2</color>
-    <color name="main_primary_dark_color">#FF930000</color>
-<!--     <color name="primary_dark_color">#FFB71C1C</color> -->
+    <color name="main_primary_color">#F44336</color>
+    <color name="main_primary_light_color">#FFEBEE</color>
+    <color name="main_primary_soft_color">#EF9A9A</color>
+    <color name="main_primary_dark_color">#B71C1C</color>
+    <color name="main_primary_deep_color">#930000</color>
     <color name="main_accent_color">#000000</color>
+    
+    <!-- Map Color -->
+    <color name="map_primary_color">#673AB7</color>
+    <color name="map_primary_light_color">#EDE7F6</color>
+    <color name="map_primary_soft_color">#B39DDB</color>
+    <color name="map_primary_dark_color">#311B92</color>
+    <color name="map_primary_deep_color">#15006F</color>
+    <color name="map_accent_color">#000000</color>
 
 </resources>
