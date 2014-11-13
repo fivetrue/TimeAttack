@@ -39,7 +39,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.RelativeLayout;
+import android.widget.RelativeLayout.LayoutParams;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -127,20 +127,19 @@ abstract public class BaseActivity extends LocationActivity implements IRequestR
 	
 	public void initActionBar(LayoutInflater inflater){
 		
-		ViewGroup actionbar = null;
-		
-		if(isActionBarBlending()){
-			actionbar =  (ViewGroup) findViewById(R.id.layout_main);
-		}else{
-			actionbar = (ViewGroup) findViewById(R.id.layout_content);
-		}
-		if(actionbar != null){
 			if(isActionBarBlending()){
-				actionbar.addView(mCustomActionBar.getContentView());
+				ViewGroup achor =  (ViewGroup) findViewById(R.id.layout_main);
+				achor.addView(mCustomActionBar.getContentView());
 			}else{
-				actionbar.addView(mCustomActionBar.getContentView(), 0);
+				ViewGroup achor =  (ViewGroup) findViewById(R.id.layout_content);
+				achor.addView(mCustomActionBar.getContentView(), 0);
+				
+				ViewGroup shadowAchor =  (ViewGroup) findViewById(R.id.layout_main);
+				View shadow = new View(this);
+				shadow.setBackground(getResources().getDrawable(R.drawable.tab_img_shadow_pattern));
+				LayoutParams params = new LayoutParams(LayoutParams.MATCH_PARENT, (int)getResources().getDimension(R.dimen.shadow_height));
+				shadowAchor.addView(shadow, params);
 			}
-		}
 	}
 
 	

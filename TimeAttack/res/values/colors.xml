@@ -67,7 +67,15 @@
     <color name="map_primary_light_color">#EDE7F6</color>
     <color name="map_primary_soft_color">#B39DDB</color>
     <color name="map_primary_dark_color">#311B92</color>
-    <color name="map_primary_deep_color">#15006F</color>
+    <color name="map_primary_deep_color">#2900C9</color>
     <color name="map_accent_color">#000000</color>
+    
+    <!-- Search Color -->
+    <color name="search_primary_color">#4CAF50</color>
+    <color name="search_primary_light_color">#E8F5E9</color>
+    <color name="search_primary_soft_color">#A5D6A7</color>
+    <color name="search_primary_dark_color">#1B5E20</color>
+    <color name="search_primary_deep_color">#008000</color>
+    <color name="search_accent_color">#000000</color>
 
 </resources>

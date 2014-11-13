@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout.LayoutParams;
 import android.widget.TextView;
 
 public class CustomActionBar {
@@ -33,8 +34,6 @@ public class CustomActionBar {
 		public void onScrollVisibleFirstItem();
 	}
 
-//	private int[] PRIMARY_COLOR = {0xF4, 0x43, 0x36};//0xFFF44336
-//	private int[] PRIMARY_DARK_COLOR = {0x93, 0x00, 0x00};//0xFF930000
 	private long[] PRIMARY_COLOR = new long[3];
 	private long[] PRIMARY_DARK_COLOR = new long[3];
 	private int COLOR_VALUE = 0xFF;
@@ -62,6 +61,7 @@ public class CustomActionBar {
 	private int mPrimaryColorRes = R.color.main_primary_color;
 	private int mPrimaryDarkColorRes = R.color.main_primary_dark_color;
 	private int mIconSelector = R.drawable.selector_main_primary_color;
+	private int mLineColor = R.color.main_primary_light_color;
 	private int mColorSubstringIndex = 3;
 
 
@@ -98,7 +98,14 @@ public class CustomActionBar {
 		mTvHomeTitle = (TextView) mContentView.findViewById(R.id.tv_actionbar_home_title);
 		mTvHomeSubtitle = (TextView) mContentView.findViewById(R.id.tv_actionbar_home_subtitle);
 		mShadow = mContentView.findViewById(R.id.actionbar_shadow);
+		
 		mActionBarHomeButtonGroup.setBackground(mContext.getResources().getDrawable(mIconSelector));
+		mActionBarLayout.setBackgroundColor(mContext.getResources().getColor(mPrimaryColorRes));
+		mActionBarHomeButtonGroup.setBackground(mContext.getResources().getDrawable(mIconSelector));
+		mHomeButton.setLineColorRes(mLineColor);
+		mTvHomeSubtitle.setTextColor(mContext.getResources().getColor(mLineColor));
+		mTvHomeTitle.setTextColor(mContext.getResources().getColor(mLineColor));
+		
 		mActionBarHomeButtonGroup.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -135,10 +142,6 @@ public class CustomActionBar {
 			String primaryDarkColor = primaryDark.substring(i * 2, (i + 1) * 2);
 			PRIMARY_COLOR[i] = Long.valueOf(primaryColor, 16);
 			PRIMARY_DARK_COLOR[i] = Long.valueOf(primaryDarkColor, 16);
-		}
-		
-		if(mActionBarLayout != null){
-			mActionBarLayout.setBackgroundColor(mContext.getResources().getColor(mPrimaryColorRes));
 		}
 	}
 
@@ -334,8 +337,11 @@ public class CustomActionBar {
 	public void setActionBarBlending(boolean isActionBarBlending) {
 		this.isActionBarBlending = isActionBarBlending;
 		if(mShadow != null){
-			int visible  = isActionBarBlending ? View.VISIBLE : View.GONE;
-			mShadow.setVisibility(visible);
+			if(isActionBarBlending){
+				mShadow.setVisibility(View.VISIBLE);
+			}else{ 
+				mShadow.setVisibility(View.GONE);
+			}
 		}
 	}
 
@@ -382,18 +388,16 @@ public class CustomActionBar {
 		this.mPrimaryColorRes = PrimaryColorRes;
 		this.mPrimaryDarkColorRes = PrimaryDarkColorRes;
 		initData();
+		initView();
 	}
 	
 	public void setIconSelector(int selectorRes){
 		mIconSelector = selectorRes;
-		if(mActionBarHomeButtonGroup != null){
-			mActionBarHomeButtonGroup.setBackground(mContext.getResources().getDrawable(mIconSelector));
-		}
+		initView();
 	}
 	
 	public void setHomeIconLineColor(int res){
-		if(mHomeButton != null){
-			mHomeButton.setLineColorRes(res);
-		}
+		mLineColor = res;
+		initView();
 	}
 }
