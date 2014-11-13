@@ -65,6 +65,10 @@ public class SearchLocationActivity extends BaseActivity {
 		mViewHolder.et_input.setImeOptions(EditorInfo.IME_ACTION_SEARCH);
 		mViewHolder.et_input.setOnEditorActionListener(onEditorActionListener);
 		
+		getCustomActionBar().setBackGroundColorRes(R.color.search_primary_color, R.color.search_primary_dark_color);
+		getCustomActionBar().setHomeIconLineColor(R.color.search_primary_light_color);
+		getCustomActionBar().setIconSelector(R.drawable.selector_search_primary_color);
+		
 	}
 
 	private void initModels(){
