@@ -3,7 +3,7 @@ package com.fivetrue.timeattack.activity;
 import com.fivetrue.timeattack.R;
 import com.fivetrue.timeattack.fragment.PagerFragment;
 import com.fivetrue.timeattack.fragment.PagerFragment.OnSelectedFragmentNameListener;
-import com.fivetrue.timeattack.fragment.main.RecentlyUseFragment;
+import com.fivetrue.timeattack.fragment.main.RecentlyListFragment;
 
 import android.location.Location;
 import android.os.Bundle;
@@ -31,10 +31,10 @@ public class MainActivity extends BaseActivity{
 			}
 		});
 		
-		mPagerFragment.addFragment(new RecentlyUseFragment(), getString(R.string.recently_infomation));
-		mPagerFragment.addFragment(new RecentlyUseFragment(), "주변 찾기 !!!!");
-		mPagerFragment.addFragment(new RecentlyUseFragment(), "주변 찾기 222");
-		mPagerFragment.addFragment(new RecentlyUseFragment(), "주변 찾기33333 ");
+		mPagerFragment.addFragment(new RecentlyListFragment(), getString(R.string.recently_infomation));
+		mPagerFragment.addFragment(new RecentlyListFragment(), "주변 찾기 !!!!");
+		mPagerFragment.addFragment(new RecentlyListFragment(), "주변 찾기 222");
+		mPagerFragment.addFragment(new RecentlyListFragment(), "주변 찾기33333 ");
 		return null;
 	}
 
@@ -93,8 +93,8 @@ public class MainActivity extends BaseActivity{
 
 		if(mPagerFragment != null){
 			for(Fragment f : mPagerFragment.getFragmentList()){
-				if(f instanceof RecentlyUseFragment){
-					((RecentlyUseFragment)f).onLoadListData();
+				if(f instanceof RecentlyListFragment){
+					((RecentlyListFragment)f).onLoadListData();
 				}
 			}
 		}

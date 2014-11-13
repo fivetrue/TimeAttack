@@ -16,8 +16,9 @@ import com.fivetrue.timeattack.database.model.NetworkResult;
 import com.fivetrue.timeattack.fragment.BaseListFragment;
 import com.fivetrue.timeattack.view.adapter.RecentlyNetworkResultAdapter;
 
-public class RecentlyUseFragment extends BaseListFragment<NetworkResult> {
+public class RecentlyListFragment extends BaseListFragment<NetworkResult> {
 
+	
 	@Override
 	public View initHeader() {
 		// TODO Auto-generated method stub
@@ -41,7 +42,10 @@ public class RecentlyUseFragment extends BaseListFragment<NetworkResult> {
 				adapter.setArrayList(arr);
 				adapter.notifyDataSetChanged();
 			}else{
-				adapter = new RecentlyNetworkResultAdapter(getActivity(), R.layout.item_recently_use, arr);
+				setColorList(new int[]{R.color.main_primary_color,
+						R.color.main_primary_light_color, R.color.main_primary_deep_color});
+				adapter = new RecentlyNetworkResultAdapter(getActivity(), arr, getColorList());
+				adapter.setIconSelector(R.drawable.selector_main_primary_color);
 			}
 			listView.setAdapter(adapter);
 			setEmptyLayout(false);
@@ -76,6 +80,5 @@ public class RecentlyUseFragment extends BaseListFragment<NetworkResult> {
 		// TODO Auto-generated method stub
 		
 	}
-	
 }
 

@@ -2,19 +2,22 @@ package com.fivetrue.timeattack.view.adapter;
 
 import java.util.ArrayList;
 
+import com.fivetrue.timeattack.R;
+
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.widget.BaseAdapter;
 
-abstract public class TimeAttackBaseAdapter <T> extends BaseAdapter {
+abstract public class MyBaseAdapter <T> extends BaseAdapter {
 	
 	protected final int INVALID_VALUE = -1;
 	protected ArrayList<T> mArrayList = null;
 	protected int mResourceId = INVALID_VALUE;
 	protected Context mContext = null;
 	protected LayoutInflater mLayoutInflater = null;
+	protected int mSelector = R.drawable.selector_common_alpha_another_gray;
 	
-	public TimeAttackBaseAdapter(Context context, int layoutResourceId, ArrayList<T> arrayList){
+	public MyBaseAdapter(Context context, int layoutResourceId, ArrayList<T> arrayList){
 		mContext = context;
 		mResourceId = layoutResourceId;
 		mArrayList = arrayList;
@@ -47,5 +50,8 @@ abstract public class TimeAttackBaseAdapter <T> extends BaseAdapter {
 		mArrayList = arrayList;
 		notifyDataSetChanged();
 	}
-
+	
+	public void setIconSelector(int resourceId){
+		mSelector = resourceId;
+	}
 }

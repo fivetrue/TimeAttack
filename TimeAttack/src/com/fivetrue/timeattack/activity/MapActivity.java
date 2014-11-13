@@ -7,7 +7,7 @@ import com.api.google.geocoding.model.AddressResultVO;
 import com.api.google.place.model.PlaceVO;
 import com.fivetrue.timeattack.R;
 import com.fivetrue.timeattack.activity.manager.MapActivityManager;
-import com.fivetrue.timeattack.fragment.map.NearBySearchFragment;
+import com.fivetrue.timeattack.fragment.map.NearBySearchListFragment;
 import com.fivetrue.timeattack.preference.MapPreferenceManager;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -38,7 +38,7 @@ public class MapActivity extends BaseActivity {
 	private GoogleMap mMap = null;
 	
 	//Fragment
-	private NearBySearchFragment mNearBySearchFragment = null;
+	private NearBySearchListFragment mNearBySearchFragment = null;
 	
 	//Model
 	private BaseEntry mEntry = null;
@@ -362,17 +362,17 @@ public class MapActivity extends BaseActivity {
 			
 			argument.putParcelable(MapActivityManager.MAP_DATA, location);
 			
-			mNearBySearchFragment = (NearBySearchFragment) createFragment(NearBySearchFragment.class, 
-					"nearby", FragmentTransaction.TRANSIT_ENTER_MASK, argument
+			mNearBySearchFragment = (NearBySearchListFragment) createFragment(NearBySearchListFragment.class, 
+					"nearby", INVALID_VALUE, argument
 					, R.anim.slide_in_top, R.anim.slide_in_top);
 
-			new AsyncTask<NearBySearchFragment, Void, ArrayList<PlaceVO>>(){
+			new AsyncTask<NearBySearchListFragment, Void, ArrayList<PlaceVO>>(){
 
 				@Override
 				protected ArrayList<PlaceVO> doInBackground(
-						NearBySearchFragment... params) {
+						NearBySearchListFragment... params) {
 					// TODO Auto-generated method stub
-					NearBySearchFragment f = params[0];
+					NearBySearchListFragment f = params[0];
 					ArrayList<PlaceVO> arr = null;
 					
 					while(true){

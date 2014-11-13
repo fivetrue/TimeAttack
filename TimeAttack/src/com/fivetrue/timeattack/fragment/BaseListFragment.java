@@ -2,8 +2,11 @@ package com.fivetrue.timeattack.fragment;
 
 
 import com.fivetrue.timeattack.R;
-import com.fivetrue.timeattack.view.adapter.TimeAttackBaseAdapter;
+import com.fivetrue.timeattack.view.adapter.MyBaseAdapter;
 
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,7 +23,7 @@ abstract public class BaseListFragment <T> extends BaseFragment implements OnIte
 	private ViewGroup emptyLayout = null;
 	private TextView tvEmpty = null;
 	protected ListView listView = null;
-	protected TimeAttackBaseAdapter<T> adapter = null;
+	protected MyBaseAdapter<T> adapter = null;
 	
 	private ViewGroup contentView = null;
 	private View shadow = null;
@@ -30,6 +33,8 @@ abstract public class BaseListFragment <T> extends BaseFragment implements OnIte
 	private int mScrollY = 0;
 	private int mPreScrollY = 0;
 	private boolean isFling = false;
+	
+	private int[] mColorList;
 	
 	public BaseListFragment(){};
 	
@@ -184,11 +189,11 @@ abstract public class BaseListFragment <T> extends BaseFragment implements OnIte
 		this.listView = listView;
 	}
 
-	public TimeAttackBaseAdapter<T> getAdapter() {
+	public MyBaseAdapter<T> getAdapter() {
 		return adapter;
 	}
 
-	public void setAdapter(TimeAttackBaseAdapter<T> adapter) {
+	public void setAdapter(MyBaseAdapter<T> adapter) {
 		this.adapter = adapter;
 	}
 
@@ -223,5 +228,13 @@ abstract public class BaseListFragment <T> extends BaseFragment implements OnIte
 	public TextView getTvEmpty() {
 		return tvEmpty;
 	}
+	
+	public void setColorList(int[] colorList){
+		mColorList = colorList;
+	}
+	
+	public int[] getColorList(){
+		return mColorList;
+	};
 	
 }
