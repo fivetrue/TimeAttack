@@ -1,6 +1,10 @@
 package com.fivetrue.timeattack.database.model;
 
-public class NetworkResult {
+import android.os.Parcel;
+
+import com.api.common.BaseEntry;
+
+public class NetworkResult extends BaseEntry{
 	
 	public enum Type{
 		Direction,
@@ -82,5 +86,20 @@ public class NetworkResult {
 	public String toString() {
 		return "NetworkResult [index=" + index + ", url=" + url + ", result="
 				+ result + ", timestamp=" + timestamp + ", type=" + type + "]";
+	}
+	@Override
+	public int describeContents() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+	@Override
+	public void writeToParcel(Parcel dest, int flags) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public Class<?> getClassInfo() {
+		// TODO Auto-generated method stub
+		return NetworkResult.class;
 	}
 }

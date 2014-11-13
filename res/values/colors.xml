@@ -66,8 +66,8 @@
     <color name="map_primary_color">#673AB7</color>
     <color name="map_primary_light_color">#EDE7F6</color>
     <color name="map_primary_soft_color">#B39DDB</color>
-    <color name="map_primary_dark_color">#311B92</color>
-    <color name="map_primary_deep_color">#2900C9</color>
+    <color name="map_primary_dark_color">#3F0099</color>
+    <color name="map_primary_deep_color">#2A0066</color>
     <color name="map_accent_color">#000000</color>
     
     <!-- Search Color -->

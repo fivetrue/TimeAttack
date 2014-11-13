@@ -52,8 +52,8 @@
     
     
      <!-- List Item -->
-    <dimen name="list_item_height">50dp</dimen>
-    <dimen name="list_item_margin">3dp</dimen>
+    <dimen name="list_item_background_shadow_margin">9dp</dimen>
+    <dimen name="list_item_margin">5dp</dimen>
     <dimen name="list_item_padding_left">12dp</dimen>
     <dimen name="list_item_padding_right">12dp</dimen>
     <dimen name="list_item_title_text_size">13dp</dimen>
@@ -61,15 +61,16 @@
     <dimen name="list_item_description_text_size">11dp</dimen>
     <dimen name="list_underline_height">2px</dimen>
     
-    <!-- Recentry list item -->
-    <dimen name="recentry_item_height">300dp</dimen>
-    <dimen name="recentry_item_header_height">90dp</dimen>
-    <dimen name="recentry_item_image_size">70dp</dimen>
-    <dimen name="recentry_item_image_padding">7dp</dimen>
-    <dimen name="recentry_item_text_margin_left">10dp</dimen>
-    <dimen name="recentry_item_pattern_size">45dp</dimen>
-    <dimen name="recentry_item_pattern_padding">15dp</dimen>
-    <dimen name="recentry_item_body_padding">5dp</dimen>
+    <!-- Common list item -->
+    <dimen name="common_item_height">300dp</dimen>
+    <dimen name="common_item_header_height">40dp</dimen>
+    <dimen name="common_item_header_text_size">17dp</dimen>
+    <dimen name="common_item_main_image_size">200dp</dimen>
+    <dimen name="common_item_image_size">70dp</dimen>
+    <dimen name="common_item_image_padding">7dp</dimen>
+    <dimen name="common_item_text_margin_left">10dp</dimen>
+    <dimen name="common_item_pattern_size">45dp</dimen>
+    <dimen name="common_item_padding">5dp</dimen>
     
     <!-- Map -->
     <dimen name="map_height">30dp</dimen>

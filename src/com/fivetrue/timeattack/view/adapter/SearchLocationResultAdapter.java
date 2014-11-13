@@ -21,82 +21,25 @@ import com.api.seoul.subway.entry.SubwayInfoEntry;
 import com.fivetrue.timeattack.R;
 import com.fivetrue.timeattack.activity.manager.MapActivityManager;
 
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
+import android.view.animation.AccelerateDecelerateInterpolator;
 
-public class SearchLocationResultAdapter extends TimeAttackBaseAdapter <AddressResultVO>{
+public class SearchLocationResultAdapter extends CommonListAdapter <AddressResultVO>{
 	
-	private ViewHolder mViewHolder = null;
 
-	public SearchLocationResultAdapter(Context context, int layoutResourceId,
-			ArrayList<AddressResultVO> arrayList) {
-		super(context, layoutResourceId, arrayList);
+	public SearchLocationResultAdapter(Context context,
+			ArrayList<AddressResultVO> arrayList, int[] colorList) {
+		super(context, arrayList, colorList);
 		// TODO Auto-generated constructor stub
 	}
 
-	@Override
-	public View getView(int position, View convertView, ViewGroup parent) {
-		// TODO Auto-generated method stub
 
-		mViewHolder = new ViewHolder();
-
-		if (convertView == null) {
-			convertView = mLayoutInflater.inflate(mResourceId, null);
-
-			mViewHolder.ivImage = (ImageView) convertView.findViewById(R.id.iv_recently_item_image);
-			mViewHolder.ivBackImage = (ImageView) convertView.findViewById(R.id.iv_recently_item_back_image);
-			mViewHolder.ivArrow =  (ImageView) convertView.findViewById(R.id.iv_recently_item_arrow);
-			mViewHolder.tvTitle = (TextView) convertView.findViewById(R.id.tv_recently_item_title);
-			mViewHolder.tvSubtitle = (TextView) convertView.findViewById(R.id.tv_recently_item_sub_title);
-			mViewHolder.tvDescription = (TextView) convertView.findViewById(R.id.tv_recently_item_description);
-			convertView.setTag(mViewHolder);
-		}else {
-			mViewHolder = (ViewHolder) convertView.getTag();
-		}
-
-		final AddressResultVO data = getItem(position);
-
-		if(data == null){
-			return convertView;
-		}
-
-		mViewHolder.ivBackImage.setVisibility(View.VISIBLE);
-
-		mViewHolder.ivImage.setImageResource(R.drawable.map);
-		mViewHolder.ivBackImage.setVisibility(View.GONE);
-		mViewHolder.tvTitle.setText(mContext.getString(R.string.location_infomation));
-		if(data.getTypes() != null){
-			if(!TextUtils.isEmpty(data.getTypes().get(0))){
-				mViewHolder.tvSubtitle.setText(data.getTypes().get(0));
-			}
-		}
-		mViewHolder.tvDescription.setText(getGeocodingDescription(data));
-		mViewHolder.ivArrow.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				MapActivityManager.newInstance(mContext).goToActivity(data);
-			}
-		});
-
-		return convertView;
-	}
-
-	private class ViewHolder{
-		public ImageView ivImage;
-		public ImageView ivBackImage;
-		public TextView tvTitle;
-		public TextView tvSubtitle;
-		public ImageView ivArrow;
-		public TextView tvDescription;
-	}
-	
 	private String getGeocodingDescription(AddressResultVO entry){
 		String postal_code = null;
 		for(AddressComponentVO componnt : entry.getAddressComponents()){
@@ -189,6 +132,53 @@ public class SearchLocationResultAdapter extends TimeAttackBaseAdapter <AddressR
 			e.printStackTrace();
 		}
 		return entry;
+	}
+
+	@Override
+	public View getView(
+			int position,
+			View convertView,
+			ViewGroup parent,
+			com.fivetrue.timeattack.view.adapter.CommonListAdapter.ViewHolder holder) {
+		// TODO Auto-generated method stub
+		final AddressResultVO data = getItem(position);
+
+		if(data == null){
+			return convertView;
+		}
+		
+		if(!data.isFinishAnimation()){
+			convertView.setX(mContext.getResources().getDisplayMetrics().widthPixels);
+			ObjectAnimator moveX = ObjectAnimator.ofFloat(convertView, "translationX", convertView.getX(), 0);
+			moveX.setInterpolator(new AccelerateDecelerateInterpolator());
+			moveX.setDuration(ANI_DURATION);
+			AnimatorSet aniPlayer = new AnimatorSet();
+			aniPlayer.play(moveX);
+			aniPlayer.start();
+			data.setFinishAnimation(true);
+		}
+
+		holder.thumbImage.setImageResource(R.drawable.map);
+		holder.thumbBackImage.setVisibility(View.GONE);
+		holder.mainImage.setVisibility(View.GONE);
+		holder.headerTitle.setText(mContext.getString(R.string.location_infomation));
+		holder.Title.setText(data.getAddress());
+		if(data.getTypes() != null){
+			if(!TextUtils.isEmpty(data.getTypes().get(0))){
+				holder.subTitle.setText(data.getTypes().get(0));
+			}
+		}
+		holder.contentText.setText(getGeocodingDescription(data));
+		holder.arrowImage.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				MapActivityManager.newInstance(mContext).goToActivity(data);
+			}
+		});
+
+		return convertView;
 	}
 
 }

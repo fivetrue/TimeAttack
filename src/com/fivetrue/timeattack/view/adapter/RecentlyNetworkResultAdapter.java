@@ -23,158 +23,28 @@ import com.api.seoul.subway.entry.SubwayArrivalInfoEntry;
 import com.api.seoul.subway.entry.SubwayInfoEntry;
 import com.fivetrue.network.VolleyInstance;
 import com.fivetrue.timeattack.R;
-import com.fivetrue.timeattack.activity.MapActivity;
 import com.fivetrue.timeattack.activity.manager.MapActivityManager;
 import com.fivetrue.timeattack.activity.manager.SearchActivityManager;
 import com.fivetrue.timeattack.database.model.NetworkResult;
 
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
 
-public class RecentlyNetworkResultAdapter extends TimeAttackBaseAdapter <NetworkResult>{
+public class RecentlyNetworkResultAdapter extends CommonListAdapter <NetworkResult>{
 	
-	private ViewHolder mViewHolder = null;
 
-	public RecentlyNetworkResultAdapter(Context context, int layoutResourceId,
-			ArrayList<NetworkResult> arrayList) {
-		super(context, layoutResourceId, arrayList);
+	public RecentlyNetworkResultAdapter(Context context, ArrayList<NetworkResult> arrayList, int[] colorList) {
+		super(context, arrayList, colorList);
 		// TODO Auto-generated constructor stub
 	}
 
-	@Override
-	public View getView(int position, View convertView, ViewGroup parent) {
-		// TODO Auto-generated method stub
-
-		mViewHolder = new ViewHolder();
-
-		if (convertView == null) {
-			convertView = mLayoutInflater.inflate(mResourceId, null);
-
-			mViewHolder.ivImage = (ImageView) convertView.findViewById(R.id.iv_recently_item_image);
-			mViewHolder.ivBackImage = (ImageView) convertView.findViewById(R.id.iv_recently_item_back_image);
-			mViewHolder.ivArrow =  (ImageView) convertView.findViewById(R.id.iv_recently_item_arrow);
-			mViewHolder.tvTitle = (TextView) convertView.findViewById(R.id.tv_recently_item_title);
-			mViewHolder.tvSubtitle = (TextView) convertView.findViewById(R.id.tv_recently_item_sub_title);
-			mViewHolder.tvDescription = (TextView) convertView.findViewById(R.id.tv_recently_item_description);
-			convertView.setTag(mViewHolder);
-		}else {
-			mViewHolder = (ViewHolder) convertView.getTag();
-		}
-		
-		NetworkResult data = getItem(position);
-		
-		if(data == null){
-			return convertView;
-		}
-		
-		mViewHolder.ivBackImage.setVisibility(View.VISIBLE);
-		
-		switch(data.getType()){
-		case Direction : 
-		{
-			DirectionsEntry entry = convertDirectionEntry(data.getResult());
-			mViewHolder.tvTitle.setText(entry.getRouteArray().get(0).getArrivalAddress());
-			mViewHolder.tvSubtitle.setText(entry.getRouteArray().get(0).getSummary());
-			break;
-		}
-
-		case Place :
-		{
-			if(data.getResult() != null){
-				PlacesEntry entry = convertPlaceEntry(data.getResult());
-				if(entry.getPlaceList().size() > 0){
-					mViewHolder.tvTitle.setText(entry.getPlaceList().get(0).getName());
-					mViewHolder.tvSubtitle.setText(entry.getPlaceList().get(0).getTypeList().get(0));
-
-					Bitmap bm = VolleyInstance.getLruCache().get(entry.getPlaceList().get(0).getIcon());
-
-					if(bm != null){
-						mViewHolder.ivImage.setImageBitmap(bm);
-					}else{
-						VolleyInstance.getImageLoader().get(entry.getPlaceList().get(0).getIcon(), new ImageListener() {
-
-							@Override
-							public void onErrorResponse(VolleyError error) {
-								// TODO Auto-generated method stub
-								error.printStackTrace();
-							}
-
-							@Override
-							public void onResponse(ImageContainer response, boolean isImmediate) {
-								// TODO Auto-generated method stub
-								if(response != null){
-									Bitmap bm = response.getBitmap();
-									if(bm != null){
-										mViewHolder.ivImage.setImageBitmap(bm);
-									}
-								}
-
-							}
-						});
-					}
-				}
-			}
-			break;
-		}
-
-		case GeoCoding :
-		{
-			final GeocodingEntry entry = convertGeocodeEntry(data.getResult());
-			mViewHolder.ivImage.setImageResource(R.drawable.map);
-			mViewHolder.ivBackImage.setVisibility(View.GONE);
-			mViewHolder.tvTitle.setText(entry.getAddressList().size() > 1 ? R.string.location_search : R.string.location_infomation);
-			mViewHolder.tvSubtitle.setText(getGeocodingSubtitle(entry));
-			mViewHolder.tvDescription.setText(getGeocodingDescription(entry));
-			mViewHolder.ivArrow.setOnClickListener(new OnClickListener() {
-				
-				@Override
-				public void onClick(View v) {
-					// TODO Auto-generated method stub
-					if(entry.getAddressList().size() > 1){
-						SearchActivityManager.newInstance(mContext).goToActivity(entry);
-					}else{
-						MapActivityManager.newInstance(mContext).goToActivity(entry.getAddressList().get(0));
-					}
-				}
-			});
-			break;
-		}
-
-		case SubwayInfo :
-		{
-			SubwayInfoEntry entry = convertSubwayInfoEntry(data.getResult());
-			mViewHolder.tvTitle.setText(entry.getStationList().get(0).getStationName());
-			mViewHolder.tvSubtitle.setText(entry.getStationList().get(0).getLineNumber());
-			break;
-		}
-
-		case SubwayArrival :
-		{
-			SubwayArrivalInfoEntry entry = convertSubwayArrivalInfoEntry(data.getResult());
-			mViewHolder.tvTitle.setText(entry.getArrivalList().get(0).getSubwayName());
-			mViewHolder.tvSubtitle.setText(entry.getArrivalList().get(0).getDestinationName());
-			break;
-		}
-		}
-		return convertView;
-	}
-
-	private class ViewHolder{
-		public ImageView ivImage;
-		public ImageView ivBackImage;
-		public TextView tvTitle;
-		public TextView tvSubtitle;
-		public ImageView ivArrow;
-		public TextView tvDescription;
-	}
-	
 	private String getGeocodingSubtitle(GeocodingEntry entry){
 		String keyword  = null;
 		
@@ -307,6 +177,126 @@ public class RecentlyNetworkResultAdapter extends TimeAttackBaseAdapter <Network
 			e.printStackTrace();
 		}
 		return entry;
+	}
+
+	@Override
+	public View getView(
+			int position,
+			View convertView,
+			ViewGroup parent,
+			final com.fivetrue.timeattack.view.adapter.CommonListAdapter.ViewHolder holder) {
+		// TODO Auto-generated method stub
+		NetworkResult data = getItem(position);
+		
+		if(data == null){
+			return convertView;
+		}
+		
+		if(!data.isFinishAnimation()){
+			convertView.setX(mContext.getResources().getDisplayMetrics().widthPixels);
+			ObjectAnimator moveX = ObjectAnimator.ofFloat(convertView, "translationX", convertView.getX(), 0);
+			moveX.setInterpolator(new AccelerateDecelerateInterpolator());
+			moveX.setDuration(ANI_DURATION);
+			AnimatorSet aniPlayer = new AnimatorSet();
+			aniPlayer.play(moveX);
+			aniPlayer.start();
+			data.setFinishAnimation(true);
+		}
+		
+		holder.thumbBackImage.setVisibility(View.GONE);
+		holder.mainImage.setVisibility(View.GONE);
+		
+		switch(data.getType()){
+		case Direction : 
+		{
+			DirectionsEntry entry = convertDirectionEntry(data.getResult());
+			holder.headerTitle.setText(R.string.find_direction);
+			holder.Title.setText(entry.getRouteArray().get(0).getArrivalAddress());
+			holder.subTitle.setText(entry.getRouteArray().get(0).getSummary());
+			break;
+		}
+
+		case Place :
+		{
+			holder.headerTitle.setText(R.string.find_subway_nearby);
+			if(data.getResult() != null){
+				PlacesEntry entry = convertPlaceEntry(data.getResult());
+				if(entry.getPlaceList().size() > 0){
+					holder.Title.setText(entry.getPlaceList().get(0).getName());
+					holder.subTitle.setText(entry.getPlaceList().get(0).getTypeList().get(0));
+
+					Bitmap bm = VolleyInstance.getLruCache().get(entry.getPlaceList().get(0).getIcon());
+
+					if(bm != null){
+						holder.thumbImage.setImageBitmap(bm);
+					}else{
+						VolleyInstance.getImageLoader().get(entry.getPlaceList().get(0).getIcon(), new ImageListener() {
+
+							@Override
+							public void onErrorResponse(VolleyError error) {
+								// TODO Auto-generated method stub
+								error.printStackTrace();
+							}
+
+							@Override
+							public void onResponse(ImageContainer response, boolean isImmediate) {
+								// TODO Auto-generated method stub
+								if(response != null){
+									Bitmap bm = response.getBitmap();
+									if(bm != null){
+										holder.thumbImage.setImageBitmap(bm);
+									}
+								}
+
+							}
+						});
+					}
+				}
+			}
+			break;
+		}
+
+		case GeoCoding :
+		{
+			final GeocodingEntry entry = convertGeocodeEntry(data.getResult());
+			holder.headerTitle.setText(R.string.location_search);
+			holder.thumbImage.setImageResource(R.drawable.map);
+			holder.thumbBackImage.setVisibility(View.GONE);
+			holder.Title.setText(entry.getAddressList().size() > 1 ? R.string.location_search : R.string.location_infomation);
+			holder.subTitle.setText(getGeocodingSubtitle(entry));
+			holder.contentText.setText(getGeocodingDescription(entry));
+			holder.arrowImage.setOnClickListener(new OnClickListener() {
+				
+				@Override
+				public void onClick(View v) {
+					// TODO Auto-generated method stub
+					if(entry.getAddressList().size() > 1){
+						SearchActivityManager.newInstance(mContext).goToActivity(entry);
+					}else{
+						MapActivityManager.newInstance(mContext).goToActivity(entry.getAddressList().get(0));
+					}
+				}
+			});
+			break;
+		}
+
+		case SubwayInfo :
+		{
+//			SubwayInfoEntry entry = convertSubwayInfoEntry(data.getResult());
+//			holder.tvTitle.setText(entry.getStationList().get(0).getStationName());
+//			holder.tvSubtitle.setText(entry.getStationList().get(0).getLineNumber());
+			break;
+		}
+
+		case SubwayArrival :
+		{
+//			SubwayArrivalInfoEntry entry = convertSubwayArrivalInfoEntry(data.getResult());
+//			holder.tvTitle.setText(entry.getArrivalList().get(0).getSubwayName());
+//			holder.tvSubtitle.setText(entry.getArrivalList().get(0).getDestinationName());
+			break;
+		}
+		}
+		return convertView;
 	}
 
 }

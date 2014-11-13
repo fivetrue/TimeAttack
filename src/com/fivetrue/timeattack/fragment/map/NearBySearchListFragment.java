@@ -27,10 +27,10 @@ import com.fivetrue.timeattack.fragment.BaseListFragment;
 import com.fivetrue.timeattack.view.adapter.NearBySearchResultAdapter;
 import com.google.android.gms.maps.model.LatLng;
 
-public class NearBySearchFragment extends BaseListFragment<PlaceVO> {
+public class NearBySearchListFragment extends BaseListFragment<PlaceVO> {
 
 	private LatLng mLocation = null;
-
+	
 	@Override
 	public View initHeader() {
 		// TODO Auto-generated method stub
@@ -90,7 +90,10 @@ public class NearBySearchFragment extends BaseListFragment<PlaceVO> {
 			adapter.setArrayList(arr);
 			adapter.notifyDataSetChanged();
 		}else{
-			adapter = new NearBySearchResultAdapter(getActivity(), R.layout.item_recently_use, arr);
+			setColorList(new int[]{R.color.map_primary_color,
+					R.color.map_primary_light_color, R.color.map_primary_deep_color});
+			adapter = new NearBySearchResultAdapter(getActivity(), arr, getColorList());
+			adapter.setIconSelector(R.drawable.selector_map_primary_color);
 			listView.setAdapter(adapter);
 		}
 		setEmptyLayout(!(arr.size() > 0));

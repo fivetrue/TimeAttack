@@ -1,0 +1,116 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content" >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/list_item_margin" >
+
+        <RelativeLayout
+            android:id="@+id/layout_common_item_header"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/common_item_header_height"
+            android:layout_alignParentTop="true"
+            android:paddingLeft="@dimen/common_item_padding"
+            android:paddingRight="@dimen/common_item_padding" >
+
+            <TextView
+                android:id="@+id/tv_common_item_header"
+                style="@style/listHeaderText"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="header" />
+
+            <ImageView
+                android:id="@+id/iv_common_item_arrow"
+                android:layout_width="@dimen/common_item_pattern_size"
+                android:layout_height="match_parent"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:scaleType="center"
+                android:src="@drawable/arrow_d" />
+        </RelativeLayout>
+
+        <ImageView
+            android:id="@+id/iv_common_item_main_image"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/common_item_main_image_size"
+            android:layout_below="@id/layout_common_item_header"
+            android:scaleType="centerCrop" />
+
+        <RelativeLayout
+            android:id="@+id/layout_common_item_body"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/iv_common_item_main_image"
+            android:paddingLeft="@dimen/common_item_padding"
+            android:paddingRight="@dimen/common_item_padding" >
+
+            <RelativeLayout
+                android:id="@+id/layout_common_item_thumb_image"
+                android:layout_width="@dimen/common_item_image_size"
+                android:layout_height="@dimen/common_item_image_size"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true" >
+
+                <ImageView
+                    android:id="@+id/iv_common_item_back_image"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/list_bg" />
+
+                <ImageView
+                    android:id="@+id/iv_common_item_image"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="@dimen/common_item_image_padding" />
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/tv_common_item_content"
+                style="@style/listDescriptionText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/layout_common_item_thumb_image" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_above="@id/tv_common_item_content"
+                android:layout_toRightOf="@id/layout_common_item_thumb_image"
+                android:orientation="vertical"
+                android:padding="@dimen/common_item_padding" >
+
+                <TextView
+                    android:id="@+id/tv_common_item_title"
+                    style="@style/listTitleText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:singleLine="true"
+                    android:text="@string/title" />
+
+                <TextView
+                    android:id="@+id/tv_common_item_sub_title"
+                    style="@style/listSubTitleText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/description" />
+            </LinearLayout>
+        </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/list_item_margin"
+            android:layout_below="@id/layout_common_item_header"
+            android:background="@drawable/tab_img_shadow_pattern" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/list_item_margin"
+            android:layout_below="@id/layout_common_item_body"
+            android:background="@drawable/tab_img_shadow_pattern" />
+    </RelativeLayout>
+
+</RelativeLayout>

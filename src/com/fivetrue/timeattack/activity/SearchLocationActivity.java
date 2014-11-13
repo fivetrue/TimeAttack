@@ -7,8 +7,7 @@ import com.api.google.geocoding.GeocodingConstants;
 import com.api.google.geocoding.entry.GeocodingEntry;
 import com.fivetrue.timeattack.R;
 import com.fivetrue.timeattack.activity.manager.SearchActivityManager;
-import com.fivetrue.timeattack.fragment.search.AddressSearchResultFragment;
-import com.fivetrue.timeattack.view.adapter.SearchLocationResultAdapter;
+import com.fivetrue.timeattack.fragment.search.AddressSearchListFragment;
 
 import android.location.Location;
 import android.os.Bundle;
@@ -30,7 +29,6 @@ public class SearchLocationActivity extends BaseActivity {
 		public ViewGroup layout_bottom = null;
 		public EditText et_input = null;
 		public View shadow_top = null;
-		public View shadow_bottom = null;
 	}
 
 	private ViewGroup mContentView = null;
@@ -38,10 +36,9 @@ public class SearchLocationActivity extends BaseActivity {
 	
 	
 	private InputMethodManager mImeManager = null;
-	private SearchLocationResultAdapter adapter = null;
 	private GeocodingEntry mEntry = null;
 	
-	private AddressSearchResultFragment mSearchFragment = null;
+	private AddressSearchListFragment mSearchFragment = null;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater) {
@@ -60,7 +57,6 @@ public class SearchLocationActivity extends BaseActivity {
 		mViewHolder.layout_bottom = (ViewGroup) mContentView.findViewById(R.id.layout_search_bottom);
 		mViewHolder.et_input = (EditText) mContentView.findViewById(R.id.et_search_top);
 		mViewHolder.shadow_top = mContentView.findViewById(R.id.shadow_search_top);
-		mViewHolder.shadow_bottom = mContentView.findViewById(R.id.shadow_search_bottom);
 
 		mViewHolder.et_input.setImeOptions(EditorInfo.IME_ACTION_SEARCH);
 		mViewHolder.et_input.setOnEditorActionListener(onEditorActionListener);
@@ -68,6 +64,7 @@ public class SearchLocationActivity extends BaseActivity {
 		getCustomActionBar().setBackGroundColorRes(R.color.search_primary_color, R.color.search_primary_dark_color);
 		getCustomActionBar().setHomeIconLineColor(R.color.search_primary_light_color);
 		getCustomActionBar().setIconSelector(R.drawable.selector_search_primary_color);
+		mContentView.setBackground(getResources().getDrawable(R.color.search_primary_light_color));
 		
 	}
 
@@ -199,9 +196,9 @@ public class SearchLocationActivity extends BaseActivity {
 	private void setListData(GeocodingEntry entry){
 		if(mSearchFragment == null){
 			Bundle argument = new Bundle();
-			argument.putParcelable(AddressSearchResultFragment.ADDRESS_DATA_KEY, entry);
-			mSearchFragment = (AddressSearchResultFragment) createFragment(mViewHolder.layout_bottom.getId(), AddressSearchResultFragment.class,
-					"search_result", INVALID_VALUE, argument, R.anim.slide_out_bottom, R.anim.slide_in_top);
+			argument.putParcelable(AddressSearchListFragment.ADDRESS_DATA_KEY, entry);
+			mSearchFragment = (AddressSearchListFragment) createFragment(mViewHolder.layout_bottom.getId(), AddressSearchListFragment.class,
+					"search_result", INVALID_VALUE, argument,  R.anim.slide_in_top, R.anim.slide_in_top);
 		}else{
 			mSearchFragment.onLoadListData(entry.getAddressList());
 		}
@@ -216,7 +213,7 @@ public class SearchLocationActivity extends BaseActivity {
 	@Override
 	public boolean isActionBarBlending() {
 		// TODO Auto-generated method stub
-		return true;
+		return getIntent().getExtras() != null;
 	}
 
 }

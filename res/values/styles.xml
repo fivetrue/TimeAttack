@@ -76,6 +76,10 @@
         <item name="android:textColor">@color/actionbar_sub_title</item>
     </style>
 
+    <style name="listHeaderText" parent="baseListTextProperties">
+        <item name="android:textSize">@dimen/common_item_header_text_size</item>
+    </style>
+    
     <style name="listTitleText" parent="baseListTextProperties">
         <item name="android:textSize">@dimen/list_item_title_text_size</item>
         <item name="android:textColor">@color/selector_list_title_text_color</item>
@@ -89,7 +93,7 @@
     <style name="listDescriptionText">
         <item name="android:textSize">@dimen/list_item_description_text_size</item>
         <item name="android:textColor">@color/list_sub_title_text_color_n</item>
-        <item name="android:padding">@dimen/recentry_item_body_padding</item>
+        <item name="android:padding">@dimen/common_item_padding</item>
         <item name="android:gravity">left|bottom</item>
         <item name="android:typeface">monospace</item>
     </style>

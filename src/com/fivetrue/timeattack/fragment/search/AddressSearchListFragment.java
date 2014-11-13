@@ -16,7 +16,7 @@ import com.fivetrue.timeattack.R;
 import com.fivetrue.timeattack.fragment.BaseListFragment;
 import com.fivetrue.timeattack.view.adapter.SearchLocationResultAdapter;
 
-public class AddressSearchResultFragment extends BaseListFragment<AddressResultVO> {
+public class AddressSearchListFragment extends BaseListFragment<AddressResultVO> {
 	
 	static public final String ADDRESS_DATA_KEY = "ADDRESS_DATA_KEY";
 
@@ -39,7 +39,7 @@ public class AddressSearchResultFragment extends BaseListFragment<AddressResultV
 			GeocodingEntry entry = getArguments().getParcelable(ADDRESS_DATA_KEY);
 			if(entry != null){
 				onLoadListData(entry.getAddressList());
-			}
+			} 
 		}
 	}
 	
@@ -49,7 +49,10 @@ public class AddressSearchResultFragment extends BaseListFragment<AddressResultV
 				adapter.setArrayList(arr);
 				adapter.notifyDataSetChanged();
 			}else{
-				adapter = new SearchLocationResultAdapter(getActivity(), R.layout.item_recently_use, arr);
+				setColorList(new int[]{R.color.search_primary_color,
+						R.color.search_primary_light_color, R.color.search_primary_deep_color});
+				adapter = new SearchLocationResultAdapter(getActivity(), arr, getColorList());
+				adapter.setIconSelector(R.drawable.selector_search_primary_color);
 			}
 			listView.setAdapter(adapter);
 			setEmptyLayout(false);
