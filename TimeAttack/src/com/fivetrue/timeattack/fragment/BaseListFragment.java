@@ -124,10 +124,22 @@ abstract public class BaseListFragment <T> extends BaseFragment implements OnIte
 			
 			mScrollY = -topChild.getTop() + firstVisibleItem	* topChild.getHeight();
 			if(!isFling){
-				if(mPreScrollY > mScrollY){
-					getCustomActionBar().getOnScrollListener().onScrollUp(mPreScrollY - mScrollY);
+				if(firstVisibleItem == 0){
+					if(topChild.getTop() > - getResources().getDisplayMetrics().density){
+						getCustomActionBar().getOnScrollListener().onScrollVisibleFirstItem();
+					}else{
+						if(mPreScrollY > mScrollY){
+							getCustomActionBar().getOnScrollListener().onScrollUp(mPreScrollY - mScrollY);
+						}else{
+							getCustomActionBar().getOnScrollListener().onScrollDown(mScrollY - mPreScrollY);
+						}
+					}
 				}else{
-					getCustomActionBar().getOnScrollListener().onScrollDown(mScrollY - mPreScrollY);
+					if(mPreScrollY > mScrollY){
+						getCustomActionBar().getOnScrollListener().onScrollUp(mPreScrollY - mScrollY);
+					}else{
+						getCustomActionBar().getOnScrollListener().onScrollDown(mScrollY - mPreScrollY);
+					}
 				}
 			}
 		

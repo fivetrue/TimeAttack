@@ -12,7 +12,7 @@ import android.view.View;
 public class HomeButtonView extends View {
 
 	private final int INVALID_VALUE = -1;
-	private final int MOVING_VALUE = 300;
+	private final int MOVING_VALUE = 150;
 	private final int CIRCLE_HALF_DEGREE = 180;
 
 	private int mStrokWidth = 2;
@@ -21,7 +21,8 @@ public class HomeButtonView extends View {
 	private boolean isHomeAsUp = false;
 	private boolean isRevert = false;
 	private float mValue = INVALID_VALUE;
-
+	
+	private int mMovingValue = INVALID_VALUE;
 	private Paint mPaint = null;
 
 	public HomeButtonView(Context context, AttributeSet attrs) {
@@ -33,6 +34,7 @@ public class HomeButtonView extends View {
 	protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
 		// TODO Auto-generated method stub
 		super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+		initModel();
 		initPaint();
 	}
 
@@ -50,10 +52,13 @@ public class HomeButtonView extends View {
 			onDrawHome(canvas);
 		}
 	}
+	
+	private void initModel(){
+		mDensity = getContext().getResources().getDisplayMetrics().density;
+		mMovingValue =  MOVING_VALUE * (int) mDensity;
+	}
 
 	private void initPaint(){
-		
-		mDensity = getContext().getResources().getDisplayMetrics().density;
 		
 		mPaint = new Paint();
 		mPaint.setAntiAlias(true);
@@ -63,7 +68,7 @@ public class HomeButtonView extends View {
 
 	private void onDrawHome(Canvas canvas){
 		
-		float moveValue = ((mValue * MOVING_VALUE) / getWidth()) * mDensity;
+		float moveValue = ((mValue * mMovingValue) / getWidth()) * mDensity;
 		canvas.drawLine(moveValue, mDensity, getWidth(), moveValue + mDensity, mPaint);
 		canvas.drawLine(0, getHeight() / 2, getWidth(), getHeight() / 2, mPaint);
 		canvas.drawLine(moveValue, getHeight() - mDensity, getWidth(), (getHeight() - mDensity) - moveValue, mPaint);
@@ -75,7 +80,7 @@ public class HomeButtonView extends View {
 
 	private void onDrawBack(Canvas canvas){
 		
-		float moveValue = ((mValue * MOVING_VALUE) / getWidth()) * mDensity;
+		float moveValue = ((mValue * mMovingValue) / getWidth()) * mDensity;
 	
 		canvas.drawLine(getWidth() - mDensity, mDensity,
 				(getWidth() / 2) - moveValue , (getHeight() / 2) + moveValue + 1, mPaint);
