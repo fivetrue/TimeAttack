@@ -30,6 +30,7 @@ public class CustomActionBar {
 		public void onScrollUp(float value);
 		public void onScrollDown(float value);
 		public void onScrollComplete();
+		public void onScrollVisibleFirstItem();
 	}
 
 	private int[] PRIMARY_COLOR = {0xF4, 0x43, 0x36};//0xFFF44336
@@ -172,10 +173,33 @@ public class CustomActionBar {
 			}
 			//Hide
 			if(- mContentView.getHeight() / 2 >= mContentView.getY()){
-				mActionBarAnimator = ObjectAnimator.ofFloat(mContentView, "translationY", mContentView.getY(), - mContentView.getHeight());
-				mActionBarAnimator.setDuration(ANIMATION_DURATION);
-				mActionBarAnimator.start();
+				if(mContentView.getY() > - mContentView.getHeight()){
+					mActionBarAnimator = ObjectAnimator.ofFloat(mContentView, "translationY", mContentView.getY(), - mContentView.getHeight());
+					mActionBarAnimator.setDuration(ANIMATION_DURATION);
+					mActionBarAnimator.start();
+				}
 			}else{
+				if(mContentView.getY() < 0){
+					mActionBarAnimator = ObjectAnimator.ofFloat(mContentView, "translationY", mContentView.getY(), 0);
+					mActionBarAnimator.setDuration(ANIMATION_DURATION);
+					mActionBarAnimator.start();
+				}
+			}
+		}
+
+		@Override
+		public void onScrollVisibleFirstItem() {
+			// TODO Auto-generated method stub
+			if(mContentView == null || !isActionBarBlending){
+				return;
+			}
+			
+			if(mActionBarAnimator != null){
+				if(mActionBarAnimator.isRunning()){
+					mActionBarAnimator.cancel();
+				}
+			}
+			if(mContentView.getY() < 0){
 				mActionBarAnimator = ObjectAnimator.ofFloat(mContentView, "translationY", mContentView.getY(), 0);
 				mActionBarAnimator.setDuration(ANIMATION_DURATION);
 				mActionBarAnimator.start();
