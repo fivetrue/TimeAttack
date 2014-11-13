@@ -4,8 +4,6 @@ import com.fivetrue.timeattack.R;
 import com.fivetrue.timeattack.view.actionbar.view.HomeButtonView;
 import com.fivetrue.utils.ColorUtil;
 
-import android.animation.Animator;
-import android.animation.Animator.AnimatorListener;
 import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.support.v4.app.FragmentActivity;
@@ -31,7 +29,6 @@ public class CustomActionBar {
 	public interface OnScrollListener{
 		public void onScrollUp(float value);
 		public void onScrollDown(float value);
-		public void onScrollFling(boolean isUp);
 		public void onScrollComplete();
 	}
 
@@ -124,7 +121,6 @@ public class CustomActionBar {
 	private OnScrollListener mOnScrollListener = new OnScrollListener() {
 		ObjectAnimator mActionBarAnimator = null;
 		float mPreValue = 0;
-		boolean isFling = false;
 		@Override
 		public void onScrollUp(float value) {
 			// TODO Auto-generated method stub
@@ -138,13 +134,10 @@ public class CustomActionBar {
 				}
 			}
 			float y = (mContentView.getY()) + (value);
-			
 			if(y > mPreValue && y > mContentView.getY()){
-				
 				mContentView.setY( y >= 0 ? 0 : y);
 				mPreValue = y;
 			}
-			isFling = false;
 		}
 
 		@Override
@@ -160,18 +153,16 @@ public class CustomActionBar {
 			}
 			
 			float y = (mContentView.getY()) - (value);
-			
 			if(mPreValue > y && y < mContentView.getY()){
 				mContentView.setY(y >= -mContentView.getHeight() ? y : -mContentView.getHeight());
 				mPreValue = y;
 			}
-			isFling = false;
 		}
 
 		@Override
 		public void onScrollComplete() {
 			// TODO Auto-generated method stub
-			if(mContentView == null || mDrawerLayout == null || !isActionBarBlending){
+			if(mContentView == null || !isActionBarBlending){
 				return;
 			}
 			if(mActionBarAnimator != null){
@@ -188,24 +179,6 @@ public class CustomActionBar {
 				mActionBarAnimator = ObjectAnimator.ofFloat(mContentView, "translationY", mContentView.getY(), 0);
 				mActionBarAnimator.setDuration(ANIMATION_DURATION);
 				mActionBarAnimator.start();
-			}
-		}
-
-		@Override
-		public void onScrollFling(boolean isUp) {
-			// TODO Auto-generated method stub
-			if(mContentView == null || !isActionBarBlending || !isFling){
-				return;
-			}
-			isFling = true;
-			if(isUp){
-				mActionBarAnimator = ObjectAnimator.ofFloat(mContentView, "translationY", mContentView.getY(), 0);
-				mActionBarAnimator.setDuration(ANIMATION_DURATION);
-				mActionBarAnimator.start();
-			}else{
-				mActionBarAnimator = ObjectAnimator.ofFloat(mContentView, "translationY", mContentView.getY(), - mContentView.getHeight());
-				mActionBarAnimator.setDuration(ANIMATION_DURATION);
-				mActionBarAnimator.start();	
 			}
 		}
 	};

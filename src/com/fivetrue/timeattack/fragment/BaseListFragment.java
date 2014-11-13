@@ -27,10 +27,9 @@ abstract public class BaseListFragment <T> extends BaseFragment implements OnIte
 	private View listHeader = null;
 	private View listFooter = null;
 	
+	private int mScrollY = 0;
 	private int mPreScrollY = 0;
-	
-	private boolean isListFling = false;
-	
+	private boolean isFling = false;
 	
 	public BaseListFragment(){};
 	
@@ -102,7 +101,6 @@ abstract public class BaseListFragment <T> extends BaseFragment implements OnIte
 	
 	abstract protected void onListScrollStateChanged(AbsListView view, int scrollState);
 	
-	
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position,
 			long id) {
@@ -124,19 +122,16 @@ abstract public class BaseListFragment <T> extends BaseFragment implements OnIte
 
 			}
 			
-			int scrollY = -topChild.getTop() + firstVisibleItem	* topChild.getHeight();
-			
-			if(isListFling){
-				getCustomActionBar().getOnScrollListener().onScrollFling((mPreScrollY > scrollY));
-				return;
-			}else{
-				if(mPreScrollY > scrollY){
-					getCustomActionBar().getOnScrollListener().onScrollUp(mPreScrollY - scrollY);
+			mScrollY = -topChild.getTop() + firstVisibleItem	* topChild.getHeight();
+			if(!isFling){
+				if(mPreScrollY > mScrollY){
+					getCustomActionBar().getOnScrollListener().onScrollUp(mPreScrollY - mScrollY);
 				}else{
-					getCustomActionBar().getOnScrollListener().onScrollDown(scrollY - mPreScrollY);
+					getCustomActionBar().getOnScrollListener().onScrollDown(mScrollY - mPreScrollY);
 				}
 			}
-			mPreScrollY = scrollY;
+		
+			mPreScrollY = mScrollY;
 		}
 	}
 	
@@ -147,18 +142,24 @@ abstract public class BaseListFragment <T> extends BaseFragment implements OnIte
 		
 		switch(scrollState){
 		case OnScrollListener.SCROLL_STATE_IDLE :
-			isListFling = false;
 			if(getCustomActionBar() != null){
 				getCustomActionBar().getOnScrollListener().onScrollComplete();
+				isFling = false;
 			}
 			break;
 			
 		case OnScrollListener.SCROLL_STATE_TOUCH_SCROLL :
-			isListFling = false;
+			isFling = false;
 			break;
 			
 		case OnScrollListener.SCROLL_STATE_FLING :
-			isListFling = true;
+			isFling = true;
+//			if(mPreScrollY > mScrollY){
+//				getCustomActionBar().getOnScrollListener().onScrollUp(mPreScrollY - mScrollY);
+//			}else{
+//				getCustomActionBar().getOnScrollListener().onScrollDown(mScrollY - mPreScrollY);
+//			}
+//			getCustomActionBar().getOnScrollListener().onScrollComplete();
 			break;
 		}
 	}
