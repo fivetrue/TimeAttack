@@ -5,25 +5,29 @@ import java.util.ArrayList;
 import com.api.common.BaseEntry;
 import com.api.google.geocoding.model.AddressResultVO;
 import com.api.google.place.model.PlaceVO;
+import com.fivetrue.network.VolleyInstance;
 import com.fivetrue.timeattack.R;
 import com.fivetrue.timeattack.activity.manager.MapActivityManager;
 import com.fivetrue.timeattack.fragment.map.NearBySearchListFragment;
 import com.fivetrue.timeattack.preference.MapPreferenceManager;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.GoogleMap.OnMapLoadedCallback;
+import com.google.android.gms.maps.GoogleMap.SnapshotReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 
 public class MapActivity extends BaseActivity {
-	
+
 	class ViewHolder{
 		public View ivPlace = null;
 		public View ivDirection = null;
@@ -32,33 +36,34 @@ public class MapActivity extends BaseActivity {
 
 	//View
 	private ViewGroup mContentView = null;
-	
+
 	//Map
 	private SupportMapFragment mMapFragment = null;
 	private GoogleMap mMap = null;
-	
+
 	//Fragment
 	private NearBySearchListFragment mNearBySearchFragment = null;
-	
+
 	//Model
 	private BaseEntry mEntry = null;
 	private int mType = INVALID_VALUE;
 	private MapActivityManager mMapManager = null;
 	private ViewHolder mMyControlView = null;
 	private MyLocationSearchAsycTask mMyLocationAyncTask = null;
-	
+
 	private Location mMyLocation = null;
+	private boolean isTakenPicture = false;
 
 	//Value
 	private float mZoomValue = 14;
 	private float mMyLocationZoomValue = 18;
-	
+
 
 	@Override
 	public View onCreateView(LayoutInflater inflater) {
 		// TODO Auto-generated method stub
 		mContentView = (ViewGroup) inflater.inflate(R.layout.activity_map, null);
-		
+
 		getIntentData();
 		initViews();
 		initModels();
@@ -77,22 +82,22 @@ public class MapActivity extends BaseActivity {
 			}
 		}
 	}
-	
+
 	private void initViews(){
 		mMyControlView = new ViewHolder();
-		
+
 		mMapFragment = (SupportMapFragment)getSupportFragmentManager().findFragmentById(R.id.fragment_map);
-		
+
 		mMyControlView.layoutMyControl = (ViewGroup) mContentView.findViewById(R.id.layout_map_my_control);
 		mMyControlView.ivDirection = mContentView.findViewById(R.id.iv_map_direction);
 		mMyControlView.ivPlace = mContentView.findViewById(R.id.iv_map_place);
-		
+
 		mMyControlView.ivPlace.setOnClickListener(onClickFindSubwayNearBy);
 		mMyControlView.ivDirection.setOnClickListener(onClickFindDirection);
-		
+
 		switch(mType){
 		case MapActivityManager.DATA_GEOCODING :
-			mMyControlView.layoutMyControl.setVisibility(View.VISIBLE);
+			
 			break;
 
 		case MapActivityManager.DATA_DIRECTION :
@@ -101,19 +106,19 @@ public class MapActivity extends BaseActivity {
 		case MapActivityManager.DATA_PLACE :
 
 			break;
-			
+
 		default :
 			mMyControlView.layoutMyControl.setVisibility(View.GONE);
 			break;
 		}
-		
+
 		getCustomActionBar().setBackGroundColorRes(R.color.map_primary_color, R.color.map_primary_dark_color);
 		getCustomActionBar().setHomeIconLineColor(R.color.map_primary_light_color);
 		getCustomActionBar().setIconSelector(R.drawable.selector_map_primary_color);
 	}
-	
+
 	private void initModels(){
-		
+
 		if(mMapFragment != null){
 			MapPreferenceManager pref = MapPreferenceManager.newInstance(this);
 			mMap = mMapFragment.getMap();
@@ -127,26 +132,64 @@ public class MapActivity extends BaseActivity {
 			log("map fragment is null");
 		}
 	}
-	
+
 	private void initDatas(){
-		
+
 		if(mEntry != null && mMap != null){
-			
+
 			switch(mType){
 			case MapActivityManager.DATA_GEOCODING : 
-				mMapManager.drawPointToMap(mMap, (AddressResultVO)mEntry, mZoomValue);
+				setGeocodingMapData((AddressResultVO)mEntry);
 				return;
-				
+
 			case MapActivityManager.DATA_DIRECTION :
 				return;
-			
+
 			case MapActivityManager.DATA_PLACE :
-				
+
 				return;
 			}
 		}
 	}
-	
+
+	private void setGeocodingMapData(final AddressResultVO addressVo){
+		mMyControlView.layoutMyControl.setVisibility(View.VISIBLE);
+		mMapManager.drawPointToMap(mMap, addressVo, mZoomValue);
+
+		Bitmap bitmap = VolleyInstance.getLruCache().get(addressVo.getAddress());
+		if(bitmap == null){
+			if(mMap != null){
+				mMap.setOnMapLoadedCallback(new OnMapLoadedCallback() {
+
+					@Override
+					public void onMapLoaded() {
+						// TODO Auto-generated method stub
+						captureMapSnapShot(new SnapshotReadyCallback() {
+
+							@Override
+							public void onSnapshotReady(Bitmap bm) {
+								// TODO Auto-generated method stub
+								if(bm != null){
+									VolleyInstance.getLruCache().put(addressVo.getLatitude() + addressVo.getLongitude(), bm);
+									if(VolleyInstance.getLruCache().get(addressVo.getLatitude() + addressVo.getLongitude()) != null){
+										System.out.println("ojkwon : " + bm.getByteCount() / 1024);
+									}
+									bm = null;
+								}
+							}
+						});
+					}
+				});
+			}
+		}
+	}
+
+	public void captureMapSnapShot(SnapshotReadyCallback callback){
+		if(mMap != null){
+			mMap.snapshot(callback);
+		}
+	}
+
 	@Override
 	protected void onDestroy() {
 		// TODO Auto-generated method stub
@@ -163,35 +206,35 @@ public class MapActivity extends BaseActivity {
 	@Override
 	public String getActionBarSubTitle() {
 		// TODO Auto-generated method stub
-		
+
 		switch(mType){
 		case MapActivityManager.DATA_GEOCODING : 
 			return getString(R.string.location_infomation);
-			
+
 		case MapActivityManager.DATA_DIRECTION :
 			break;
-		
+
 		case MapActivityManager.DATA_PLACE :
-			
+
 			break;
 		}
-		
+
 		return null;
 	}
 
 	@Override
 	public int getActionBarMenuResource() {
 		// TODO Auto-generated method stub
-		
+
 		switch(mType){
-//		case MapActivityManager.DATA_GEOCODING : 
-//			return R.menu.actionbar_map_geocoding_menu;
-			
+		//		case MapActivityManager.DATA_GEOCODING : 
+		//			return R.menu.actionbar_map_geocoding_menu;
+
 		case MapActivityManager.DATA_DIRECTION :
 			break;
-		
+
 		case MapActivityManager.DATA_PLACE :
-			
+
 			break;
 		}
 		return R.menu.actionbar_map_default_menu;
@@ -231,17 +274,17 @@ public class MapActivity extends BaseActivity {
 	protected void changeLocation(Location location) {
 		// TODO Auto-generated method stub
 		if(location != null){
-//			mMyLocation = location;
+			//			mMyLocation = location;
 		}
 	}
-		
+
 	// 지도정보에서 현재위치 액션버튼 눌렀을 경우.
 	@Override
 	public void onClickAcitionMenuLocationSearch(final View view) {
-	// TODO Auto-generated method stub
+		// TODO Auto-generated method stub
 		if(isGpsEnable()){
 			view.setSelected(!view.isSelected());
-			
+
 			if(mMyLocationAyncTask == null){
 				mMyLocationAyncTask = new MyLocationSearchAsycTask(mMap);
 			}
@@ -253,7 +296,7 @@ public class MapActivity extends BaseActivity {
 				mMyLocationAyncTask.cancel(true);
 				mMyLocationAyncTask = null;
 				mMap.setMyLocationEnabled(false);
-				
+
 				switch(mType){
 				case MapActivityManager.DATA_GEOCODING :
 					break;
@@ -264,7 +307,7 @@ public class MapActivity extends BaseActivity {
 				case MapActivityManager.DATA_PLACE :
 
 					break;
-					
+
 				default :
 					mMyControlView.layoutMyControl.setVisibility(View.GONE);
 					break;
@@ -274,16 +317,16 @@ public class MapActivity extends BaseActivity {
 			makeToast(R.string.error_location_out_of_service);
 		}
 	}
-	
-	
+
+
 	/**
 	 * @author Fivetrue
 	 * My Location Search Async
 	 */
 	private class MyLocationSearchAsycTask extends AsyncTask<Void, Void, Location>{
-		
+
 		private GoogleMap mMap = null;
-		
+
 		public MyLocationSearchAsycTask(GoogleMap map) {
 			// TODO Auto-generated constructor stub
 			mMap = map;
@@ -318,17 +361,17 @@ public class MapActivity extends BaseActivity {
 			}
 		}
 	}
-	
+
 	private OnClickListener onClickFindSubwayNearBy = new OnClickListener() {
-		
+
 		@Override
 		public void onClick(View v) {
 			// TODO Auto-generated method stub
 			Bundle argument = new Bundle();
-			
+
 			double latitude = INVALID_VALUE;
 			double longitude = INVALID_VALUE;
-			
+
 			switch(mType){
 			case MapActivityManager.DATA_GEOCODING :
 				if(mEntry != null){
@@ -346,7 +389,7 @@ public class MapActivity extends BaseActivity {
 				if(mEntry != null){
 				}
 				break;
-				
+
 			default :
 				if(mMyLocation != null){
 					latitude = mMyLocation.getLatitude();
@@ -354,14 +397,14 @@ public class MapActivity extends BaseActivity {
 				}
 				break;
 			}
-			
+
 			if(latitude == INVALID_VALUE || longitude == INVALID_VALUE)
 				return;
-			
+
 			LatLng location = new LatLng(latitude, longitude);
-			
+
 			argument.putParcelable(MapActivityManager.MAP_DATA, location);
-			
+
 			mNearBySearchFragment = (NearBySearchListFragment) createFragment(NearBySearchListFragment.class, 
 					"nearby", INVALID_VALUE, argument
 					, R.anim.slide_in_top, R.anim.slide_in_top);
@@ -374,7 +417,7 @@ public class MapActivity extends BaseActivity {
 					// TODO Auto-generated method stub
 					NearBySearchListFragment f = params[0];
 					ArrayList<PlaceVO> arr = null;
-					
+
 					while(true){
 						if(f != null){
 							arr = f.getPlaceList();
@@ -387,22 +430,22 @@ public class MapActivity extends BaseActivity {
 					}
 					return arr;
 				}
-				
+
 				protected void onPostExecute(java.util.ArrayList<PlaceVO> result) {
 					mMapManager.drawPointToMap(mMap, result);
 				};
 			}.execute(mNearBySearchFragment);
 		}
 	};
-	
+
 	private OnClickListener onClickFindDirection = new OnClickListener() {
-		
+
 		@Override
 		public void onClick(View v) {
 			// TODO Auto-generated method stub
 		}
 	};
-	
+
 	public void onBackPressed(){
 		if(mNearBySearchFragment != null){
 			removeFragment(mNearBySearchFragment, R.anim.slide_out_bottom, R.anim.slide_out_bottom);

@@ -18,12 +18,14 @@ import com.api.seoul.subway.converter.SubwayArrivalInfoConverter;
 import com.api.seoul.subway.converter.SubwayInfoConverter;
 import com.api.seoul.subway.entry.SubwayArrivalInfoEntry;
 import com.api.seoul.subway.entry.SubwayInfoEntry;
+import com.fivetrue.network.VolleyInstance;
 import com.fivetrue.timeattack.R;
 import com.fivetrue.timeattack.activity.manager.MapActivityManager;
 
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -160,7 +162,15 @@ public class SearchLocationResultAdapter extends CommonListAdapter <AddressResul
 
 		holder.thumbImage.setImageResource(R.drawable.map);
 		holder.thumbBackImage.setVisibility(View.GONE);
-		holder.mainImage.setVisibility(View.GONE);
+		
+		
+		Bitmap image = VolleyInstance.getLruCache().get(data.getLatitude() + data.getLongitude());
+		if(image != null){
+			holder.mainImage.setVisibility(View.VISIBLE);
+			holder.mainImage.setImageBitmap(image);
+		}else{
+			holder.mainImage.setVisibility(View.GONE);
+		}
 		holder.headerTitle.setText(mContext.getString(R.string.location_infomation));
 		holder.Title.setText(data.getAddress());
 		if(data.getTypes() != null){
