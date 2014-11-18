@@ -21,6 +21,7 @@ import com.api.seoul.subway.entry.SubwayInfoEntry;
 import com.fivetrue.network.VolleyInstance;
 import com.fivetrue.timeattack.R;
 import com.fivetrue.timeattack.activity.manager.MapActivityManager;
+import com.fivetrue.timeattack.utils.ImageUtils;
 
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
@@ -164,7 +165,8 @@ public class SearchLocationResultAdapter extends CommonListAdapter <AddressResul
 		holder.thumbBackImage.setVisibility(View.GONE);
 		
 		
-		Bitmap image = VolleyInstance.getLruCache().get(data.getLatitude() + data.getLongitude());
+		
+		Bitmap image = ImageUtils.getInstance(mContext).getImageBitmap(data.getLatitude() + data.getLongitude());
 		if(image != null){
 			holder.mainImage.setVisibility(View.VISIBLE);
 			holder.mainImage.setImageBitmap(image);

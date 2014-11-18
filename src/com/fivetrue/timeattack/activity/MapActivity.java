@@ -5,11 +5,13 @@ import java.util.ArrayList;
 import com.api.common.BaseEntry;
 import com.api.google.geocoding.model.AddressResultVO;
 import com.api.google.place.model.PlaceVO;
+import com.fivetrue.dialog.ProgressDialog;
 import com.fivetrue.network.VolleyInstance;
 import com.fivetrue.timeattack.R;
 import com.fivetrue.timeattack.activity.manager.MapActivityManager;
 import com.fivetrue.timeattack.fragment.map.NearBySearchListFragment;
 import com.fivetrue.timeattack.preference.MapPreferenceManager;
+import com.fivetrue.timeattack.utils.ImageUtils;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMap.OnMapLoadedCallback;
 import com.google.android.gms.maps.GoogleMap.SnapshotReadyCallback;
@@ -17,7 +19,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 
 import android.graphics.Bitmap;
-import android.graphics.Canvas;
+import android.graphics.Bitmap.CompressFormat;
 import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -94,7 +96,7 @@ public class MapActivity extends BaseActivity {
 
 		mMyControlView.ivPlace.setOnClickListener(onClickFindSubwayNearBy);
 		mMyControlView.ivDirection.setOnClickListener(onClickFindDirection);
-
+		
 		switch(mType){
 		case MapActivityManager.DATA_GEOCODING :
 			
@@ -136,7 +138,7 @@ public class MapActivity extends BaseActivity {
 	private void initDatas(){
 
 		if(mEntry != null && mMap != null){
-
+			
 			switch(mType){
 			case MapActivityManager.DATA_GEOCODING : 
 				setGeocodingMapData((AddressResultVO)mEntry);
@@ -155,33 +157,30 @@ public class MapActivity extends BaseActivity {
 	private void setGeocodingMapData(final AddressResultVO addressVo){
 		mMyControlView.layoutMyControl.setVisibility(View.VISIBLE);
 		mMapManager.drawPointToMap(mMap, addressVo, mZoomValue);
+		showProgressDialog();
+		final String key = addressVo.getLatitude() + addressVo.getLongitude();
+		mMap.setOnMapLoadedCallback(new OnMapLoadedCallback() {
 
-		Bitmap bitmap = VolleyInstance.getLruCache().get(addressVo.getAddress());
-		if(bitmap == null){
-			if(mMap != null){
-				mMap.setOnMapLoadedCallback(new OnMapLoadedCallback() {
+			@Override
+			public void onMapLoaded() {
+				// TODO Auto-generated method stub
+				dismissProgressDialog();
+				Bitmap bitmap = ImageUtils.getInstance(MapActivity.this).getImageBitmap(key);
+				if(bitmap == null){
+					captureMapSnapShot(new SnapshotReadyCallback() {
 
-					@Override
-					public void onMapLoaded() {
-						// TODO Auto-generated method stub
-						captureMapSnapShot(new SnapshotReadyCallback() {
-
-							@Override
-							public void onSnapshotReady(Bitmap bm) {
-								// TODO Auto-generated method stub
-								if(bm != null){
-									VolleyInstance.getLruCache().put(addressVo.getLatitude() + addressVo.getLongitude(), bm);
-									if(VolleyInstance.getLruCache().get(addressVo.getLatitude() + addressVo.getLongitude()) != null){
-										System.out.println("ojkwon : " + bm.getByteCount() / 1024);
-									}
-									bm = null;
-								}
+						@Override
+						public void onSnapshotReady(Bitmap bm) {
+							// TODO Auto-generated method stub
+							if(bm != null){
+								ImageUtils.getInstance(getApplication()).saveBitmap(bm, key);
+								bm = null;
 							}
-						});
-					}
-				});
+						}
+					});
+				}
 			}
-		}
+		});
 	}
 
 	public void captureMapSnapShot(SnapshotReadyCallback callback){

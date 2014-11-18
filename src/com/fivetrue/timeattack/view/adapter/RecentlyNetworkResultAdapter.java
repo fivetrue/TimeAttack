@@ -26,6 +26,7 @@ import com.fivetrue.timeattack.R;
 import com.fivetrue.timeattack.activity.manager.MapActivityManager;
 import com.fivetrue.timeattack.activity.manager.SearchActivityManager;
 import com.fivetrue.timeattack.database.model.NetworkResult;
+import com.fivetrue.timeattack.utils.ImageUtils;
 
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
@@ -262,6 +263,23 @@ public class RecentlyNetworkResultAdapter extends CommonListAdapter <NetworkResu
 			holder.headerTitle.setText(R.string.location_search);
 			holder.thumbImage.setImageResource(R.drawable.map);
 			holder.thumbBackImage.setVisibility(View.GONE);
+			
+			holder.thumbImage.setImageResource(R.drawable.map);
+			holder.thumbBackImage.setVisibility(View.GONE);
+			
+			
+			
+			if(entry.getAddressList().size() == 1){
+				AddressResultVO address = entry.getAddressList().get(0);
+				Bitmap image = ImageUtils.getInstance(mContext).getImageBitmap(address.getLatitude() + address.getLongitude());
+				if(image != null){
+					holder.mainImage.setVisibility(View.VISIBLE);
+					holder.mainImage.setImageBitmap(image);
+				}else{
+					holder.mainImage.setVisibility(View.GONE);
+				}
+			}
+			
 			holder.Title.setText(entry.getAddressList().size() > 1 ? R.string.location_search : R.string.location_infomation);
 			holder.subTitle.setText(getGeocodingSubtitle(entry));
 			holder.contentText.setText(getGeocodingDescription(entry));
