@@ -16,6 +16,7 @@ import com.api.seoul.subway.converter.SubwayArrivalInfoConverter;
 import com.api.seoul.subway.converter.SubwayInfoConverter;
 import com.api.seoul.subway.entry.SubwayArrivalInfoEntry;
 import com.api.seoul.subway.entry.SubwayInfoEntry;
+import com.fivetrue.dialog.ProgressDialog;
 import com.fivetrue.location.activity.LocationActivity;
 import com.fivetrue.timeattack.R;
 import com.fivetrue.timeattack.database.NetworkResultDBManager;
@@ -31,7 +32,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.DrawerLayout.DrawerListener;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -62,6 +62,8 @@ abstract public class BaseActivity extends LocationActivity implements IRequestR
 	private CustomActionBar mCustomActionBar = null;
 
 	private LayoutInflater mInflater = null;
+	
+	private ProgressDialog mProgressDialog = null;
 
 	@Override
 	protected void onCreate(Bundle arg0) {
@@ -106,6 +108,10 @@ abstract public class BaseActivity extends LocationActivity implements IRequestR
 		mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 		mContentView = (ViewGroup) findViewById(R.id.layout_main_frame);
 		mLayoutDrawer = (ViewGroup) findViewById(R.id.layout_drawer);
+		
+		mProgressDialog = new ProgressDialog(this);
+		mProgressDialog.setCanceledOnTouchOutside(false);
+		mProgressDialog.setCancelable(false);
 
 		if(mFragmentDrawer == null){
 			mFragmentDrawer = (DrawerFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_drawer);
@@ -126,20 +132,20 @@ abstract public class BaseActivity extends LocationActivity implements IRequestR
 	 */
 	
 	public void initActionBar(LayoutInflater inflater){
-		
-			if(isActionBarBlending()){
-				ViewGroup achor =  (ViewGroup) findViewById(R.id.layout_main);
-				achor.addView(mCustomActionBar.getContentView());
-			}else{
-				ViewGroup achor =  (ViewGroup) findViewById(R.id.layout_content);
-				achor.addView(mCustomActionBar.getContentView(), 0);
-				
-				ViewGroup shadowAchor =  (ViewGroup) findViewById(R.id.layout_main);
-				View shadow = new View(this);
-				shadow.setBackground(getResources().getDrawable(R.drawable.tab_img_shadow_pattern));
-				LayoutParams params = new LayoutParams(LayoutParams.MATCH_PARENT, (int)getResources().getDimension(R.dimen.shadow_height));
-				shadowAchor.addView(shadow, params);
-			}
+
+		if(isActionBarBlending()){
+			ViewGroup achor =  (ViewGroup) findViewById(R.id.layout_main);
+			achor.addView(mCustomActionBar.getContentView());
+		}else{
+			ViewGroup achor =  (ViewGroup) findViewById(R.id.layout_content);
+			achor.addView(mCustomActionBar.getContentView(), 0);
+
+			ViewGroup shadowAchor =  (ViewGroup) findViewById(R.id.layout_main);
+			View shadow = new View(this);
+			shadow.setBackground(getResources().getDrawable(R.drawable.tab_img_shadow_pattern));
+			LayoutParams params = new LayoutParams(LayoutParams.MATCH_PARENT, (int)getResources().getDimension(R.dimen.shadow_height));
+			shadowAchor.addView(shadow, params);
+		}
 	}
 
 	
@@ -506,6 +512,22 @@ abstract public class BaseActivity extends LocationActivity implements IRequestR
 
 	public void showNetworkFailToast(){
 		Toast.makeText(this, R.string.error_network_request_fail, Toast.LENGTH_SHORT).show();
+	}
+	
+	public void showProgressDialog(){
+		if(mProgressDialog != null){
+			if(!mProgressDialog.isShowing()){
+				mProgressDialog.show();
+			}
+		}
+	}
+	
+	public void dismissProgressDialog(){
+		if(mProgressDialog != null){
+			if(mProgressDialog.isShowing()){
+				mProgressDialog.dismiss();
+			}
+		}
 	}
 
 }
