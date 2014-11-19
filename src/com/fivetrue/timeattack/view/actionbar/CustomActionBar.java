@@ -101,7 +101,6 @@ public class CustomActionBar {
 		
 		mActionBarHomeButtonGroup.setBackground(mContext.getResources().getDrawable(mIconSelector));
 		mActionBarLayout.setBackgroundColor(mContext.getResources().getColor(mPrimaryColorRes));
-		mActionBarHomeButtonGroup.setBackground(mContext.getResources().getDrawable(mIconSelector));
 		mHomeButton.setLineColorRes(mLineColor);
 		mTvHomeSubtitle.setTextColor(mContext.getResources().getColor(mLineColor));
 		mTvHomeTitle.setTextColor(mContext.getResources().getColor(mLineColor));
