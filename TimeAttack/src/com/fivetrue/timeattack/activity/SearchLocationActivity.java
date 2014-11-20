@@ -65,6 +65,13 @@ public class SearchLocationActivity extends BaseActivity {
 		getCustomActionBar().setBackGroundColorRes(R.color.search_primary_color, R.color.search_primary_dark_color);
 		getCustomActionBar().setHomeIconLineColor(R.color.search_primary_light_color);
 		getCustomActionBar().setIconSelector(R.drawable.selector_search_primary_color);
+		
+		if(getDrawerFragment() != null){
+			getDrawerFragment().setBackGroundColorRes(R.color.search_primary_color, R.color.search_primary_dark_color);
+			getDrawerFragment().setLineColor(R.color.search_primary_light_color);
+			getDrawerFragment().setIconSelector(R.drawable.selector_search_primary_color);
+		}
+		
 		mContentView.setBackground(getResources().getDrawable(R.color.search_primary_light_color));
 		
 	}

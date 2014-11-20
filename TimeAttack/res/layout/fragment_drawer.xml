@@ -1,10 +1,46 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/layout_items_parent"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="@color/drawer_item_background_n" >
+    android:background="@android:color/white"
+    android:orientation="vertical" >
+
+    <RelativeLayout
+        android:id="@+id/layout_drawer_user_info"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/drawer_user_layout_height"
+        android:paddingLeft="@dimen/drawer_item_padding_left"
+        android:paddingRight="@dimen/drawer_item_padding_right" >
+
+        <ImageView
+            android:id="@+id/iv_drawer_user"
+            android:layout_width="@dimen/drawer_user_layout_height"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_toRightOf="@id/iv_drawer_user"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/tv_drawer_user_name"
+                style="@style/listTitleText"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:text="name" />
+
+            <TextView
+                android:id="@+id/tv_drawer_user_info"
+                style="@style/listSubTitleText"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:text="user_info"/>
+        </LinearLayout>
+    </RelativeLayout>
 
     <RelativeLayout
         android:id="@+id/layout_drawer_home"
@@ -24,16 +60,17 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="@dimen/drawer_item_height"
-            android:layout_marginRight="@dimen/drawer_item_image_padding"
             android:layout_alignParentRight="true"
+            android:layout_marginRight="@dimen/drawer_item_image_padding"
+            android:rotation="180"
             android:scaleType="center"
-            android:src="@drawable/selector_drawer_arrow" />
+            android:src="@drawable/ic_action_previous_item" />
 
         <View
+            android:id="@+id/line"
             android:layout_width="match_parent"
             android:layout_height="0.5dp"
-            android:layout_alignParentBottom="true"
-            android:background="@color/main_primary_light_color" />
+            android:layout_alignParentBottom="true"/>
     </RelativeLayout>
 
     <RelativeLayout
@@ -54,16 +91,16 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="@dimen/drawer_item_height"
-            android:layout_marginRight="@dimen/drawer_item_image_padding"
             android:layout_alignParentRight="true"
+            android:layout_marginRight="@dimen/drawer_item_image_padding"
+            android:rotation="180"
             android:scaleType="center"
-            android:src="@drawable/selector_drawer_arrow" />
-
+            android:src="@drawable/ic_action_previous_item" />
         <View
+            android:id="@id/line"
             android:layout_width="match_parent"
             android:layout_height="0.5dp"
-            android:layout_alignParentBottom="true"
-            android:background="@color/main_primary_light_color" />
+            android:layout_alignParentBottom="true"/>
     </RelativeLayout>
 
     <RelativeLayout
@@ -84,16 +121,17 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="@dimen/drawer_item_height"
-            android:layout_marginRight="@dimen/drawer_item_image_padding"
             android:layout_alignParentRight="true"
+            android:layout_marginRight="@dimen/drawer_item_image_padding"
+            android:rotation="180"
             android:scaleType="center"
-            android:src="@drawable/selector_drawer_arrow" />
+            android:src="@drawable/ic_action_previous_item" />
 
         <View
+            android:id="@id/line"
             android:layout_width="match_parent"
             android:layout_height="0.5dp"
-            android:layout_alignParentBottom="true"
-            android:background="@color/main_primary_light_color" />
+            android:layout_alignParentBottom="true"/>
     </RelativeLayout>
 
 </LinearLayout>

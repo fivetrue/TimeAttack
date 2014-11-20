@@ -114,6 +114,12 @@ public class MapActivity extends BaseActivity {
 		getCustomActionBar().setBackGroundColorRes(R.color.map_primary_color, R.color.map_primary_dark_color);
 		getCustomActionBar().setHomeIconLineColor(R.color.map_primary_light_color);
 		getCustomActionBar().setIconSelector(R.drawable.selector_map_primary_color);
+		
+		if(getDrawerFragment() != null){
+			getDrawerFragment().setBackGroundColorRes(R.color.map_primary_color, R.color.map_primary_dark_color);
+			getDrawerFragment().setLineColor(R.color.map_primary_light_color);
+			getDrawerFragment().setIconSelector(R.drawable.selector_map_primary_color);
+		}
 	}
 
 	private void initModels(){

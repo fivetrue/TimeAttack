@@ -25,13 +25,13 @@
 
         <RelativeLayout
             android:id="@+id/layout_drawer"
-            android:layout_width="200dp"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="start" >
 
             <fragment
                 android:id="@+id/fragment_drawer"
-                android:layout_width="200dp"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 class="com.fivetrue.timeattack.fragment.DrawerFragment" />
         </RelativeLayout>
