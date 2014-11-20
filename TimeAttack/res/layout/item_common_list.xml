@@ -104,13 +104,13 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/list_item_margin"
             android:layout_below="@id/layout_common_item_header"
-            android:background="@drawable/tab_img_shadow_pattern" />
+            android:background="@drawable/shadow_pattern" />
 
         <View
             android:layout_width="match_parent"
             android:layout_height="@dimen/list_item_margin"
             android:layout_below="@id/layout_common_item_body"
-            android:background="@drawable/tab_img_shadow_pattern" />
+            android:background="@drawable/shadow_pattern" />
     </RelativeLayout>
 
 </RelativeLayout>
