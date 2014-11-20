@@ -1,6 +1,7 @@
 package com.fivetrue.timeattack.fragment;
 
 import com.fivetrue.timeattack.R;
+import com.fivetrue.utils.ColorUtil;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -16,6 +17,10 @@ public class DrawerFragment extends BaseFragment {
 		public void onMenuClick(ViewGroup parent, ViewGroup itemLayout, TextView itemText);
 	}
 	
+	private long[] PRIMARY_COLOR = new long[3];
+	private long[] PRIMARY_DARK_COLOR = new long[3];
+	private int COLOR_VALUE = 0xFF;
+	
 	private OnDrawerMenuClickListener mDrawerMenuClickListener = null;
 	private ViewHolder mViewHolder = new ViewHolder();
 	
@@ -23,6 +28,7 @@ public class DrawerFragment extends BaseFragment {
 	private int mPrimaryDarkColorRes = R.color.main_primary_dark_color;
 	private int mIconSelector = R.drawable.selector_main_primary_color;
 	private int mLineColor = R.color.main_primary_light_color;
+	private int mColorSubstringIndex = 3;
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -31,6 +37,7 @@ public class DrawerFragment extends BaseFragment {
 		mViewHolder.layout = inflater.inflate(R.layout.fragment_drawer, null);
 		
 		initView();
+		initData();
 		
 		return mViewHolder.layout;
 	}
@@ -42,7 +49,7 @@ public class DrawerFragment extends BaseFragment {
 		mViewHolder.tvUserName = (TextView) mViewHolder.layout.findViewById(R.id.tv_drawer_user_name);
 		mViewHolder.tvUserInfo = (TextView) mViewHolder.layout.findViewById(R.id.tv_drawer_user_info);
 		
-		mViewHolder.layoutUserInfo.setBackground(getResources().getDrawable(mPrimaryDarkColorRes));
+		mViewHolder.layoutUserInfo.setBackground(getResources().getDrawable(mPrimaryColorRes));
 		mViewHolder.tvUserName.setTextColor(getResources().getColor(mLineColor));
 		mViewHolder.tvUserInfo.setTextColor(getResources().getColor(mLineColor));
 		
@@ -69,6 +76,18 @@ public class DrawerFragment extends BaseFragment {
 		mViewHolder.layoutDirection.setOnClickListener(mOnClickListener);
 		mViewHolder.layoutNearBy.setOnClickListener(mOnClickListener);
 		
+	}
+	
+	private void initData(){
+		
+		String primary =  getResources().getString(mPrimaryColorRes).substring(mColorSubstringIndex);
+		String primaryDark =  getResources().getString(mPrimaryDarkColorRes).substring(mColorSubstringIndex);
+		for(int i = 0 ; i < PRIMARY_COLOR.length ; i++){
+			String primaryColor = primary.substring(i * 2, (i + 1) * 2);
+			String primaryDarkColor = primaryDark.substring(i * 2, (i + 1) * 2);
+			PRIMARY_COLOR[i] = Long.valueOf(primaryColor, 16);
+			PRIMARY_DARK_COLOR[i] = Long.valueOf(primaryDarkColor, 16);
+		}
 	}
 	
 	
@@ -105,6 +124,7 @@ public class DrawerFragment extends BaseFragment {
 		this.mPrimaryColorRes = PrimaryColorRes;
 		this.mPrimaryDarkColorRes = PrimaryDarkColorRes;
 		initView();
+		initData();
 	}
 	
 	public void setIconSelector(int selectorRes){
@@ -115,6 +135,12 @@ public class DrawerFragment extends BaseFragment {
 	public void setLineColor(int res){
 		mLineColor = res;
 		initView();
+	}
+	
+	public void slideDrawer(float offset){
+		if(mViewHolder.layoutUserInfo != null){
+			mViewHolder.layoutUserInfo.setBackgroundColor(ColorUtil.changeColor(PRIMARY_COLOR, PRIMARY_DARK_COLOR, offset * COLOR_VALUE));
+		}
 	}
 	
 	private class ViewHolder{
