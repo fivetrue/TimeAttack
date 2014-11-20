@@ -12,7 +12,7 @@
         android:layout_height="@dimen/actionbar_height"
         android:orientation="horizontal"
         android:paddingLeft="@dimen/activity_horizontal_margin"
-        android:paddingRight="@dimen/activity_horizontal_margin" >
+        android:paddingRight="@dimen/common_item_padding" >
 
         <LinearLayout
             android:id="@+id/layout_actionbar_home"
