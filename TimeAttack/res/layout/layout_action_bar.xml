@@ -10,9 +10,9 @@
         style="@style/MyActionBar"
         android:layout_width="match_parent"
         android:layout_height="@dimen/actionbar_height"
+        android:orientation="horizontal"
         android:paddingLeft="@dimen/activity_horizontal_margin"
-        android:paddingRight="@dimen/activity_horizontal_margin"
-        android:orientation="horizontal" >
+        android:paddingRight="@dimen/activity_horizontal_margin" >
 
         <LinearLayout
             android:id="@+id/layout_actionbar_home"
@@ -25,14 +25,13 @@
                 style="@style/MyActionBarButton"
                 android:layout_width="@dimen/actionbar_height"
                 android:layout_height="match_parent"
-                android:layout_marginRight="@dimen/activity_horizontal_margin">
-               	
+                android:layout_marginRight="@dimen/activity_horizontal_margin" >
+
                 <com.fivetrue.timeattack.view.actionbar.view.HomeButtonView
                     android:id="@+id/home_button"
                     android:layout_width="@dimen/home_button_size"
                     android:layout_height="@dimen/home_button_size"
-                    android:layout_centerInParent="true"
-                    />
+                    android:layout_centerInParent="true" />
             </RelativeLayout>
 
             <LinearLayout
@@ -60,11 +59,17 @@
             </LinearLayout>
         </LinearLayout>
 
+        <RelativeLayout
+            android:id="@+id/layout_actionbar_menu_group"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="right" />
     </LinearLayout>
-    
+
     <View
-        android:id="@+id/actionbar_shadow" 
+        android:id="@+id/actionbar_shadow"
         android:layout_width="match_parent"
         android:layout_height="@dimen/shadow_height"
-        android:background="@drawable/tab_img_shadow_pattern"/>
+        android:background="@drawable/tab_img_shadow_pattern" />
+
 </LinearLayout>

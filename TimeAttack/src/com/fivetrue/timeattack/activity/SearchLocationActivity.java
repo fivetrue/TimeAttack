@@ -39,6 +39,7 @@ public class SearchLocationActivity extends BaseActivity {
 	private GeocodingEntry mEntry = null;
 	
 	private AddressSearchListFragment mSearchFragment = null;
+	
 
 	@Override
 	public View onCreateView(LayoutInflater inflater) {
@@ -106,10 +107,16 @@ public class SearchLocationActivity extends BaseActivity {
 		return null;
 	}
 
+//	@Override
+//	public int getActionBarMenuResource() {
+//		// TODO Auto-generated method stub
+//		return INVALID_VALUE;
+//	}
+	
 	@Override
-	public int getActionBarMenuResource() {
+	public ViewGroup getActionBarMenuView(LayoutInflater inflater) {
 		// TODO Auto-generated method stub
-		return INVALID_VALUE;
+		return null;
 	}
 
 	@Override
@@ -202,6 +209,7 @@ public class SearchLocationActivity extends BaseActivity {
 		}else{
 			mSearchFragment.onLoadListData(entry.getAddressList());
 		}
+		
 	}
 	
 	@Override

@@ -6,6 +6,7 @@ import java.util.ArrayList;
 
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.AbsListView.LayoutParams;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -13,12 +14,15 @@ import android.widget.ListView;
 import com.api.google.geocoding.entry.GeocodingEntry;
 import com.api.google.geocoding.model.AddressResultVO;
 import com.fivetrue.timeattack.R;
+import com.fivetrue.timeattack.activity.BaseActivity;
 import com.fivetrue.timeattack.fragment.BaseListFragment;
 import com.fivetrue.timeattack.view.adapter.SearchLocationResultAdapter;
 
 public class AddressSearchListFragment extends BaseListFragment<AddressResultVO> {
 	
 	static public final String ADDRESS_DATA_KEY = "ADDRESS_DATA_KEY";
+	
+	private View mBlankHeader = null;
 
 	@Override
 	public View initHeader() {
@@ -65,7 +69,13 @@ public class AddressSearchListFragment extends BaseListFragment<AddressResultVO>
 	@Override
 	protected void configView(ListView listview, LayoutInflater inflater) {
 		// TODO Auto-generated method stub
-		
+		if(((BaseActivity)getActivity()).isActionBarBlending()){
+			if(mBlankHeader == null){
+				mBlankHeader = new View(getActivity());
+				mBlankHeader.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, (int) getResources().getDimension(R.dimen.actionbar_height)));
+				listview.addHeaderView(mBlankHeader, null, false);
+			}
+		}
 	}
 
 	@Override
@@ -87,6 +97,5 @@ public class AddressSearchListFragment extends BaseListFragment<AddressResultVO>
 		// TODO Auto-generated method stub
 		
 	}
-	
 }
 

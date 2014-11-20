@@ -32,7 +32,7 @@
     </style>
 
     <style name="MyActionBarButton">
-        <item name="android:background">@drawable/selector_main_primary_color</item>
+        <!-- <item name="android:background">@drawable/selector_main_primary_color</item> -->
     </style>
     <!-- Fivetrue Custom ActionBar -->
 

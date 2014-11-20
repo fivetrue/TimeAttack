@@ -48,6 +48,7 @@ public class CustomActionBar {
 
 	private ViewGroup mActionBarHomeButtonGroup = null;
 	private ViewGroup mActionBarHomeViewGroup = null;
+	private ViewGroup mActionBarHomeMenuGroup = null;
 	private HomeButtonView mHomeButton = null;
 	
 	private View mShadow = null;
@@ -94,9 +95,12 @@ public class CustomActionBar {
 		mActionBarLayout = (ViewGroup) mContentView.findViewById(R.id.layout_actionbar);
 		mActionBarHomeViewGroup = (ViewGroup) mContentView.findViewById(R.id.layout_actionbar_home);
 		mActionBarHomeButtonGroup = (ViewGroup) mContentView.findViewById(R.id.layout_actionbar_home_group);
-		mHomeButton = (HomeButtonView) mContentView.findViewById(R.id.home_button) ;
+		mHomeButton = (HomeButtonView) mContentView.findViewById(R.id.home_button);
 		mTvHomeTitle = (TextView) mContentView.findViewById(R.id.tv_actionbar_home_title);
 		mTvHomeSubtitle = (TextView) mContentView.findViewById(R.id.tv_actionbar_home_subtitle);
+		
+		mActionBarHomeMenuGroup = (ViewGroup) mContentView.findViewById(R.id.layout_actionbar_menu_group);
+		
 		mShadow = mContentView.findViewById(R.id.actionbar_shadow);
 		
 		mActionBarHomeButtonGroup.setBackground(mContext.getResources().getDrawable(mIconSelector));
@@ -104,6 +108,13 @@ public class CustomActionBar {
 		mHomeButton.setLineColorRes(mLineColor);
 		mTvHomeSubtitle.setTextColor(mContext.getResources().getColor(mLineColor));
 		mTvHomeTitle.setTextColor(mContext.getResources().getColor(mLineColor));
+		
+		ViewGroup menu = (ViewGroup) mActionBarHomeMenuGroup.getChildAt(0);
+		if(menu != null && menu.getChildCount() > 0){
+			for(int i = 0 ; i < menu.getChildCount() ; i ++){
+				menu.getChildAt(i).setBackground(mContext.getResources().getDrawable(mIconSelector));
+			}
+		}
 		
 		mActionBarHomeButtonGroup.setOnClickListener(new OnClickListener() {
 
@@ -398,5 +409,12 @@ public class CustomActionBar {
 	public void setHomeIconLineColor(int res){
 		mLineColor = res;
 		initView();
+	}
+	
+	public void setHomeMenuViews(ViewGroup view){
+		if(view != null){
+			mActionBarHomeMenuGroup.addView(view);
+			initView();
+		}
 	}
 }
