@@ -26,6 +26,8 @@
     
     <!--Drawer Texts -->
     <string name="drawer_home">홈</string>
+    <string name="drawer_map">지도</string>
+    <string name="drawer_search_address">주소검색</string>
     <string name="drawer_near_by">주변 찾기</string>
     <string name="drawer_direction">길 찾기</string>
     

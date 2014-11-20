@@ -267,6 +267,7 @@ public class MapActivity extends BaseActivity {
 		menu.findViewById(R.id.action_item_place).setOnClickListener(onClickActionBarItem);
 		menu.findViewById(R.id.action_item_directions).setOnClickListener(onClickActionBarItem);
 		menu.findViewById(R.id.action_item_setting).setOnClickListener(onClickActionBarItem);
+		menu.findViewById(R.id.action_item_location_searching).setOnClickListener(onClickActionBarItem);
 		
 		switch(mType){
 		case MapActivityManager.DATA_GEOCODING : 
@@ -278,6 +279,11 @@ public class MapActivity extends BaseActivity {
 
 		case MapActivityManager.DATA_PLACE :
 
+			break;
+			
+		default :
+			menu.findViewById(R.id.action_item_place).setVisibility(View.GONE);
+			menu.findViewById(R.id.action_item_directions).setVisibility(View.GONE);
 			break;
 		}
 		return menu;

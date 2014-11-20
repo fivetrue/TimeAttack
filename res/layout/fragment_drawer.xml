@@ -9,19 +9,27 @@
         android:id="@+id/layout_drawer_user_info"
         android:layout_width="match_parent"
         android:layout_height="@dimen/drawer_user_layout_height"
-        android:paddingLeft="@dimen/drawer_item_padding_left"
         android:paddingRight="@dimen/drawer_item_padding_right" >
+
+        <View
+            android:id="@+id/line"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:layout_alignParentTop="true" />
 
         <ImageView
             android:id="@+id/iv_drawer_user"
             android:layout_width="@dimen/drawer_user_layout_height"
             android:layout_height="match_parent"
-            android:scaleType="centerCrop"/>
+            android:padding="@dimen/drawer_image_padding"
+            android:layout_marginLeft="@dimen/drawer_item_padding_left"
+            android:scaleType="centerCrop" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_toRightOf="@id/iv_drawer_user"
+            android:layout_marginLeft="@dimen/drawer_item_padding_left"
             android:orientation="vertical" >
 
             <TextView
@@ -38,7 +46,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"
-                android:text="user_info"/>
+                android:text="user_info" />
         </LinearLayout>
     </RelativeLayout>
 
@@ -61,16 +69,15 @@
             android:layout_width="wrap_content"
             android:layout_height="@dimen/drawer_item_height"
             android:layout_alignParentRight="true"
-            android:layout_marginRight="@dimen/drawer_item_image_padding"
             android:rotation="180"
             android:scaleType="center"
             android:src="@drawable/ic_action_previous_item" />
 
         <View
-            android:id="@+id/line"
+            android:id="@id/line"
             android:layout_width="match_parent"
             android:layout_height="0.5dp"
-            android:layout_alignParentBottom="true"/>
+            android:layout_alignParentBottom="true" />
     </RelativeLayout>
 
     <RelativeLayout
@@ -86,21 +93,21 @@
             style="@style/DrawerText"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="@string/drawer_near_by" />
+            android:text="@string/drawer_map" />
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="@dimen/drawer_item_height"
             android:layout_alignParentRight="true"
-            android:layout_marginRight="@dimen/drawer_item_image_padding"
             android:rotation="180"
             android:scaleType="center"
             android:src="@drawable/ic_action_previous_item" />
+
         <View
             android:id="@id/line"
             android:layout_width="match_parent"
             android:layout_height="0.5dp"
-            android:layout_alignParentBottom="true"/>
+            android:layout_alignParentBottom="true" />
     </RelativeLayout>
 
     <RelativeLayout
@@ -116,13 +123,12 @@
             style="@style/DrawerText"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="@string/drawer_direction" />
+            android:text="@string/drawer_search_address" />
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="@dimen/drawer_item_height"
             android:layout_alignParentRight="true"
-            android:layout_marginRight="@dimen/drawer_item_image_padding"
             android:rotation="180"
             android:scaleType="center"
             android:src="@drawable/ic_action_previous_item" />
@@ -131,7 +137,7 @@
             android:id="@id/line"
             android:layout_width="match_parent"
             android:layout_height="0.5dp"
-            android:layout_alignParentBottom="true"/>
+            android:layout_alignParentBottom="true" />
     </RelativeLayout>
 
 </LinearLayout>
