@@ -162,12 +162,14 @@ public class SearchLocationResultAdapter extends CommonListAdapter <AddressResul
 		}
 
 		holder.thumbImage.setImageResource(R.drawable.map);
-		holder.thumbBackImage.setVisibility(View.GONE);
+		holder.mainImage.setVisibility(View.GONE);
+		holder.aboveBodyShadow.setVisibility(View.GONE);
 		
 		
 		
 		Bitmap image = ImageUtils.getInstance(mContext).getImageBitmap(data.getLatitude() + data.getLongitude());
 		if(image != null){
+			holder.aboveBodyShadow.setVisibility(View.VISIBLE);
 			holder.mainImage.setVisibility(View.VISIBLE);
 			holder.mainImage.setImageBitmap(image);
 		}else{
