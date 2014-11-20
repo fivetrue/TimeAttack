@@ -56,7 +56,7 @@ abstract public class BaseActivity extends LocationActivity implements IRequestR
 
 	private ViewGroup mContentView = null;
 	private ViewGroup mLayoutDrawer = null;
-	static protected DrawerFragment mFragmentDrawer = null;
+	protected DrawerFragment mFragmentDrawer = null;
 	private NetworkResultDBManager mNetworkResultDBM = null;
 
 	private CustomActionBar mCustomActionBar = null;
@@ -113,12 +113,8 @@ abstract public class BaseActivity extends LocationActivity implements IRequestR
 		mProgressDialog.setCanceledOnTouchOutside(false);
 		mProgressDialog.setCancelable(false);
 
-		if(mFragmentDrawer == null){
-			mFragmentDrawer = (DrawerFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_drawer);
-			mFragmentDrawer.setOnClickDrawerMenuClickListener(mDrawerMenuClickListener);
-		}else{
-			mFragmentDrawer.setOnClickDrawerMenuClickListener(mDrawerMenuClickListener);
-		}
+		mFragmentDrawer = (DrawerFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_drawer);
+		mFragmentDrawer.setOnClickDrawerMenuClickListener(mDrawerMenuClickListener);
 
 		View contentView = onCreateView(inflater);
 		if(contentView != null){
@@ -530,6 +526,10 @@ abstract public class BaseActivity extends LocationActivity implements IRequestR
 				mProgressDialog.dismiss();
 			}
 		}
+	}
+	
+	public DrawerFragment getDrawerFragment(){
+		return mFragmentDrawer;
 	}
 
 }
