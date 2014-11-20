@@ -29,7 +29,8 @@
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:scaleType="center"
-                android:src="@drawable/arrow_d" />
+                android:rotation="180"
+                android:src="@drawable/ic_action_previous_item" />
         </RelativeLayout>
 
         <ImageView
