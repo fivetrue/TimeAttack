@@ -74,7 +74,7 @@ abstract public class BaseActivity extends LocationActivity implements IRequestR
 
 		initViews(mInflater);
 		initActionBar(mInflater);
-		initActionBarSetting();
+		initActionBarSetting(mInflater);
 		initModels();
 	}
 
@@ -149,7 +149,7 @@ abstract public class BaseActivity extends LocationActivity implements IRequestR
 	}
 
 	
-	public void initActionBarSetting(){
+	public void initActionBarSetting(LayoutInflater inflater){
 
 		if(mCustomActionBar == null)
 			return ;
@@ -157,21 +157,22 @@ abstract public class BaseActivity extends LocationActivity implements IRequestR
 		mCustomActionBar.setActionBarBlending(isActionBarBlending());
 		mCustomActionBar.setTitle(getActionBarTitleName());
 		mCustomActionBar.setSubTitle(getActionBarSubTitle());
+		mCustomActionBar.setHomeMenuViews(getActionBarMenuView(inflater));
 		mCustomActionBar.setDrawerLayout(mDrawerLayout);
 		mCustomActionBar.setLayoutDrawer(mLayoutDrawer);
 	}
 
 
-	private void initActionBarButtons(Menu menu){
-		if(menu != null){
-			for(int i = 0 ; i < menu.size() ; i ++){
-				View view = menu.getItem(i).getActionView();
-				if(view != null){
-					view.setOnClickListener(onClickActionBarItem);
-				}
-			}
-		}
-	}
+//	private void initActionBarButtons(Menu menu){
+//		if(menu != null){
+//			for(int i = 0 ; i < menu.size() ; i ++){
+//				View view = menu.getItem(i).getActionView();
+//				if(view != null){
+//					view.setOnClickListener(onClickActionBarItem);
+//				}
+//			}
+//		}
+//	}
 
 	DrawerListener onDrawerListener = new DrawerListener() {
 
@@ -217,11 +218,11 @@ abstract public class BaseActivity extends LocationActivity implements IRequestR
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
-		if(getActionBarMenuResource() != INVALID_VALUE){
-			MenuInflater inflater = getMenuInflater();
-			inflater.inflate(getActionBarMenuResource(), menu);
-			initActionBarButtons(menu);
-		}
+//		if(getActionBarMenuResource() != INVALID_VALUE){
+//			MenuInflater inflater = getMenuInflater();
+//			inflater.inflate(getActionBarMenuResource(), menu);
+//			initActionBarButtons(menu);
+//		}
 
 		return super.onCreateOptionsMenu(menu);
 	}
@@ -317,7 +318,8 @@ abstract public class BaseActivity extends LocationActivity implements IRequestR
 
 	abstract public String getActionBarSubTitle();
 
-	abstract public int getActionBarMenuResource();
+//	abstract public int getActionBarMenuResource();
+	abstract public ViewGroup getActionBarMenuView(LayoutInflater inflater);
 
 	abstract public boolean isHomeAsUp();
 

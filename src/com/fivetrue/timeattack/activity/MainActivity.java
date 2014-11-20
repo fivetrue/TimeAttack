@@ -11,6 +11,7 @@ import android.support.v4.app.Fragment;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 
 public class MainActivity extends BaseActivity{
 	
@@ -81,11 +82,11 @@ public class MainActivity extends BaseActivity{
 		
 	}
 
-	@Override
-	public int getActionBarMenuResource() {
-		// TODO Auto-generated method stub
-		return R.menu.actionbar_main_menu;
-	}
+//	@Override
+//	public int getActionBarMenuResource() {
+//		// TODO Auto-generated method stub
+//		return R.menu.actionbar_main_menu;
+//	}
 
 	@Override
 	public void requsetNetworkResultSuccess() {
@@ -110,5 +111,11 @@ public class MainActivity extends BaseActivity{
 	public boolean isActionBarBlending() {
 		// TODO Auto-generated method stub
 		return false ;
+	}
+
+	@Override
+	public ViewGroup getActionBarMenuView(LayoutInflater inflater) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

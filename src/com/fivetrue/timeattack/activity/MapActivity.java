@@ -5,8 +5,6 @@ import java.util.ArrayList;
 import com.api.common.BaseEntry;
 import com.api.google.geocoding.model.AddressResultVO;
 import com.api.google.place.model.PlaceVO;
-import com.fivetrue.dialog.ProgressDialog;
-import com.fivetrue.network.VolleyInstance;
 import com.fivetrue.timeattack.R;
 import com.fivetrue.timeattack.activity.manager.MapActivityManager;
 import com.fivetrue.timeattack.fragment.map.NearBySearchListFragment;
@@ -19,7 +17,6 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 
 import android.graphics.Bitmap;
-import android.graphics.Bitmap.CompressFormat;
 import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -221,13 +218,54 @@ public class MapActivity extends BaseActivity {
 		return null;
 	}
 
+//	@Override
+//	public int getActionBarMenuResource() {
+//		// TODO Auto-generated method stub
+//
+//		switch(mType){
+//		//		case MapActivityManager.DATA_GEOCODING : 
+//		//			return R.menu.actionbar_map_geocoding_menu;
+//
+//		case MapActivityManager.DATA_DIRECTION :
+//			break;
+//
+//		case MapActivityManager.DATA_PLACE :
+//
+//			break;
+//		}
+//		return R.menu.actionbar_map_default_menu;
+//	}
+	
+//	 <item
+//     android:showAsAction="always"
+//     android:title="@string/actionbar_place"
+//     android:actionLayout="@layout/actionbar_menu_place"/>
+// 
+// <item
+//     android:showAsAction="always"
+//     android:title="@string/actionbar_direction"
+//     android:actionLayout="@layout/actionbar_menu_direction"/>
+// 
+// <item
+//     android:showAsAction="always"
+//     android:title="@string/action_settings"
+//     android:actionLayout="@layout/actionbar_menu_setting"/>
+	
+	
 	@Override
-	public int getActionBarMenuResource() {
+	public ViewGroup getActionBarMenuView(LayoutInflater inflater) {
 		// TODO Auto-generated method stub
-
+		
+		ViewGroup menu = (ViewGroup) inflater.inflate(R.layout.actionbar_map_menu, null);
+		
+		menu.findViewById(R.id.action_item_place).setOnClickListener(onClickActionBarItem);
+		menu.findViewById(R.id.action_item_directions).setOnClickListener(onClickActionBarItem);
+		menu.findViewById(R.id.action_item_setting).setOnClickListener(onClickActionBarItem);
+		
 		switch(mType){
-		//		case MapActivityManager.DATA_GEOCODING : 
-		//			return R.menu.actionbar_map_geocoding_menu;
+		case MapActivityManager.DATA_GEOCODING : 
+			menu.findViewById(R.id.action_item_place).setVisibility(View.GONE);
+			menu.findViewById(R.id.action_item_directions).setVisibility(View.GONE);
 
 		case MapActivityManager.DATA_DIRECTION :
 			break;
@@ -236,7 +274,7 @@ public class MapActivity extends BaseActivity {
 
 			break;
 		}
-		return R.menu.actionbar_map_default_menu;
+		return menu;
 	}
 
 	@Override

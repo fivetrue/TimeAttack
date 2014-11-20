@@ -10,15 +10,11 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.ImageLoader.ImageContainer;
-import com.android.volley.toolbox.ImageLoader.ImageListener;
 import com.api.common.BaseEntry;
 import com.api.google.directions.entry.DirectionsEntry;
 import com.api.google.directions.model.RouteVO;
 import com.api.google.geocoding.model.AddressResultVO;
 import com.api.google.place.model.PlaceVO;
-import com.fivetrue.network.VolleyInstance;
 import com.fivetrue.timeattack.activity.MapActivity;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
