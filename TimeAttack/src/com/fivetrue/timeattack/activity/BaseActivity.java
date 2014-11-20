@@ -62,7 +62,7 @@ abstract public class BaseActivity extends LocationActivity implements IRequestR
 	private CustomActionBar mCustomActionBar = null;
 
 	private LayoutInflater mInflater = null;
-	
+
 	private ProgressDialog mProgressDialog = null;
 
 	@Override
@@ -108,7 +108,7 @@ abstract public class BaseActivity extends LocationActivity implements IRequestR
 		mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 		mContentView = (ViewGroup) findViewById(R.id.layout_main_frame);
 		mLayoutDrawer = (ViewGroup) findViewById(R.id.layout_drawer);
-		
+
 		mProgressDialog = new ProgressDialog(this);
 		mProgressDialog.setCanceledOnTouchOutside(false);
 		mProgressDialog.setCancelable(false);
@@ -126,7 +126,7 @@ abstract public class BaseActivity extends LocationActivity implements IRequestR
 	/**
 	 * Actionbar Setting Area Start
 	 */
-	
+
 	public void initActionBar(LayoutInflater inflater){
 
 		if(isActionBarBlending()){
@@ -144,7 +144,7 @@ abstract public class BaseActivity extends LocationActivity implements IRequestR
 		}
 	}
 
-	
+
 	public void initActionBarSetting(LayoutInflater inflater){
 
 		if(mCustomActionBar == null)
@@ -159,16 +159,16 @@ abstract public class BaseActivity extends LocationActivity implements IRequestR
 	}
 
 
-//	private void initActionBarButtons(Menu menu){
-//		if(menu != null){
-//			for(int i = 0 ; i < menu.size() ; i ++){
-//				View view = menu.getItem(i).getActionView();
-//				if(view != null){
-//					view.setOnClickListener(onClickActionBarItem);
-//				}
-//			}
-//		}
-//	}
+	//	private void initActionBarButtons(Menu menu){
+	//		if(menu != null){
+	//			for(int i = 0 ; i < menu.size() ; i ++){
+	//				View view = menu.getItem(i).getActionView();
+	//				if(view != null){
+	//					view.setOnClickListener(onClickActionBarItem);
+	//				}
+	//			}
+	//		}
+	//	}
 
 	DrawerListener onDrawerListener = new DrawerListener() {
 
@@ -183,7 +183,7 @@ abstract public class BaseActivity extends LocationActivity implements IRequestR
 			if(mCustomActionBar != null){
 				mCustomActionBar.getDrawerListener().onDrawerSlide(arg1);
 			}
-			
+
 			if(mFragmentDrawer != null){
 				mFragmentDrawer.slideDrawer(arg1);
 			}
@@ -206,7 +206,7 @@ abstract public class BaseActivity extends LocationActivity implements IRequestR
 			}
 		}
 	};
-	
+
 	/**
 	 * Actionbar Setting Area End
 	 */
@@ -218,11 +218,11 @@ abstract public class BaseActivity extends LocationActivity implements IRequestR
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
-//		if(getActionBarMenuResource() != INVALID_VALUE){
-//			MenuInflater inflater = getMenuInflater();
-//			inflater.inflate(getActionBarMenuResource(), menu);
-//			initActionBarButtons(menu);
-//		}
+		//		if(getActionBarMenuResource() != INVALID_VALUE){
+		//			MenuInflater inflater = getMenuInflater();
+		//			inflater.inflate(getActionBarMenuResource(), menu);
+		//			initActionBarButtons(menu);
+		//		}
 
 		return super.onCreateOptionsMenu(menu);
 	}
@@ -318,7 +318,7 @@ abstract public class BaseActivity extends LocationActivity implements IRequestR
 
 	abstract public String getActionBarSubTitle();
 
-//	abstract public int getActionBarMenuResource();
+	//	abstract public int getActionBarMenuResource();
 	abstract public ViewGroup getActionBarMenuView(LayoutInflater inflater);
 
 	abstract public boolean isHomeAsUp();
@@ -328,7 +328,7 @@ abstract public class BaseActivity extends LocationActivity implements IRequestR
 	abstract public void onClickAcitionMenuLocationSearch(View view);
 
 	abstract public boolean isActionBarBlending();
-	
+
 	protected OnDrawerMenuClickListener  mDrawerMenuClickListener = new OnDrawerMenuClickListener() {
 
 		@Override
@@ -350,9 +350,9 @@ abstract public class BaseActivity extends LocationActivity implements IRequestR
 					}
 				}
 			}
-			
+
 			switch(itemLayout.getId()){
-			
+
 			case R.id.layout_drawer_home :
 				if(!(BaseActivity.this instanceof MainActivity)){
 					Intent i = new Intent(BaseActivity.this, MainActivity.class);
@@ -360,13 +360,21 @@ abstract public class BaseActivity extends LocationActivity implements IRequestR
 					startActivity(i);
 				}
 				break;
-				
+
 			case R.id.layout_drawer_near_by :
-				startActivity(MapActivity.class);
+				if(!(BaseActivity.this instanceof MapActivity)){
+					Intent i = new Intent(BaseActivity.this, MapActivity.class);
+					i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+					startActivity(i);
+				}
 				break;
-				
+
 			case R.id.layout_drawer_direction :
-				startActivity(SearchLocationActivity.class);
+				if(!(BaseActivity.this instanceof SearchLocationActivity)){
+					Intent i = new Intent(BaseActivity.this, SearchLocationActivity.class);
+					i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+					startActivity(i);
+				}
 				break;
 			}
 
@@ -397,7 +405,7 @@ abstract public class BaseActivity extends LocationActivity implements IRequestR
 			case R.id.action_item_place :
 			{
 				//위치 검색..
-					Toast.makeText(getApplicationContext(), "action_place", Toast.LENGTH_SHORT).show();
+				Toast.makeText(getApplicationContext(), "action_place", Toast.LENGTH_SHORT).show();
 				return ;
 			}
 
@@ -515,7 +523,7 @@ abstract public class BaseActivity extends LocationActivity implements IRequestR
 	public void showNetworkFailToast(){
 		Toast.makeText(this, R.string.error_network_request_fail, Toast.LENGTH_SHORT).show();
 	}
-	
+
 	public void showProgressDialog(){
 		if(mProgressDialog != null){
 			if(!mProgressDialog.isShowing()){
@@ -523,7 +531,7 @@ abstract public class BaseActivity extends LocationActivity implements IRequestR
 			}
 		}
 	}
-	
+
 	public void dismissProgressDialog(){
 		if(mProgressDialog != null){
 			if(mProgressDialog.isShowing()){
@@ -531,7 +539,7 @@ abstract public class BaseActivity extends LocationActivity implements IRequestR
 			}
 		}
 	}
-	
+
 	public DrawerFragment getDrawerFragment(){
 		return mFragmentDrawer;
 	}
