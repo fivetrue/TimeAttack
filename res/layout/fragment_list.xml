@@ -45,6 +45,6 @@
         android:layout_height="@dimen/common_margin"
         android:layout_marginLeft="@dimen/common_margin"
         android:layout_marginRight="@dimen/common_margin"
-        android:background="@drawable/tab_img_shadow_pattern" />
+        android:background="@drawable/shadow_pattern" />
 
 </LinearLayout>

@@ -142,7 +142,7 @@ abstract public class BaseActivity extends LocationActivity implements IRequestR
 
 			ViewGroup shadowAchor =  (ViewGroup) findViewById(R.id.layout_main);
 			View shadow = new View(this);
-			shadow.setBackground(getResources().getDrawable(R.drawable.tab_img_shadow_pattern));
+			shadow.setBackground(getResources().getDrawable(R.drawable.shadow_pattern));
 			LayoutParams params = new LayoutParams(LayoutParams.MATCH_PARENT, (int)getResources().getDimension(R.dimen.shadow_height));
 			shadowAchor.addView(shadow, params);
 		}

@@ -27,7 +27,7 @@
         android:layout_height="@dimen/shadow_height"
         android:layout_below="@id/layout_search_top"
         android:layout_marginBottom="@dimen/common_margin"
-        android:background="@drawable/tab_img_shadow_pattern" />
+        android:background="@drawable/shadow_pattern" />
 
     <RelativeLayout
         android:id="@+id/layout_search_bottom"
