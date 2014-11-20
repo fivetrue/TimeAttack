@@ -183,6 +183,10 @@ abstract public class BaseActivity extends LocationActivity implements IRequestR
 			if(mCustomActionBar != null){
 				mCustomActionBar.getDrawerListener().onDrawerSlide(arg1);
 			}
+			
+			if(mFragmentDrawer != null){
+				mFragmentDrawer.slideDrawer(arg1);
+			}
 		}
 
 		@Override
