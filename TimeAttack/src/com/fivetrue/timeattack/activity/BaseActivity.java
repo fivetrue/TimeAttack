@@ -396,8 +396,8 @@ abstract public class BaseActivity extends LocationActivity implements IRequestR
 
 			case R.id.action_item_place :
 			{
-				//주변 검색.
-				Toast.makeText(getApplicationContext(), "action_place", Toast.LENGTH_SHORT).show();
+				//위치 검색..
+					Toast.makeText(getApplicationContext(), "action_place", Toast.LENGTH_SHORT).show();
 				return ;
 			}
 

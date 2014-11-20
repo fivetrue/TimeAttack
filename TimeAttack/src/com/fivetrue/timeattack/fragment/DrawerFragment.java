@@ -1,13 +1,16 @@
 package com.fivetrue.timeattack.fragment;
 
 import com.fivetrue.timeattack.R;
+import com.fivetrue.timeattack.utils.ImageUtils;
 import com.fivetrue.utils.ColorUtil;
 
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 
@@ -46,12 +49,14 @@ public class DrawerFragment extends BaseFragment {
 		
 		
 		mViewHolder.layoutUserInfo = (ViewGroup) mViewHolder.layout.findViewById(R.id.layout_drawer_user_info);
+		mViewHolder.ivUserProfile = (ImageView) mViewHolder.layout.findViewById(R.id.iv_drawer_user);
 		mViewHolder.tvUserName = (TextView) mViewHolder.layout.findViewById(R.id.tv_drawer_user_name);
 		mViewHolder.tvUserInfo = (TextView) mViewHolder.layout.findViewById(R.id.tv_drawer_user_info);
 		
 		mViewHolder.layoutUserInfo.setBackground(getResources().getDrawable(mPrimaryColorRes));
 		mViewHolder.tvUserName.setTextColor(getResources().getColor(mLineColor));
 		mViewHolder.tvUserInfo.setTextColor(getResources().getColor(mLineColor));
+		mViewHolder.layoutUserInfo.findViewById(R.id.line).setBackground(getResources().getDrawable(mPrimaryDarkColorRes));
 		
 		mViewHolder.layoutHome = (ViewGroup) mViewHolder.layout.findViewById(R.id.layout_drawer_home);
 		mViewHolder.layoutDirection = (ViewGroup) mViewHolder.layout.findViewById(R.id.layout_drawer_direction);
@@ -88,6 +93,8 @@ public class DrawerFragment extends BaseFragment {
 			PRIMARY_COLOR[i] = Long.valueOf(primaryColor, 16);
 			PRIMARY_DARK_COLOR[i] = Long.valueOf(primaryDarkColor, 16);
 		}
+		
+		mViewHolder.ivUserProfile.setImageBitmap(ImageUtils.getInstance(getActivity()).circleBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.map)));
 	}
 	
 	
@@ -149,6 +156,7 @@ public class DrawerFragment extends BaseFragment {
 		public ViewGroup layoutUserInfo;
 		public TextView tvUserName;
 		public TextView tvUserInfo;
+		public ImageView ivUserProfile;
 		
 		public ViewGroup layoutHome;
 		public ViewGroup layoutNearBy;
