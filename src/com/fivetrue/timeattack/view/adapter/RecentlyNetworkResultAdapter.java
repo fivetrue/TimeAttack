@@ -206,6 +206,7 @@ public class RecentlyNetworkResultAdapter extends CommonListAdapter <NetworkResu
 		
 		holder.thumbBackImage.setVisibility(View.GONE);
 		holder.mainImage.setVisibility(View.GONE);
+		holder.aboveBodyShadow.setVisibility(View.GONE);
 		
 		switch(data.getType()){
 		case Direction : 
@@ -273,6 +274,7 @@ public class RecentlyNetworkResultAdapter extends CommonListAdapter <NetworkResu
 				AddressResultVO address = entry.getAddressList().get(0);
 				Bitmap image = ImageUtils.getInstance(mContext).getImageBitmap(address.getLatitude() + address.getLongitude());
 				if(image != null){
+					holder.aboveBodyShadow.setVisibility(View.VISIBLE);
 					holder.mainImage.setVisibility(View.VISIBLE);
 					holder.mainImage.setImageBitmap(image);
 				}else{

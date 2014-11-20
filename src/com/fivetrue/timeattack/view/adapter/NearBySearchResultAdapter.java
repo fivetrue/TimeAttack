@@ -62,6 +62,7 @@ public class NearBySearchResultAdapter extends CommonListAdapter<PlaceVO>{
 		}
 		
 		holder.mainImage.setVisibility(View.GONE);
+		holder.aboveBodyShadow.setVisibility(View.GONE);
 
 		VolleyInstance.getImageLoader().get(data.getIcon(), new ImageListener() {
 

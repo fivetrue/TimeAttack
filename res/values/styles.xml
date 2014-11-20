@@ -79,6 +79,7 @@
 
     <style name="listHeaderText" parent="baseListTextProperties">
         <item name="android:textSize">@dimen/common_item_header_text_size</item>
+        <item name="android:padding">@dimen/common_item_padding</item>
     </style>
     
     <style name="listTitleText" parent="baseListTextProperties">

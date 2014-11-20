@@ -58,6 +58,8 @@ abstract public class CommonListAdapter<T> extends MyBaseAdapter<T>{
 			holder.subTitle = (TextView) convertView.findViewById(R.id.tv_common_item_sub_title);
 			
 			holder.contentText = (TextView) convertView.findViewById(R.id.tv_common_item_content);
+			holder.aboveBodyShadow = convertView.findViewById(R.id.above_body_shadow);
+			
 			convertView.setTag(holder);
 		}else {
 			holder = (ViewHolder) convertView.getTag();
@@ -97,6 +99,8 @@ abstract public class CommonListAdapter<T> extends MyBaseAdapter<T>{
 		public TextView subTitle;
 		
 		public TextView contentText;
+		
+		public View aboveBodyShadow;
 	}
 	
 	protected void setColorList(int[] colorList){
