@@ -116,6 +116,10 @@ public class MainActivity extends BaseActivity{
 	@Override
 	public ViewGroup getActionBarMenuView(LayoutInflater inflater) {
 		// TODO Auto-generated method stub
-		return null;
+		ViewGroup menu = (ViewGroup) inflater.inflate(R.layout.actionbar_main_menu, null);
+		menu.findViewById(R.id.action_item_searching).setOnClickListener(onClickActionBarItem);
+		menu.findViewById(R.id.action_item_map).setOnClickListener(onClickActionBarItem);
+		menu.findViewById(R.id.action_item_setting).setOnClickListener(onClickActionBarItem);
+		return menu;
 	}
 }
