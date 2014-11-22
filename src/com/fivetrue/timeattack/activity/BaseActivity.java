@@ -22,7 +22,6 @@ import com.fivetrue.timeattack.R;
 import com.fivetrue.timeattack.database.NetworkResultDBManager;
 import com.fivetrue.timeattack.fragment.BaseFragment;
 import com.fivetrue.timeattack.fragment.DrawerFragment;
-import com.fivetrue.timeattack.fragment.DrawerFragment.OnDrawerMenuClickListener;
 import com.fivetrue.timeattack.view.actionbar.CustomActionBar;
 import com.fivetrue.utils.Logger;
 
@@ -34,13 +33,11 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.DrawerLayout.DrawerListener;
 import android.view.LayoutInflater;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout.LayoutParams;
-import android.widget.TextView;
 import android.widget.Toast;
 
 /**
@@ -114,7 +111,7 @@ abstract public class BaseActivity extends LocationActivity implements IRequestR
 		mProgressDialog.setCancelable(false);
 
 		mFragmentDrawer = (DrawerFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_drawer);
-		mFragmentDrawer.setOnClickDrawerMenuClickListener(mDrawerMenuClickListener);
+		mFragmentDrawer.setDrawerLayout(mDrawerLayout, mLayoutDrawer);
 
 		View contentView = onCreateView(inflater);
 		if(contentView != null){
@@ -318,7 +315,6 @@ abstract public class BaseActivity extends LocationActivity implements IRequestR
 
 	abstract public String getActionBarSubTitle();
 
-	//	abstract public int getActionBarMenuResource();
 	abstract public ViewGroup getActionBarMenuView(LayoutInflater inflater);
 
 	abstract public boolean isHomeAsUp();
@@ -328,64 +324,6 @@ abstract public class BaseActivity extends LocationActivity implements IRequestR
 	abstract public void onClickAcitionMenuLocationSearch(View view);
 
 	abstract public boolean isActionBarBlending();
-
-	protected OnDrawerMenuClickListener  mDrawerMenuClickListener = new OnDrawerMenuClickListener() {
-
-		@Override
-		public void onMenuClick(ViewGroup parent, ViewGroup itemLayout,
-				TextView itemText) {
-			// TODO Auto-generated method stub
-			if(parent != null){
-				for(int i = 0 ; i < parent.getChildCount() ; i ++){
-					ViewGroup view = (ViewGroup) parent.getChildAt(i);
-					if(view != null){
-						for(int index = 0 ; index < view.getChildCount() ; index ++){
-							View child = view.getChildAt(index);
-							if(child != null){
-								if(child instanceof TextView){
-									child.setSelected(false);
-								}
-							}
-						}
-					}
-				}
-			}
-
-			switch(itemLayout.getId()){
-
-			case R.id.layout_drawer_home :
-				if(!(BaseActivity.this instanceof MainActivity)){
-					Intent i = new Intent(BaseActivity.this, MainActivity.class);
-					i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-					startActivity(i);
-				}
-				break;
-
-			case R.id.layout_drawer_near_by :
-				if(!(BaseActivity.this instanceof MapActivity)){
-					Intent i = new Intent(BaseActivity.this, MapActivity.class);
-					i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-					startActivity(i);
-				}
-				break;
-
-			case R.id.layout_drawer_direction :
-				if(!(BaseActivity.this instanceof SearchLocationActivity)){
-					Intent i = new Intent(BaseActivity.this, SearchLocationActivity.class);
-					i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-					startActivity(i);
-				}
-				break;
-			}
-
-			itemText.setSelected(true);
-
-			if(mDrawerLayout != null && mLayoutDrawer != null){
-				mDrawerLayout.closeDrawer(mLayoutDrawer);
-			}
-
-		}
-	};
 
 	protected OnClickListener onClickActionBarItem = new OnClickListener() {
 

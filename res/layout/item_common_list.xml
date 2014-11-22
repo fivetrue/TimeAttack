@@ -30,7 +30,7 @@
                 android:layout_centerVertical="true"
                 android:scaleType="center"
                 android:rotation="180"
-                android:src="@drawable/ic_action_previous_item" />
+                android:src="@drawable/ic_action_previous_item_w" />
         </RelativeLayout>
 
         <ImageView
