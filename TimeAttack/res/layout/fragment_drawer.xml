@@ -50,65 +50,66 @@
         </LinearLayout>
     </RelativeLayout>
 
-    <RelativeLayout
+    <LinearLayout
         android:id="@+id/layout_drawer_default_items"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/drawer_item_padding_left"
+        android:orientation="horizontal"
         android:paddingTop="@dimen/drawer_item_padding_left" >
 
-        <View
-            android:id="@+id/base_line"
-            android:layout_width="1px"
-            android:layout_height="1px"
-            android:layout_centerInParent="true" />
-
-        <TextView
-            android:id="@+id/tv_drawer_home"
-            style="@style/DrawerText"
-            android:layout_width="@dimen/drawer_item_width"
-            android:layout_height="@dimen/drawer_item_height"
-            android:layout_margin="@dimen/drawer_item_margin"
-            android:drawableLeft="@drawable/ic_action_view_as_grid"
-            android:text="@string/drawer_home" />
-
-        <TextView
-            android:id="@+id/tv_drawer_map"
-            style="@style/DrawerText"
-            android:layout_width="@dimen/drawer_item_width"
-            android:layout_height="@dimen/drawer_item_height"
-            android:layout_alignLeft="@id/base_line"
-            android:layout_margin="@dimen/drawer_item_margin"
-            android:drawableLeft="@drawable/ic_action_map"
-            android:text="@string/drawer_map" />
-
-        <TextView
-            android:id="@+id/tv_drawer_search"
-            style="@style/DrawerText"
-            android:layout_width="@dimen/drawer_item_width"
-            android:layout_height="@dimen/drawer_item_height"
-            android:layout_below="@id/tv_drawer_home"
-            android:layout_margin="@dimen/drawer_item_margin"
-            android:drawableLeft="@drawable/ic_action_search"
-            android:text="@string/drawer_search_address" />
-
-        <TextView
-            android:id="@+id/tv_drawer_setting"
-            style="@style/DrawerText"
-            android:layout_width="@dimen/drawer_item_width"
-            android:layout_height="@dimen/drawer_item_height"
-            android:layout_alignLeft="@id/base_line"
-            android:layout_below="@id/tv_drawer_home"
-            android:layout_margin="@dimen/drawer_item_margin"
-            android:drawableLeft="@drawable/ic_action_settings"
-            android:text="@string/actionbar_setting" />
-
-        <View
-            android:id="@id/line"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="0.5dp"
-            android:layout_below="@id/tv_drawer_search"
-            android:layout_marginTop="@dimen/drawer_item_padding_left" />
-    </RelativeLayout>
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/tv_drawer_home"
+                style="@style/DrawerText"
+                android:layout_width="@dimen/drawer_item_width"
+                android:layout_height="@dimen/drawer_item_height"
+                android:layout_gravity="center_horizontal"
+                android:layout_margin="@dimen/drawer_item_margin"
+                android:drawableLeft="@drawable/ic_action_view_as_grid"
+                android:text="@string/drawer_home" />
+
+            <TextView
+                android:id="@+id/tv_drawer_search"
+                style="@style/DrawerText"
+                android:layout_width="@dimen/drawer_item_width"
+                android:layout_height="@dimen/drawer_item_height"
+                android:layout_gravity="center_horizontal"
+                android:layout_margin="@dimen/drawer_item_margin"
+                android:drawableLeft="@drawable/ic_action_search"
+                android:text="@string/drawer_search_address" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/tv_drawer_map"
+                style="@style/DrawerText"
+                android:layout_width="@dimen/drawer_item_width"
+                android:layout_height="@dimen/drawer_item_height"
+                android:layout_gravity="center_horizontal"
+                android:layout_margin="@dimen/drawer_item_margin"
+                android:drawableLeft="@drawable/ic_action_map"
+                android:text="@string/drawer_map" />
+
+            <TextView
+                android:id="@+id/tv_drawer_setting"
+                style="@style/DrawerText"
+                android:layout_width="@dimen/drawer_item_width"
+                android:layout_height="@dimen/drawer_item_height"
+                android:layout_gravity="center_horizontal"
+                android:layout_margin="@dimen/drawer_item_margin"
+                android:drawableLeft="@drawable/ic_action_settings"
+                android:text="@string/actionbar_setting" />
+        </LinearLayout>
+    </LinearLayout>
 
 </LinearLayout>

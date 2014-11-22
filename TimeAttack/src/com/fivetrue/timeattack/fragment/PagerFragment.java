@@ -26,8 +26,9 @@ public class PagerFragment extends BaseFragment {
 	}
 
 	static public String PAGE_INDEX = "PAGE_INDEX";
-	private int mViewPagerId = 0x009900;
+	private final int mViewPagerId = 0x009900;
 
+	private final int ANIMATION_DURATION = 200;
 	private final int INVALID_VALUE = -1;
 
 	private ViewGroup mContentView = null;
@@ -162,7 +163,7 @@ public class PagerFragment extends BaseFragment {
 			if(mHorizontalScroll != null){
 				float destination = mHorizontalScroll.getWidth() * position;
 				ObjectAnimator objectAnimator= ObjectAnimator.ofFloat(mHorizontalScroll, "translationX", mHorizontalScroll.getX(), destination);
-				objectAnimator.setDuration(200);
+				objectAnimator.setDuration(ANIMATION_DURATION);
 				objectAnimator.start();
 			}
 		}
@@ -187,7 +188,7 @@ public class PagerFragment extends BaseFragment {
 			case CustomViewPager.SCROLL_STATE_SETTLING :
 				float destination = mHorizontalScroll.getWidth() * mViewPager.getCurrentItem();
 				ObjectAnimator objectAnimator= ObjectAnimator.ofFloat(mHorizontalScroll, "translationX", mHorizontalScroll.getX(), destination);
-				objectAnimator.setDuration(200);
+				objectAnimator.setDuration(ANIMATION_DURATION);
 				objectAnimator.start();
 				break;
 			}
@@ -225,6 +226,10 @@ public class PagerFragment extends BaseFragment {
 		@Override
 		public void onSwipeComplete(MotionEvent event) {
 			// TODO Auto-generated method stub
+			float destination = mHorizontalScroll.getWidth() * mViewPager.getCurrentItem();
+			ObjectAnimator objectAnimator= ObjectAnimator.ofFloat(mHorizontalScroll, "translationX", mHorizontalScroll.getX(), destination);
+			objectAnimator.setDuration(ANIMATION_DURATION);
+			objectAnimator.start();
 		}
 	};
 	
