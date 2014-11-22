@@ -21,15 +21,15 @@
             android:id="@+id/iv_drawer_user"
             android:layout_width="@dimen/drawer_user_layout_height"
             android:layout_height="match_parent"
-            android:padding="@dimen/drawer_image_padding"
             android:layout_marginLeft="@dimen/drawer_item_padding_left"
+            android:padding="@dimen/drawer_image_padding"
             android:scaleType="centerCrop" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_toRightOf="@id/iv_drawer_user"
             android:layout_marginLeft="@dimen/drawer_item_padding_left"
+            android:layout_toRightOf="@id/iv_drawer_user"
             android:orientation="vertical" >
 
             <TextView
@@ -51,93 +51,65 @@
     </RelativeLayout>
 
     <RelativeLayout
-        android:id="@+id/layout_drawer_home"
+        android:id="@+id/layout_drawer_default_items"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/drawer_item_height"
-        android:background="@drawable/selector_drawer_layout"
-        android:paddingLeft="@dimen/drawer_item_padding_left"
-        android:paddingRight="@dimen/drawer_item_padding_right" >
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/drawer_item_margin" >
+
+        <View
+            android:id="@+id/base_line"
+            android:layout_width="1px"
+            android:layout_height="1px"
+            android:layout_centerInParent="true" />
 
         <TextView
             android:id="@+id/tv_drawer_home"
             style="@style/DrawerText"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_width="@dimen/drawer_item_width"
+            android:layout_height="@dimen/drawer_item_height"
+            android:layout_alignRight="@id/base_line"
+            android:layout_margin="@dimen/drawer_item_margin"
+            android:drawableLeft="@drawable/ic_action_view_as_grid"
             android:text="@string/drawer_home" />
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/drawer_item_height"
-            android:layout_alignParentRight="true"
-            android:rotation="180"
-            android:scaleType="center"
-            android:src="@drawable/ic_action_previous_item" />
-
-        <View
-            android:id="@id/line"
-            android:layout_width="match_parent"
-            android:layout_height="0.5dp"
-            android:layout_alignParentBottom="true" />
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:id="@+id/layout_drawer_near_by"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/drawer_item_height"
-        android:background="@drawable/selector_drawer_layout"
-        android:paddingLeft="@dimen/drawer_item_padding_left"
-        android:paddingRight="@dimen/drawer_item_padding_right" >
-
         <TextView
-            android:id="@+id/tv_drawer_near_by"
+            android:id="@+id/tv_drawer_map"
             style="@style/DrawerText"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_width="@dimen/drawer_item_width"
+            android:layout_height="@dimen/drawer_item_height"
+            android:layout_alignLeft="@id/base_line"
+            android:layout_margin="@dimen/drawer_item_margin"
+            android:drawableLeft="@drawable/ic_action_map"
             android:text="@string/drawer_map" />
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/drawer_item_height"
-            android:layout_alignParentRight="true"
-            android:rotation="180"
-            android:scaleType="center"
-            android:src="@drawable/ic_action_previous_item" />
-
-        <View
-            android:id="@id/line"
-            android:layout_width="match_parent"
-            android:layout_height="0.5dp"
-            android:layout_alignParentBottom="true" />
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:id="@+id/layout_drawer_direction"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/drawer_item_height"
-        android:background="@drawable/selector_drawer_layout"
-        android:paddingLeft="@dimen/drawer_item_padding_left"
-        android:paddingRight="@dimen/drawer_item_padding_right" >
-
         <TextView
-            android:id="@+id/tv_drawer_direction"
+            android:id="@+id/tv_drawer_search"
             style="@style/DrawerText"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_width="@dimen/drawer_item_width"
+            android:layout_height="@dimen/drawer_item_height"
+            android:layout_alignRight="@id/base_line"
+            android:layout_below="@id/tv_drawer_home"
+            android:layout_margin="@dimen/drawer_item_margin"
+            android:drawableLeft="@drawable/ic_action_search"
             android:text="@string/drawer_search_address" />
 
-        <ImageView
-            android:layout_width="wrap_content"
+        <TextView
+            android:id="@+id/tv_drawer_setting"
+            style="@style/DrawerText"
+            android:layout_width="@dimen/drawer_item_width"
             android:layout_height="@dimen/drawer_item_height"
-            android:layout_alignParentRight="true"
-            android:rotation="180"
-            android:scaleType="center"
-            android:src="@drawable/ic_action_previous_item" />
+            android:layout_alignLeft="@id/base_line"
+            android:layout_below="@id/tv_drawer_home"
+            android:layout_margin="@dimen/drawer_item_margin"
+            android:drawableLeft="@drawable/ic_action_settings"
+            android:text="@string/drawer_search_address" />
 
         <View
             android:id="@id/line"
             android:layout_width="match_parent"
             android:layout_height="0.5dp"
-            android:layout_alignParentBottom="true" />
+            android:layout_below="@id/tv_drawer_search"
+            android:layout_marginTop="@dimen/drawer_item_margin" />
     </RelativeLayout>
 
 </LinearLayout>

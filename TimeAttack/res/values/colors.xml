@@ -49,10 +49,10 @@
     <color name="dialog_button_text_color_p">#FF4E6B66</color>
 
     <!-- Drawer Layout -->
-    <color name="drawer_item_background_n">#FFFFEBEE</color>
-    <color name="drawer_item_background_p">#FF930000</color>
-    <color name="drawer_item_background_s">#FF930000</color>
-    <color name="drawer_item_background_d">#FFFFCDD2</color>
+    <color name="drawer_item_background_n">#FFAAAAAA</color>
+    <color name="drawer_item_background_p">#66AAAAAA</color>
+    <color name="drawer_item_background_s">#66AAAAAA</color>
+    <color name="drawer_item_background_d">#33AAAAAA</color>
 
     <!-- Main Color -->
     <color name="main_primary_color">#F44336</color>

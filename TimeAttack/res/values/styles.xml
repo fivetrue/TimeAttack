@@ -56,11 +56,10 @@
     <!-- TextStyles -->
      <style name="DrawerText" parent="baseListTextProperties">
         <item name="android:textSize">@dimen/drawer_item_text_size</item>
-<!--         <item name="android:textColor">@color/selector_drawer_text_color</item> -->
-        <item name="android:gravity">center_vertical</item>
-        <item name="android:paddingLeft">@dimen/drawer_item_text_padding</item>
-        <item name="android:paddingRight">@dimen/drawer_item_text_padding</item>
-        <!-- <item name="android:typeface">sans</item> -->
+        <item name="android:gravity">center</item>
+        <item name="android:padding">@dimen/drawer_item_text_padding</item>
+        <item name="android:textColor">@color/drawer_item_background_n</item>
+        <item name="android:background">@drawable/selector_drawer_item_background</item>
     </style>
     
     <style name="actionBarTitleText" parent="baseListTextProperties">
@@ -131,7 +130,7 @@
     </style>
 
     <style name="MySearchEditText.Search" parent="MySearchEditText">
-        <item name="android:drawableLeft">@drawable/ic_action_location_searching</item>
+        <item name="android:drawableLeft">@drawable/ic_action_location_searching_w</item>
         <item name="android:drawablePadding">@dimen/edit_text_padding</item>
     </style>
 
