@@ -67,7 +67,7 @@ public class DrawerFragment extends BaseFragment {
 		mViewHolder.tvSearch = (TextView) mViewHolder.layout.findViewById(R.id.tv_drawer_search);
 		mViewHolder.tvSetting = (TextView) mViewHolder.layout.findViewById(R.id.tv_drawer_setting);
 
-		mViewHolder.layoutDefaultItems.findViewById(R.id.line).setBackground(getResources().getDrawable(mLineColor));
+//		mViewHolder.layoutDefaultItems.findViewById(R.id.line).setBackground(getResources().getDrawable(mLineColor));
 
 		mViewHolder.tvHome.setOnClickListener(mOnClickListener);
 		mViewHolder.tvMap.setOnClickListener(mOnClickListener);
