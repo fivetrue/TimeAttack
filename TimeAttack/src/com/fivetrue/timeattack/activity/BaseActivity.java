@@ -351,7 +351,7 @@ abstract public class BaseActivity extends LocationActivity implements IRequestR
 			{
 				//위치 검색.
 				startActivity(SearchLocationActivity.class);
-				return;
+				break;
 			}
 			case R.id.action_item_location_searching :
 			{
@@ -449,6 +449,7 @@ abstract public class BaseActivity extends LocationActivity implements IRequestR
 			intent.putExtras(b);
 		}
 		startActivity(intent);
+		overridePendingTransition(R.anim.activity_alpha_in, R.anim.activity_slide_in_bottom);
 	}
 
 	protected void makeToast(String str){
