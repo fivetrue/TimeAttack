@@ -108,7 +108,6 @@
 
     <style name="EmptyText">
         <item name="android:textSize">@dimen/empty_text_size</item>
-        <item name="android:textColor">@color/main_accent_color</item>
         <item name="android:background">@android:color/transparent</item>
         <item name="android:gravity">center</item>
         <item name="android:typeface">monospace</item>

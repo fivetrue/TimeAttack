@@ -4,9 +4,6 @@ package com.fivetrue.timeattack.fragment;
 import com.fivetrue.timeattack.R;
 import com.fivetrue.timeattack.view.adapter.MyBaseAdapter;
 
-import android.animation.AnimatorSet;
-import android.animation.ObjectAnimator;
-import android.animation.ValueAnimator;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
