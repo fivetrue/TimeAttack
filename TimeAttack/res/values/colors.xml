@@ -13,10 +13,6 @@
     <color name="common_alpha_raleway_yellow">#66EBCC6E</color>
     <color name="common_alpha_another_gray">#66EBE1C5</color>
 
-    <!-- Dismiss Top Layout -->
-    <color name="dismiss_layout_background">#FF4E6B66</color>
-    <color name="dismiss_button_selected_background">#FFEBE1C5</color>
-
     <!-- Drawer text -->
     <!-- <color name="drawer_text_color_n">#FF595643</color>
     <color name="drawer_text_color_p">#FFFFFFFF</color>

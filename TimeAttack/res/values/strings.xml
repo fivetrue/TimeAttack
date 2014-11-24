@@ -23,6 +23,7 @@
     <!-- Error Message -->
     <string name="error_location_out_of_service">위치정보 서비스를 이용 할 수 없는 상태입니다.</string>
     <string name="error_network_request_fail">네트워크 통신에 실패 하였습니다.</string>
+    <string name="error_zero_result_nearby_subway">반경 %s 내에 지하철이 없습니다.</string>
     
     <!--Drawer Texts -->
     <string name="drawer_home">홈</string>
@@ -34,6 +35,8 @@
     <!-- Fragment -->
     <string name="recently_infomation">최근 이용정보</string>
     <string name="recently_infomation_empty">최근 이용한 정보가 없습니다.</string>
+    
+    <string name="nearby_subway_infomation_empty">주변 지하철 정보가 없습니다.</string>
     
     <!-- Map Fragment -->
     <string name="show_map">지도 보기</string>

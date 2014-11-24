@@ -7,7 +7,6 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/dismiss_layout_height"
-        android:background="@color/dismiss_layout_background"
         android:paddingLeft="@dimen/dismiss_layout_padding"
         android:paddingRight="@dimen/dismiss_layout_padding" >
 
@@ -22,7 +21,6 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_alignParentRight="true"
-            android:background="@drawable/selector_dismiss_button"
             android:src="@android:drawable/ic_menu_close_clear_cancel" />
     </RelativeLayout>
    <!--  <View 
