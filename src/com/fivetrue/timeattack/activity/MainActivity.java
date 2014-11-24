@@ -33,16 +33,13 @@ public class MainActivity extends BaseActivity{
 		});
 		
 		mPagerFragment.addFragment(new RecentlyListFragment(), getString(R.string.recently_infomation));
-		mPagerFragment.addFragment(new RecentlyListFragment(), "주변 찾기 !!!!");
-		mPagerFragment.addFragment(new RecentlyListFragment(), "주변 찾기 222");
-		mPagerFragment.addFragment(new RecentlyListFragment(), "주변 찾기33333 ");
 		return null;
 	}
 
 	@Override
 	public String getActionBarTitleName() {
 		// TODO Auto-generated method stub
-		return getString(R.string.activity_home);
+		return getString(R.string.recently_infomation);
 	}
 
 	@Override

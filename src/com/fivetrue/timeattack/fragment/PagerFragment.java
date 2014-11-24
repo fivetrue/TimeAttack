@@ -254,5 +254,14 @@ public class PagerFragment extends BaseFragment {
 			OnSelectedFragmentNameListener ll) {
 		this.mOnSelectedFragmentName = ll;
 	} 
+	
+	public String getSelectedFragmentName(){
+		String name = null;
+		if(mTitleList != null && mViewPager != null){
+			name = mTitleList.get(mViewPager.getCurrentItem());
+		}
+		
+		return name;
+	}
 }
 

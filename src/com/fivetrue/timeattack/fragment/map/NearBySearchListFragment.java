@@ -29,7 +29,7 @@ import com.google.android.gms.maps.model.LatLng;
 
 public class NearBySearchListFragment extends BaseListFragment<PlaceVO> {
 
-	private LatLng mLocation = null;
+	private ArrayList<PlaceVO> mArrPlace = new ArrayList<PlaceVO>();
 	
 	@Override
 	public View initHeader() {
@@ -55,30 +55,13 @@ public class NearBySearchListFragment extends BaseListFragment<PlaceVO> {
 	private void initData(){
 		Bundle b = getArguments();
 		if(b != null){
-			mLocation = (LatLng) b.getParcelable(MapActivityManager.MAP_DATA);
+			mArrPlace = b.getParcelableArrayList(MapActivityManager.MAP_DATA);
 		}
 	}
 	
 	private void loadData(){
-		if(mLocation != null){
-			new PlaceAPIHelper(getActivity(), API_TYPE.NEAR_BY_SEARCH, ((BaseActivity)getActivity()))
-			.requestNearBySearchSubway(mLocation.latitude, mLocation.longitude, 1000, new BaseResponseListener<PlacesEntry>() {
-				
-				@Override
-				public void onResponse(PlacesEntry response) {
-					// TODO Auto-generated method stub
-					if(response != null){
-						if(response.getStatus().equals(PlacesConstans.Status.OK.toString())){
-							setListData(response.getPlaceList());
-						}else{
-							makeToast(response.getStatusMessgae());
-							setEmptyLayout(true);
-						}
-					}else{
-						showNetworkFailToast();
-					}
-				}
-			});
+		if(mArrPlace != null){
+			setListData(mArrPlace);
 		}
 	}
 	
@@ -136,9 +119,12 @@ public class NearBySearchListFragment extends BaseListFragment<PlaceVO> {
 	
 	private View initTopView(LayoutInflater inflater){
 		ViewGroup topContent = (ViewGroup) inflater.inflate(R.layout.include_dismiss_top_layout, null);
+		topContent.setBackground(getResources().getDrawable(R.color.map_primary_color));
 		TextView title = (TextView) topContent.findViewById(R.id.tv_dismiss_title);
-		View close = topContent.findViewById(R.id.iv_dismiss_close);
+		title.setTextColor(getResources().getColor(R.color.map_primary_light_color));
 		title.setText(R.string.find_subway_nearby);
+		View close = topContent.findViewById(R.id.iv_dismiss_close);
+		close.setBackground(getResources().getDrawable(R.drawable.selector_map_primary_color));
 		close.setOnClickListener(new OnClickListener() {
 			
 			@Override

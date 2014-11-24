@@ -1,10 +1,13 @@
 package com.fivetrue.timeattack.activity;
 
-import java.util.ArrayList;
 
 import com.api.common.BaseEntry;
+import com.api.common.BaseResponseListener;
 import com.api.google.geocoding.model.AddressResultVO;
-import com.api.google.place.model.PlaceVO;
+import com.api.google.place.PlaceAPIHelper;
+import com.api.google.place.PlacesConstans;
+import com.api.google.place.PlaceAPIHelper.API_TYPE;
+import com.api.google.place.entry.PlacesEntry;
 import com.fivetrue.timeattack.R;
 import com.fivetrue.timeattack.activity.manager.MapActivityManager;
 import com.fivetrue.timeattack.fragment.map.NearBySearchListFragment;
@@ -56,6 +59,7 @@ public class MapActivity extends BaseActivity {
 	//Value
 	private float mZoomValue = 14;
 	private float mMyLocationZoomValue = 18;
+	private int mLocationRadius = 1000;
 
 
 	@Override
@@ -120,6 +124,8 @@ public class MapActivity extends BaseActivity {
 			getDrawerFragment().setLineColor(R.color.map_primary_light_color);
 			getDrawerFragment().setIconSelector(R.drawable.selector_map_primary_color);
 		}
+		
+		mContentView.setBackground(getResources().getDrawable(R.color.map_primary_light_color));
 	}
 
 	private void initModels(){
@@ -224,40 +230,6 @@ public class MapActivity extends BaseActivity {
 		return null;
 	}
 
-//	@Override
-//	public int getActionBarMenuResource() {
-//		// TODO Auto-generated method stub
-//
-//		switch(mType){
-//		//		case MapActivityManager.DATA_GEOCODING : 
-//		//			return R.menu.actionbar_map_geocoding_menu;
-//
-//		case MapActivityManager.DATA_DIRECTION :
-//			break;
-//
-//		case MapActivityManager.DATA_PLACE :
-//
-//			break;
-//		}
-//		return R.menu.actionbar_map_default_menu;
-//	}
-	
-//	 <item
-//     android:showAsAction="always"
-//     android:title="@string/actionbar_place"
-//     android:actionLayout="@layout/actionbar_menu_place"/>
-// 
-// <item
-//     android:showAsAction="always"
-//     android:title="@string/actionbar_direction"
-//     android:actionLayout="@layout/actionbar_menu_direction"/>
-// 
-// <item
-//     android:showAsAction="always"
-//     android:title="@string/action_settings"
-//     android:actionLayout="@layout/actionbar_menu_setting"/>
-	
-	
 	@Override
 	public ViewGroup getActionBarMenuView(LayoutInflater inflater) {
 		// TODO Auto-generated method stub
@@ -416,7 +388,7 @@ public class MapActivity extends BaseActivity {
 		@Override
 		public void onClick(View v) {
 			// TODO Auto-generated method stub
-			Bundle argument = new Bundle();
+			final Bundle argument = new Bundle();
 
 			double latitude = INVALID_VALUE;
 			double longitude = INVALID_VALUE;
@@ -449,41 +421,32 @@ public class MapActivity extends BaseActivity {
 
 			if(latitude == INVALID_VALUE || longitude == INVALID_VALUE)
 				return;
-
-			LatLng location = new LatLng(latitude, longitude);
-
-			argument.putParcelable(MapActivityManager.MAP_DATA, location);
-
-			mNearBySearchFragment = (NearBySearchListFragment) createFragment(NearBySearchListFragment.class, 
-					"nearby", INVALID_VALUE, argument
-					, R.anim.slide_in_top, R.anim.slide_in_top);
-
-			new AsyncTask<NearBySearchListFragment, Void, ArrayList<PlaceVO>>(){
-
+			
+			
+			new PlaceAPIHelper(MapActivity.this, API_TYPE.NEAR_BY_SEARCH, MapActivity.this)
+			.requestNearBySearchSubway(latitude, longitude, mLocationRadius, new BaseResponseListener<PlacesEntry>() {
+				
 				@Override
-				protected ArrayList<PlaceVO> doInBackground(
-						NearBySearchListFragment... params) {
+				public void onResponse(PlacesEntry response) {
 					// TODO Auto-generated method stub
-					NearBySearchListFragment f = params[0];
-					ArrayList<PlaceVO> arr = null;
-
-					while(true){
-						if(f != null){
-							arr = f.getPlaceList();
-							if(arr != null){
-								break;
-							}
+					if(response != null){
+						if(response.getStatus().equals(PlacesConstans.Status.OK.toString())){
+							argument.putParcelableArrayList(MapActivityManager.MAP_DATA, response.getPlaceList());
+							mNearBySearchFragment = (NearBySearchListFragment) createFragment(NearBySearchListFragment.class, 
+									"nearby", INVALID_VALUE, argument
+									, R.anim.slide_in_top, R.anim.slide_in_top);
+							
+							mMapManager.drawPointToMap(mMap, response.getPlaceList());
+						}else if(response.getStatus().equals(PlacesConstans.Status.ZERO_RESULTS.toString())){
+							makeToast(String.format(getString(R.string.error_zero_result_nearby_subway), mLocationRadius));
 						}else{
-							break;
+							makeToast(response.getStatusMessgae());
 						}
+					}else{
+						showNetworkFailToast();
 					}
-					return arr;
 				}
-
-				protected void onPostExecute(java.util.ArrayList<PlaceVO> result) {
-					mMapManager.drawPointToMap(mMap, result);
-				};
-			}.execute(mNearBySearchFragment);
+			});
 		}
 	};
 
