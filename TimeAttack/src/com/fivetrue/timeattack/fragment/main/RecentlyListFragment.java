@@ -51,6 +51,8 @@ public class RecentlyListFragment extends BaseListFragment<NetworkResult> {
 			setEmptyLayout(false);
 		}else{
 			getTvEmpty().setText(R.string.recently_infomation_empty);
+			getTvEmpty().setTextColor(getResources().getColor(R.color.main_primary_deep_color));
+//			getEmptyLayout().setBackground(getResources().getDrawable(R.color.main_primary_color));
 			setEmptyLayout(true);
 		}
 	}
