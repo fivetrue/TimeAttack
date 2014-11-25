@@ -51,7 +51,7 @@ public class NearBySearchResultAdapter extends CommonListAdapter<PlaceVO>{
 		}
 		
 		if(!data.isFinishAnimation()){
-			convertView.setX(mContext.getResources().getDisplayMetrics().widthPixels);
+			convertView.setX(-mContext.getResources().getDisplayMetrics().widthPixels);
 			ObjectAnimator moveX = ObjectAnimator.ofFloat(convertView, "translationX", convertView.getX(), 0);
 			moveX.setInterpolator(new AccelerateDecelerateInterpolator());
 			moveX.setDuration(ANI_DURATION);
