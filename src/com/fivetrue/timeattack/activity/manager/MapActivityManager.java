@@ -130,7 +130,7 @@ public class MapActivityManager extends BaseActivityManager{
 		b.putInt(MAP_DATA_TYPE, DATA_GEOCODING);
 		b.putParcelable(MAP_DATA, entry);
 		i.putExtras(b);
-		mContext.startActivity(i);
+		startActivity(mContext, i);
 	}
 	
 	public void showMyLocationDialog(OnMyLocationDialogSelectedListener listener){
