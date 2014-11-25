@@ -1,9 +1,13 @@
 package com.fivetrue.timeattack.activity.manager;
 
 import com.api.common.BaseEntry;
+import com.fivetrue.timeattack.R;
 import com.fivetrue.utils.Logger;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
 
 
 abstract public class BaseActivityManager {
@@ -29,5 +33,33 @@ abstract public class BaseActivityManager {
 	
 	protected void warring(String msg){
 		Logger.w(getClass().getName(), msg);
+	}
+	
+	static public void startActivity(Context context, Class<?> cls){
+		startActivity(context, cls, false, null, null);
+	}
+	
+	static public void startActivity(Context context, Intent intent){
+		startActivity(context, null, false, null, intent);
+	}
+
+	static public void startActivity(Context context, Class<?> cls , boolean bringToTop){
+		startActivity(context, cls, bringToTop, null, null);
+	}
+
+	static public void startActivity (Context context, Class<?> cls , boolean bringToTop, Bundle b, Intent intent){
+		
+		if(intent == null){
+			intent = new Intent(context, cls);
+		}
+		
+		if(bringToTop){
+			intent.setFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
+		}
+		if(b != null){
+			intent.putExtras(b);
+		}
+		context.startActivity(intent);
+		((Activity)context).overridePendingTransition(R.anim.activity_alpha_in, R.anim.activity_slide_in_right);
 	}
 }

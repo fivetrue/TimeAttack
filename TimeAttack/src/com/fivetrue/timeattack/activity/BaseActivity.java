@@ -19,6 +19,7 @@ import com.api.seoul.subway.entry.SubwayInfoEntry;
 import com.fivetrue.dialog.ProgressDialog;
 import com.fivetrue.location.activity.LocationActivity;
 import com.fivetrue.timeattack.R;
+import com.fivetrue.timeattack.activity.manager.BaseActivityManager;
 import com.fivetrue.timeattack.database.NetworkResultDBManager;
 import com.fivetrue.timeattack.fragment.BaseFragment;
 import com.fivetrue.timeattack.fragment.DrawerFragment;
@@ -95,6 +96,14 @@ abstract public class BaseActivity extends LocationActivity implements IRequestR
 			isRunningGps = false;
 		}
 	}
+	
+	@Override
+	public void finish() {
+		// TODO Auto-generated method stub
+		super.finish();
+		overridePendingTransition(R.anim.activity_slide_in_left, R.anim.activity_alpha_out);
+	}
+	
 
 	/**
 	 * 기본적인 View를 초기화함.
@@ -350,7 +359,7 @@ abstract public class BaseActivity extends LocationActivity implements IRequestR
 			case R.id.action_item_searching :
 			{
 				//위치 검색.
-				startActivity(SearchLocationActivity.class);
+				BaseActivityManager.startActivity(BaseActivity.this, SearchLocationActivity.class);
 				break;
 			}
 			case R.id.action_item_location_searching :
@@ -363,7 +372,7 @@ abstract public class BaseActivity extends LocationActivity implements IRequestR
 			case R.id.action_item_map : 
 			{
 				//지도 이동.
-				startActivity(MapActivity.class);
+				BaseActivityManager.startActivity(BaseActivity.this, MapActivity.class);
 				return ;
 			}
 
@@ -430,26 +439,6 @@ abstract public class BaseActivity extends LocationActivity implements IRequestR
 
 	protected void log(String msg){
 		Logger.e(getPackageName(), getClass().getName() + " = " + msg);
-	}
-
-	protected void startActivity(Class<?> cls){
-		startActivity(cls, false, null);
-	}
-
-	protected void startActivity(Class<?> cls , boolean bringToTop){
-		startActivity(cls, bringToTop, null);
-	}
-
-	protected void startActivity (Class<?> cls , boolean bringToTop, Bundle b){
-		Intent intent = new Intent(getApplicationContext(), cls);
-		if(bringToTop){
-			intent.setFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
-		}
-		if(b != null){
-			intent.putExtras(b);
-		}
-		startActivity(intent);
-		overridePendingTransition(R.anim.activity_alpha_in, R.anim.activity_slide_in_bottom);
 	}
 
 	protected void makeToast(String str){

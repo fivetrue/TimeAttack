@@ -27,6 +27,6 @@ public class SearchActivityManager extends BaseActivityManager{
 		Bundle b = new Bundle();
 		b.putParcelable(SEARCH_DATA, entry);
 		i.putExtras(b);
-		mContext.startActivity(i);
+		startActivity(mContext, i);
 	}
 }
