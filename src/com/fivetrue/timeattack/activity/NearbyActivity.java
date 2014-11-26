@@ -1,6 +1,9 @@
 package com.fivetrue.timeattack.activity;
 
 
+import com.api.common.BaseResponseListener;
+import com.api.google.place.PlaceDetailAPIHelper;
+import com.api.google.place.entry.PlacesDetailEntry;
 import com.api.google.place.model.PlaceVO;
 import com.fivetrue.timeattack.R;
 import com.fivetrue.timeattack.activity.manager.NearbyActivityManager;
@@ -11,7 +14,6 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
 
 public class NearbyActivity extends BaseActivity {
 
@@ -23,10 +25,8 @@ public class NearbyActivity extends BaseActivity {
 //	}
 
 	private ViewGroup mContentView = null;
-//	private ViewHolder mViewHolder = new ViewHolder();
 	
 	
-	private InputMethodManager mImeManager = null;
 	private PlaceVO mEntry = null;
 	
 	
@@ -77,6 +77,16 @@ public class NearbyActivity extends BaseActivity {
 	
 	private void initData(){
 		if(mEntry != null){
+			new PlaceDetailAPIHelper(NearbyActivity.this, this).requestPlaceDetail(mEntry.getReference(), new BaseResponseListener<PlacesDetailEntry>() {
+				
+				@Override
+				public void onResponse(PlacesDetailEntry response) {
+					// TODO Auto-generated method stub
+					if(response != null){
+						System.out.println("ojkwon : " + response.toString());
+					}
+				}
+			});
 		}
 	}
 
