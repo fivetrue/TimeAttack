@@ -9,11 +9,13 @@ import com.android.volley.toolbox.ImageLoader.ImageListener;
 import com.api.google.place.model.PlaceVO;
 import com.fivetrue.network.VolleyInstance;
 import com.fivetrue.timeattack.R;
+import com.fivetrue.timeattack.activity.manager.NearbyActivityManager;
 
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.animation.AccelerateDecelerateInterpolator;
 
@@ -44,7 +46,7 @@ public class NearBySearchResultAdapter extends CommonListAdapter<PlaceVO>{
 			ViewGroup parent,
 			final com.fivetrue.timeattack.view.adapter.CommonListAdapter.ViewHolder holder) {
 		// TODO Auto-generated method stub
-		PlaceVO data = getItem(position);
+		final PlaceVO data = getItem(position);
 
 		if(data == null){
 			return convertView;
@@ -62,6 +64,7 @@ public class NearBySearchResultAdapter extends CommonListAdapter<PlaceVO>{
 		}
 		
 		holder.mainImage.setVisibility(View.GONE);
+		holder.thumbBackImage.setVisibility(View.GONE);
 		holder.aboveBodyShadow.setVisibility(View.GONE);
 
 		VolleyInstance.getImageLoader().get(data.getIcon(), new ImageListener() {
@@ -80,6 +83,15 @@ public class NearBySearchResultAdapter extends CommonListAdapter<PlaceVO>{
 				}else{
 					holder.thumbImage.setImageResource(R.drawable.map);
 				}
+			}
+		});
+		
+		holder.arrowImage.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				NearbyActivityManager.newInstance(mContext).goToActivity(data);
 			}
 		});
 		holder.headerTitle.setText(data.getName());
