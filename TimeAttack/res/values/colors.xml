@@ -73,5 +73,13 @@
     <color name="search_primary_dark_color">#1B5E20</color>
     <color name="search_primary_deep_color">#008000</color>
     <color name="search_accent_color">#000000</color>
+    
+    <!-- Nearby Color -->
+    <color name="nearby_primary_color">#CDDC39</color>
+    <color name="nearby_primary_light_color">#F9FBE7</color>
+    <color name="nearby_primary_soft_color">#E6EE9C</color>
+    <color name="nearby_primary_dark_color">#827717</color>
+    <color name="nearby_primary_deep_color">#335D00</color>
+    <color name="nearby_accent_color">#000000</color>
 
 </resources>
