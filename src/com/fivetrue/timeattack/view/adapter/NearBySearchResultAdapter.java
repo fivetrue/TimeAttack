@@ -10,6 +10,7 @@ import com.api.google.place.model.PlaceVO;
 import com.fivetrue.network.VolleyInstance;
 import com.fivetrue.timeattack.R;
 import com.fivetrue.timeattack.activity.manager.NearbyActivityManager;
+import com.fivetrue.timeattack.fragment.map.NearBySearchListFragment.PlaceItemDetailClickListener;
 
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
@@ -20,11 +21,14 @@ import android.view.ViewGroup;
 import android.view.animation.AccelerateDecelerateInterpolator;
 
 public class NearBySearchResultAdapter extends CommonListAdapter<PlaceVO>{
+	
+	public PlaceItemDetailClickListener mPlaceItemDetailClickListener = null;
 
 	public NearBySearchResultAdapter(Context context,
-			ArrayList<PlaceVO> arrayList, int[] colorList) {
+			ArrayList<PlaceVO> arrayList, int[] colorList, PlaceItemDetailClickListener ll) {
 		super(context, arrayList, colorList);
 		// TODO Auto-generated constructor stub
+		mPlaceItemDetailClickListener = ll;
 	}
 
 	private String getPlaceSubtitle(PlaceVO entry){
@@ -91,7 +95,9 @@ public class NearBySearchResultAdapter extends CommonListAdapter<PlaceVO>{
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				NearbyActivityManager.newInstance(mContext).goToActivity(data);
+				if(mPlaceItemDetailClickListener != null){
+					mPlaceItemDetailClickListener.onClickDetailItem(data);
+				}
 			}
 		});
 		holder.headerTitle.setText(data.getName());
@@ -100,4 +106,15 @@ public class NearBySearchResultAdapter extends CommonListAdapter<PlaceVO>{
 		holder.contentText.setText(getPlaceSubtitle(data));
 		return convertView;
 	}
+
+	public PlaceItemDetailClickListener getPlaceItemDetailClickListener() {
+		return mPlaceItemDetailClickListener;
+	}
+
+	public void setPlaceItemDetailClickListener(
+			PlaceItemDetailClickListener ll) {
+		this.mPlaceItemDetailClickListener = ll;
+	}
+	
+	
 }

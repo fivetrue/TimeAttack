@@ -14,22 +14,21 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.api.common.BaseResponseListener;
-import com.api.google.place.PlaceAPIHelper;
-import com.api.google.place.PlaceAPIHelper.API_TYPE;
-import com.api.google.place.PlacesConstans;
-import com.api.google.place.entry.PlacesEntry;
 import com.api.google.place.model.PlaceVO;
 import com.fivetrue.timeattack.R;
-import com.fivetrue.timeattack.activity.BaseActivity;
 import com.fivetrue.timeattack.activity.manager.MapActivityManager;
 import com.fivetrue.timeattack.fragment.BaseListFragment;
 import com.fivetrue.timeattack.view.adapter.NearBySearchResultAdapter;
-import com.google.android.gms.maps.model.LatLng;
 
 public class NearBySearchListFragment extends BaseListFragment<PlaceVO> {
+	
+	public interface PlaceItemDetailClickListener{
+		public void onClickDetailItem(PlaceVO item);
+	}
 
 	private ArrayList<PlaceVO> mArrPlace = new ArrayList<PlaceVO>();
+	private PlaceItemDetailClickListener mPlaceItemDetailClickListener = null;
+	
 	
 	@Override
 	public View initHeader() {
@@ -75,7 +74,7 @@ public class NearBySearchListFragment extends BaseListFragment<PlaceVO> {
 		}else{
 			setColorList(new int[]{R.color.map_primary_color,
 					R.color.map_primary_light_color, R.color.map_primary_deep_color});
-			adapter = new NearBySearchResultAdapter(getActivity(), arr, getColorList());
+			adapter = new NearBySearchResultAdapter(getActivity(), arr, getColorList(), mPlaceItemDetailClickListener);
 			adapter.setIconSelector(R.drawable.selector_map_primary_color);
 			listView.setAdapter(adapter);
 		}
@@ -138,5 +137,16 @@ public class NearBySearchListFragment extends BaseListFragment<PlaceVO> {
 	
 		return topContent;
 	}
-}
 
+	public PlaceItemDetailClickListener getPlaceItemDetailClickListener() {
+		return mPlaceItemDetailClickListener;
+	}
+
+	public void setPlaceItemDetailClickListener(
+			PlaceItemDetailClickListener ll) {
+		this.mPlaceItemDetailClickListener = ll;
+		if(adapter != null){
+			((NearBySearchResultAdapter)adapter).setPlaceItemDetailClickListener(mPlaceItemDetailClickListener);
+		}
+	}
+}
