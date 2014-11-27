@@ -73,6 +73,10 @@
     <string name="location_longitude">경도</string>
     <string name="location_type">주소</string>
     
+    <string name="location_address_message">주소\n%s\n</string>
+    <string name="location_postal_code_message">우편번호 (%s)\n</string>
+    <string name="location_latlng_message" formatted="false">위도,경도 (%s, %s)</string>
+    
     
     
     
