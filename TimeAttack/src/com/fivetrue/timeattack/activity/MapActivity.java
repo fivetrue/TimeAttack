@@ -8,9 +8,13 @@ import com.api.google.place.PlaceAPIHelper;
 import com.api.google.place.PlacesConstans;
 import com.api.google.place.PlaceAPIHelper.API_TYPE;
 import com.api.google.place.entry.PlacesEntry;
+import com.api.google.place.model.PlaceVO;
 import com.fivetrue.timeattack.R;
 import com.fivetrue.timeattack.activity.manager.MapActivityManager;
+import com.fivetrue.timeattack.activity.manager.MapActivityManager.OnSaveMapImageListener;
+import com.fivetrue.timeattack.activity.manager.NearbyActivityManager;
 import com.fivetrue.timeattack.fragment.map.NearBySearchListFragment;
+import com.fivetrue.timeattack.fragment.map.NearBySearchListFragment.PlaceItemDetailClickListener;
 import com.fivetrue.timeattack.preference.MapPreferenceManager;
 import com.fivetrue.timeattack.utils.ImageUtils;
 import com.google.android.gms.maps.GoogleMap;
@@ -29,7 +33,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 
 public class MapActivity extends BaseActivity {
-
+	
 	class ViewHolder{
 		public View ivPlace = null;
 		public View ivDirection = null;
@@ -54,11 +58,11 @@ public class MapActivity extends BaseActivity {
 	private MyLocationSearchAsycTask mMyLocationAyncTask = null;
 
 	private Location mMyLocation = null;
-	private boolean isTakenPicture = false;
 
 	//Value
 	private float mZoomValue = 14;
 	private float mMyLocationZoomValue = 18;
+	private float mPlcaeZoomValue = 19;
 	private int mLocationRadius = 1000;
 
 
@@ -165,37 +169,18 @@ public class MapActivity extends BaseActivity {
 
 	private void setGeocodingMapData(final AddressResultVO addressVo){
 		mMyControlView.layoutMyControl.setVisibility(View.VISIBLE);
-		mMapManager.drawPointToMap(mMap, addressVo, mZoomValue);
-		showProgressDialog();
 		final String key = addressVo.getLatitude() + addressVo.getLongitude();
-		mMap.setOnMapLoadedCallback(new OnMapLoadedCallback() {
-
+		showProgressDialog();
+		mMapManager.saveLocateMapImage(mMap, addressVo.getLatitude(), addressVo.getLongitude(), mMyLocationZoomValue, key, new OnSaveMapImageListener() {
+			
 			@Override
-			public void onMapLoaded() {
+			public void onComplete(Bitmap bm) {
 				// TODO Auto-generated method stub
 				dismissProgressDialog();
-				Bitmap bitmap = ImageUtils.getInstance(MapActivity.this).getImageBitmap(key);
-				if(bitmap == null){
-					captureMapSnapShot(new SnapshotReadyCallback() {
-
-						@Override
-						public void onSnapshotReady(Bitmap bm) {
-							// TODO Auto-generated method stub
-							if(bm != null){
-								ImageUtils.getInstance(getApplication()).saveBitmap(bm, key);
-								bm = null;
-							}
-						}
-					});
-				}
+				mMapManager.drawPointToMap(mMap, addressVo, 0);
+				bm = null;
 			}
 		});
-	}
-
-	public void captureMapSnapShot(SnapshotReadyCallback callback){
-		if(mMap != null){
-			mMap.snapshot(callback);
-		}
 	}
 
 	@Override
@@ -435,7 +420,7 @@ public class MapActivity extends BaseActivity {
 							mNearBySearchFragment = (NearBySearchListFragment) createFragment(NearBySearchListFragment.class, 
 									"nearby", INVALID_VALUE, argument
 									, R.anim.slide_in_top, R.anim.slide_in_top);
-							
+							mNearBySearchFragment.setPlaceItemDetailClickListener(mPlaceItemDetailClickListener);
 							mMapManager.drawPointToMap(mMap, response.getPlaceList());
 						}else if(response.getStatus().equals(PlacesConstans.Status.ZERO_RESULTS.toString())){
 							makeToast(String.format(getString(R.string.error_zero_result_nearby_subway), mLocationRadius));
@@ -449,12 +434,32 @@ public class MapActivity extends BaseActivity {
 			});
 		}
 	};
-
+	
 	private OnClickListener onClickFindDirection = new OnClickListener() {
 
 		@Override
 		public void onClick(View v) {
 			// TODO Auto-generated method stub
+		}
+	};
+	
+	private PlaceItemDetailClickListener mPlaceItemDetailClickListener = new PlaceItemDetailClickListener() {
+		
+		@Override
+		public void onClickDetailItem(final PlaceVO item) {
+			// TODO Auto-generated method stub
+			if(item != null){
+				showProgressDialog();
+				mMapManager.saveLocateMapImage(mMap, item.getLatitude(), item.getLongitude(), mPlcaeZoomValue, item.getReference(), new OnSaveMapImageListener() {
+					
+					@Override
+					public void onComplete(Bitmap bm) {
+						// TODO Auto-generated method stub
+						dismissProgressDialog();
+						NearbyActivityManager.newInstance(MapActivity.this).goToActivity(item);
+					}
+				});
+			}
 		}
 	};
 

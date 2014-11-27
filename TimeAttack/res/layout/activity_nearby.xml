@@ -1,8 +1,59 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical" >
 
+    <TextView
+        android:id="@+id/tv_nearby_header"
+        style="@style/listHeaderText"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/common_item_header_height"
+        android:layout_margin="@dimen/list_item_margin"
+        android:paddingLeft="@dimen/common_item_padding"
+        android:paddingRight="@dimen/common_item_padding"
+        android:text="@string/location_infomation" />
 
-</RelativeLayout>
+    <ImageView
+        android:id="@+id/iv_nearby_map_image"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/common_item_main_image_size"
+        android:layout_marginLeft="@dimen/list_item_margin"
+        android:layout_marginRight="@dimen/list_item_margin"
+        android:scaleType="centerCrop" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginLeft="@dimen/common_item_padding"
+        android:layout_marginRight="@dimen/common_item_padding"
+        android:paddingLeft="@dimen/common_item_padding"
+        android:paddingRight="@dimen/common_item_padding" >
+
+        <TextView
+            android:id="@+id/tv_nearby_location_info"
+            style="@style/listTitleText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:singleLine="true"
+            android:text="@string/location_infomation" />
+
+        <TextView
+            android:id="@+id/tv_nearby_loaction_detail"
+            style="@style/listSubTitleText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/description" />
+    </LinearLayout>
+
+    <View
+        android:id="@+id/above_body_shadow"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/list_item_margin"
+        android:layout_marginLeft="@dimen/common_item_padding"
+        android:layout_marginRight="@dimen/common_item_padding"
+        android:background="@drawable/shadow_pattern"
+        android:rotation="180" />
+
+</LinearLayout>

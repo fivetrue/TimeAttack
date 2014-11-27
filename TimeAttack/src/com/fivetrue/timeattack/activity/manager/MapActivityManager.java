@@ -16,14 +16,20 @@ import com.api.google.directions.model.RouteVO;
 import com.api.google.geocoding.model.AddressResultVO;
 import com.api.google.place.model.PlaceVO;
 import com.fivetrue.timeattack.activity.MapActivity;
+import com.fivetrue.timeattack.utils.ImageUtils;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.GoogleMap.OnMapLoadedCallback;
+import com.google.android.gms.maps.GoogleMap.SnapshotReadyCallback;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 public class MapActivityManager extends BaseActivityManager{
 	
+	public interface OnSaveMapImageListener{
+		public void onComplete(Bitmap bm);
+	}
 	public interface OnMyLocationDialogSelectedListener{
 		public void onSelected(View view);
 	}
@@ -35,6 +41,7 @@ public class MapActivityManager extends BaseActivityManager{
 	public static final int DATA_GEOCODING = 0x00;
 	public static final int DATA_PLACE = 0x01;
 	public static final int DATA_DIRECTION = 0x02;
+	
 	
 	static public MapActivityManager newInstance(Context context){
 		return new MapActivityManager(context);
@@ -76,7 +83,11 @@ public class MapActivityManager extends BaseActivityManager{
 		if(entry != null && map != null){
 			
 			LatLng lat = new LatLng(Double.parseDouble(entry.getLatitude()), Double.parseDouble(entry.getLongitude()));
-			zoomToPoint(map, lat, zoom);
+			
+			if(zoom > 0){
+				zoomToPoint(map, lat, zoom);
+			}
+			
 			return drawPointToMap(map, entry.getAddress(), null, lat);
 		}else{
 			error("Entry is null");
@@ -121,6 +132,38 @@ public class MapActivityManager extends BaseActivityManager{
 		}else{
 			error("map, zoom, latlng are invalid");
 		}
+	}
+	
+	public void saveLocateMapImage(GoogleMap map, String lat, String lng, float zoom, String cacheKey, OnSaveMapImageListener callback){
+		saveLocateMapImage(map, Double.parseDouble(lat), Double.parseDouble(lng), zoom, cacheKey, callback);
+	}
+	
+	public void saveLocateMapImage(final GoogleMap map, double lat, double lng, float zoom, final String cacheKey, final OnSaveMapImageListener callback){
+		LatLng latlng = new LatLng(lat, lng);
+		zoomToPoint(map, latlng, zoom);
+		map.setOnMapLoadedCallback(new OnMapLoadedCallback() {
+			
+			@Override
+			public void onMapLoaded() {
+				// TODO Auto-generated method stub
+				Bitmap bitmap = ImageUtils.getInstance(mContext).getImageBitmap(cacheKey);
+				if(bitmap == null){
+					map.snapshot(new SnapshotReadyCallback() {
+						
+						@Override
+						public void onSnapshotReady(Bitmap paramBitmap) {
+							// TODO Auto-generated method stub
+							if(paramBitmap != null){
+								ImageUtils.getInstance(mContext).saveBitmap(paramBitmap, cacheKey);
+								callback.onComplete(paramBitmap);
+							}
+						}
+					});
+				}else{
+					callback.onComplete(bitmap);
+				}
+			}
+		});
 	}
 	
 	private void goToMapForGeocodingData(AddressResultVO entry){
