@@ -96,25 +96,12 @@ public class RecentlyNetworkResultAdapter extends CommonListAdapter <NetworkResu
 				}
 			}
 			
-			desc.append(mContext.getString(R.string.location_address))
-			.append("\n")
-			.append(vo.getAddress())
-			.append("\n");
+			desc.append(String.format(mContext.getString(R.string.location_address_message), vo.getAddress()));
 			if(!TextUtils.isEmpty(postal_code)){
-				desc.append(mContext.getString(R.string.location_postal_code))
-				.append("(")
-				.append(postal_code)
-				.append(")\n");
+				desc.append(String.format(mContext.getString(R.string.location_postal_code_message), postal_code));
 			}
-			desc.append("\n")
-			.append(mContext.getString(R.string.location_latitude))
-			.append(",")
-			.append(mContext.getString(R.string.location_longitude))
-			.append(" (")
-			.append(vo.getLatitude())
-			.append(",")
-			.append(vo.getLongitude())
-			.append(")\n");
+			desc.append("\n");
+			desc.append(String.format(mContext.getString(R.string.location_latlng_message), vo.getLatitude(), vo.getLongitude()));
 		}
 		
 		return desc.toString();

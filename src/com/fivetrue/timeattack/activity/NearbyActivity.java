@@ -18,6 +18,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 public class NearbyActivity extends BaseActivity {
@@ -25,7 +26,12 @@ public class NearbyActivity extends BaseActivity {
 	private class ViewHolder{
 		public TextView tvHeader = null;
 		public ImageView ivMap = null;
-		public TextView tvLocationInfo = null;
+		
+		public ViewGroup layoutLactionInfo = null;
+		public TextView tvLocationDetail = null;
+		
+		public ProgressBar pbLocationDetail = null;
+		
 
 	}
 
@@ -51,8 +57,15 @@ public class NearbyActivity extends BaseActivity {
 	private void initViews(){
 		mViewHolder.tvHeader = (TextView) mContentView.findViewById(R.id.tv_nearby_header);
 		mViewHolder.ivMap = (ImageView) mContentView.findViewById(R.id.iv_nearby_map_image);
+		mViewHolder.tvLocationDetail = (TextView) mContentView.findViewById(R.id.tv_nearby_loaction_detail);
+		mViewHolder.layoutLactionInfo = (ViewGroup) mContentView.findViewById(R.id.layout_naerby_location_info);
+		
+		mViewHolder.pbLocationDetail = (ProgressBar) mContentView.findViewById(R.id.pb_nearby_location_detail);
 
+		mViewHolder.tvHeader.setTextColor(getResources().getColor(R.color.nearby_primary_light_color));
 		mViewHolder.tvHeader.setBackground(getResources().getDrawable(R.color.nearby_primary_color));
+		
+		mViewHolder.layoutLactionInfo.setBackground(getResources().getDrawable(R.color.nearby_primary_color));
 
 		getCustomActionBar().setBackGroundColorRes(R.color.nearby_primary_color, R.color.nearby_primary_dark_color);
 		getCustomActionBar().setHomeIconLineColor(R.color.nearby_primary_light_color);
@@ -82,8 +95,31 @@ public class NearbyActivity extends BaseActivity {
 				mViewHolder.ivMap.setImageBitmap(map);
 				map = null;
 			}
+			setLocationInfoFromPlaceInfo(mViewHolder.tvLocationDetail, mEntry);
 			loadDetailData();
 		}
+	}
+	
+	public void setLocationInfoFromPlaceInfo(TextView tv, PlaceVO vo){
+		
+		if(tv == null || vo == null)
+			return;
+		
+		StringBuilder sb = new StringBuilder();
+		sb.append(String.format(getString(R.string.location_latlng_message), vo.getLatitude(), vo.getLongitude()));
+		tv.setText(sb.toString());
+	}
+	
+	public void setLocationInfoFromPlaceDetailInfo(TextView tv, PlacesDetailEntry entry){
+		
+		if(tv == null || entry == null)
+			return;
+		StringBuilder sb = new StringBuilder();
+		if(!TextUtils.isEmpty(tv.getText().toString())){
+			sb.append(tv.getText().toString());
+		}
+		sb.append(String.format(getString(R.string.location_address_message), entry.getFormattedAddress()));
+		tv.setText(sb.toString());
 	}
 
 	private void loadDetailData(){
@@ -95,6 +131,7 @@ public class NearbyActivity extends BaseActivity {
 				// TODO Auto-generated method stub
 				if(response != null){
 					if(response.getStatus().equals(PlacesConstans.Status.OK.toString())){
+						mViewHolder.pbLocationDetail.setVisibility(View.GONE);
 						setData(response);
 					}
 				}
@@ -103,7 +140,7 @@ public class NearbyActivity extends BaseActivity {
 	}
 
 	private void setData(PlacesDetailEntry entry){
-
+		setLocationInfoFromPlaceDetailInfo(mViewHolder.tvLocationDetail, entry);
 	}
 
 	@Override

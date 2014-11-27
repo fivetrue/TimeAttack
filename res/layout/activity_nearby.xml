@@ -1,59 +1,88 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical" >
-
-    <TextView
-        android:id="@+id/tv_nearby_header"
-        style="@style/listHeaderText"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/common_item_header_height"
-        android:layout_margin="@dimen/list_item_margin"
-        android:paddingLeft="@dimen/common_item_padding"
-        android:paddingRight="@dimen/common_item_padding"
-        android:text="@string/location_infomation" />
-
-    <ImageView
-        android:id="@+id/iv_nearby_map_image"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/common_item_main_image_size"
-        android:layout_marginLeft="@dimen/list_item_margin"
-        android:layout_marginRight="@dimen/list_item_margin"
-        android:scaleType="centerCrop" />
+    android:layout_height="match_parent" >
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_marginLeft="@dimen/common_item_padding"
-        android:layout_marginRight="@dimen/common_item_padding"
-        android:paddingLeft="@dimen/common_item_padding"
-        android:paddingRight="@dimen/common_item_padding" >
+        android:orientation="vertical" >
 
         <TextView
-            android:id="@+id/tv_nearby_location_info"
-            style="@style/listTitleText"
+            android:id="@+id/tv_nearby_header"
+            style="@style/listHeaderText"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:singleLine="true"
+            android:layout_height="@dimen/common_item_header_height"
+            android:layout_marginLeft="@dimen/list_item_margin"
+            android:layout_marginRight="@dimen/list_item_margin"
+            android:layout_marginTop="@dimen/list_item_margin"
+            android:paddingLeft="@dimen/common_item_padding"
+            android:paddingRight="@dimen/common_item_padding"
             android:text="@string/location_infomation" />
 
-        <TextView
-            android:id="@+id/tv_nearby_loaction_detail"
-            style="@style/listSubTitleText"
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/common_item_main_image_size"
+            android:layout_marginLeft="@dimen/common_item_padding"
+            android:layout_marginRight="@dimen/common_item_padding" >
+
+            <ImageView
+                android:id="@+id/iv_nearby_map_image"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/common_item_main_image_size"
+                android:scaleType="centerCrop" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/list_item_margin"
+                android:layout_alignParentTop="true"
+                android:background="@drawable/shadow_pattern" />
+
+            <View
+                android:id="@+id/above_body_shadow"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/list_item_margin"
+                android:layout_alignParentBottom="true"
+                android:rotation="180"
+                android:background="@drawable/shadow_pattern" />
+        </RelativeLayout>
+
+        <LinearLayout
+            android:id="@+id/layout_naerby_location_info"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/description" />
+            android:layout_marginLeft="@dimen/common_item_padding"
+            android:layout_marginRight="@dimen/common_item_padding"
+            android:orientation="vertical"
+            android:padding="@dimen/common_item_padding" >
+
+            <TextView
+                android:id="@+id/tv_nearby_location_info"
+                style="@style/listTitleText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:singleLine="true"
+                android:text="@string/location_infomation" />
+
+            <TextView
+                android:id="@+id/tv_nearby_loaction_detail"
+                style="@style/listDescriptionText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/description" />
+            
+            <ProgressBar android:id="@+id/pb_nearby_location_detail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+            
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/list_item_margin"
+            android:layout_marginLeft="@dimen/common_item_padding"
+            android:layout_marginRight="@dimen/common_item_padding"
+            android:background="@drawable/shadow_pattern" />
     </LinearLayout>
 
-    <View
-        android:id="@+id/above_body_shadow"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/list_item_margin"
-        android:layout_marginLeft="@dimen/common_item_padding"
-        android:layout_marginRight="@dimen/common_item_padding"
-        android:background="@drawable/shadow_pattern"
-        android:rotation="180" />
-
-</LinearLayout>
+</ScrollView>

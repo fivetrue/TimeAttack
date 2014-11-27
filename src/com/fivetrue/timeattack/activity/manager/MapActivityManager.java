@@ -141,15 +141,17 @@ public class MapActivityManager extends BaseActivityManager{
 	public void saveLocateMapImage(final GoogleMap map, double lat, double lng, float zoom, final String cacheKey, final OnSaveMapImageListener callback){
 		LatLng latlng = new LatLng(lat, lng);
 		zoomToPoint(map, latlng, zoom);
-		map.setOnMapLoadedCallback(new OnMapLoadedCallback() {
-			
-			@Override
-			public void onMapLoaded() {
-				// TODO Auto-generated method stub
-				Bitmap bitmap = ImageUtils.getInstance(mContext).getImageBitmap(cacheKey);
-				if(bitmap == null){
+		Bitmap bitmap = ImageUtils.getInstance(mContext).getImageBitmap(cacheKey);
+		if(bitmap != null){
+			callback.onComplete(bitmap);
+		}else{
+			map.setOnMapLoadedCallback(new OnMapLoadedCallback() {
+
+				@Override
+				public void onMapLoaded() {
+					// TODO Auto-generated method stub
 					map.snapshot(new SnapshotReadyCallback() {
-						
+
 						@Override
 						public void onSnapshotReady(Bitmap paramBitmap) {
 							// TODO Auto-generated method stub
@@ -159,11 +161,9 @@ public class MapActivityManager extends BaseActivityManager{
 							}
 						}
 					});
-				}else{
-					callback.onComplete(bitmap);
 				}
-			}
-		});
+			});
+		}
 	}
 	
 	private void goToMapForGeocodingData(AddressResultVO entry){
