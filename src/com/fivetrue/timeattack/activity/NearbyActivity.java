@@ -7,8 +7,6 @@ import com.api.google.place.PlacesConstans;
 import com.api.google.place.entry.PlacesDetailEntry;
 import com.api.google.place.model.PlaceVO;
 import com.api.seoul.SeoulAPIConstants;
-import com.api.seoul.subway.SubwayArrivalInfoAPIHelper;
-import com.api.seoul.subway.SubwayFindInfoAPIHelper;
 import com.api.seoul.subway.entry.SubwayInfoEntry;
 import com.api.seoul.subway.model.StationVO;
 import com.fivetrue.timeattack.R;
@@ -16,12 +14,18 @@ import com.fivetrue.timeattack.activity.manager.NearbyActivityManager;
 import com.fivetrue.timeattack.utils.ImageUtils;
 import com.fivetrue.utils.Logger;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.location.Location;
+import android.net.Uri;
 import android.os.Bundle;
+import android.telephony.PhoneNumberUtils;
+import android.text.Html;
 import android.text.TextUtils;
+import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -32,10 +36,10 @@ public class NearbyActivity extends BaseActivity {
 	private class ViewHolder{
 		public TextView tvHeader = null;
 		public ImageView ivMap = null;
-		
-		public ViewGroup layoutLactionInfo = null;
+
+		public ViewGroup layoutLocationInfo = null;
 		public TextView tvLocationDetail = null;
-		
+
 		public ProgressBar pbLocationDetail = null;
 	}
 
@@ -64,14 +68,14 @@ public class NearbyActivity extends BaseActivity {
 		mViewHolder.tvHeader = (TextView) mContentView.findViewById(R.id.tv_nearby_header);
 		mViewHolder.ivMap = (ImageView) mContentView.findViewById(R.id.iv_nearby_map_image);
 		mViewHolder.tvLocationDetail = (TextView) mContentView.findViewById(R.id.tv_nearby_loaction_detail);
-		mViewHolder.layoutLactionInfo = (ViewGroup) mContentView.findViewById(R.id.layout_naerby_location_info);
-		
+		mViewHolder.layoutLocationInfo = (ViewGroup) mContentView.findViewById(R.id.layout_naerby_location_info);
+
 		mViewHolder.pbLocationDetail = (ProgressBar) mContentView.findViewById(R.id.pb_nearby_location_detail);
 
 		mViewHolder.tvHeader.setTextColor(getResources().getColor(R.color.nearby_primary_light_color));
 		mViewHolder.tvHeader.setBackground(getResources().getDrawable(R.color.nearby_primary_color));
-		
-		mViewHolder.layoutLactionInfo.setBackground(getResources().getDrawable(R.color.nearby_primary_color));
+
+		mViewHolder.layoutLocationInfo.setBackground(getResources().getDrawable(R.color.nearby_primary_color));
 
 		getCustomActionBar().setBackGroundColorRes(R.color.nearby_primary_color, R.color.nearby_primary_dark_color);
 		getCustomActionBar().setHomeIconLineColor(R.color.nearby_primary_light_color);
@@ -86,7 +90,7 @@ public class NearbyActivity extends BaseActivity {
 		mContentView.setBackground(getResources().getDrawable(R.color.nearby_primary_light_color));
 
 	}
-	
+
 	private void initModels(){
 		mManager = NearbyActivityManager.newInstance(this);
 	}
@@ -109,26 +113,14 @@ public class NearbyActivity extends BaseActivity {
 			loadDetailData();
 		}
 	}
-	
+
 	public void setLocationInfoFromPlaceInfo(TextView tv, PlaceVO vo){
-		
+
 		if(tv == null || vo == null)
 			return;
-		
+
 		StringBuilder sb = new StringBuilder();
 		sb.append(String.format(getString(R.string.location_latlng_message), vo.getLatitude(), vo.getLongitude()));
-		tv.setText(sb.toString());
-	}
-	
-	public void setLocationInfoFromPlaceDetailInfo(TextView tv, PlacesDetailEntry entry){
-		
-		if(tv == null || entry == null)
-			return;
-		StringBuilder sb = new StringBuilder();
-		if(!TextUtils.isEmpty(tv.getText().toString())){
-			sb.append(tv.getText().toString());
-		}
-		sb.append(String.format(getString(R.string.location_address_message), entry.getFormattedAddress()));
 		tv.setText(sb.toString());
 	}
 
@@ -151,14 +143,50 @@ public class NearbyActivity extends BaseActivity {
 
 	private void setData(PlacesDetailEntry entry){
 		setLocationInfoFromPlaceDetailInfo(mViewHolder.tvLocationDetail, entry);
+		setDetailInfoFromPlaceDetailInfo((ViewGroup)mContentView.getChildAt(0) ,entry);
+
 		String subwayName = mManager.getSubwayNameFromPlacesSubwayData(mEntry);
 		loadingSubwayStaionInfo(subwayName);
 	}
-	
+
+	private void setLocationInfoFromPlaceDetailInfo(TextView tv, PlacesDetailEntry entry){
+
+		if(tv == null || entry == null)
+			return;
+		StringBuilder sb = new StringBuilder();
+		if(!TextUtils.isEmpty(tv.getText().toString())){
+			sb.append(tv.getText().toString());
+		}
+		sb.append(String.format(getString(R.string.location_address_message), entry.getFormattedAddress()));
+		tv.setText(sb.toString());
+	}
+
+	private void setDetailInfoFromPlaceDetailInfo(ViewGroup parent, PlacesDetailEntry entry){
+		if(entry != null){
+			LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
+			ViewGroup detailViews =  (ViewGroup) inflater.inflate(R.layout.include_nearby_detail_info_layout, null);
+			((TextView)detailViews.findViewById(R.id.tv_nearby_detail_info_phone_number)).setText(entry.getInternationalPhoneNumber());
+			detailViews.findViewById(R.id.tv_nearby_detail_info_phone_number).setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View v) {
+					// TODO Auto-generated method stub
+					Intent intent = new Intent(Intent.ACTION_DIAL);
+					intent.setData(Uri.parse("tel:" + ((TextView)v).getText().toString().trim()));
+					startActivity(intent);
+				}
+			});
+
+			((TextView)detailViews.findViewById(R.id.tv_nearby_detail_info_google_plus_url)).setText(Html.fromHtml("<a href=" + entry.getPlaceUrl() + ">" + entry.getPlaceUrl() + "</a>"));
+			((TextView)detailViews.findViewById(R.id.tv_nearby_detail_info_google_plus_url)).setMovementMethod(LinkMovementMethod.getInstance());
+			parent.addView(detailViews);
+		}
+	}
+
 	private void loadingSubwayStaionInfo(String subwayName){
 		if(subwayName != null){
-			mManager.findingSubwayInfo(subwayName, new BaseResponseListener<SubwayInfoEntry>() {
-				
+			mManager.findingSubwayInfo(this, subwayName, new BaseResponseListener<SubwayInfoEntry>() {
+
 				@Override
 				public void onResponse(SubwayInfoEntry response) {
 					// TODO Auto-generated method stub
@@ -172,10 +200,10 @@ public class NearbyActivity extends BaseActivity {
 				}
 			});
 		}else{
-			
+
 		}
 	}
-	
+
 	private void setSubwayInfoData(SubwayInfoEntry entry){
 		if(entry != null){
 			for(StationVO vo : entry.getStationList()){
@@ -183,7 +211,7 @@ public class NearbyActivity extends BaseActivity {
 			}
 		}
 	}
-	
+
 
 	@Override
 	public String getActionBarTitleName() {
