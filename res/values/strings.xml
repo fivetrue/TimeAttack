@@ -77,6 +77,8 @@
     <string name="location_postal_code_message">우편번호 (%s)\n</string>
     <string name="location_latlng_message" formatted="false">위도,경도 (%s, %s)</string>
     
+    <!-- NearBy -->
+     <string name="station">역</string>
     
     
     
