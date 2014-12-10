@@ -50,7 +50,7 @@ public class NearbyActivityManager extends BaseActivityManager{
 		startActivity(mContext, i);
 	}
 	
-	public void findingSubwayInfo(final String subwayName, BaseResponseListener<SubwayInfoEntry> ll){
+	public void findingSubwayInfo(final IRequestResult IResult, final String subwayName, BaseResponseListener<SubwayInfoEntry> ll){
 		if(!TextUtils.isEmpty(subwayName) && ll != null){
 			ArrayList<StationVO> stationList = mSubwayDBManager.getStationsByName(subwayName);
 			if(stationList != null && stationList.size() > 0){
@@ -64,6 +64,7 @@ public class NearbyActivityManager extends BaseActivityManager{
 					@Override
 					public void onSuccessRequest(String url, JSONObject request) {
 						// TODO Auto-generated method stub
+						IResult.onSuccessRequest(url, request);
 						if(url != null && request != null){
 							SubwayInfoEntry entry = new SubwayInfoConverter().onReceive(request);
 							if(entry != null){
@@ -77,6 +78,7 @@ public class NearbyActivityManager extends BaseActivityManager{
 					@Override
 					public void onFailRequest(String url) {
 						// TODO Auto-generated method stub
+						IResult.onFailRequest(url);
 
 					}
 				}).requestFindInfoSubway(subwayName, ll);

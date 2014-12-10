@@ -78,7 +78,8 @@
     <string name="location_latlng_message" formatted="false">위도,경도 (%s, %s)</string>
     
     <!-- NearBy -->
-     <string name="station">역</string>
+    <string name="station">역</string>
+    <string name="detail_info">상세정보</string>
     
     
     
