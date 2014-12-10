@@ -18,14 +18,13 @@ import android.graphics.Bitmap.Config;
 import android.graphics.Path.Direction;
 import android.graphics.BitmapFactory;
 
-public class ImageUtils {
+public class ImageUtils extends BaseUtils{
 	
 	static private ImageUtils instance = null;
 	private final int STROKE_WIDTH = 3;
 	private String PNG = ".png";
 	private int QUALITY = 90;
 	
-	private Context mContext = null;
 	private String mCacheDirPath = null;
 	private float mDensity = 0;
 
@@ -122,10 +121,16 @@ public class ImageUtils {
 	}
 	
 	private ImageUtils(Context context){
-		mContext = context;
+		super(context);
 		VolleyInstance.init(context);
 		mCacheDirPath = mContext.getCacheDir().getAbsolutePath() + "/";
 		mDensity = context.getResources().getDisplayMetrics().density;
+	}
+
+	@Override
+	public String getClassName() {
+		// TODO Auto-generated method stub
+		return ImageUtils.class.getSimpleName();
 	}
 	
 }
