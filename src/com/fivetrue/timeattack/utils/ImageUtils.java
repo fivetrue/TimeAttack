@@ -108,9 +108,6 @@ public class ImageUtils extends BaseUtils{
 		return circleBitmap(bitmap, drawStroke, STROKE_WIDTH);
 	}
 	
-	
-	
-	
 	static public ImageUtils getInstance(Context context){
 		if(instance != null){
 			return instance;
