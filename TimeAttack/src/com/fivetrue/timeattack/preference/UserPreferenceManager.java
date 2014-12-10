@@ -1,9 +1,11 @@
 package com.fivetrue.timeattack.preference;
 
 import android.content.Context;
-import android.util.Base64;
+import android.text.TextUtils;
 
 import com.fivetrue.preference.SharedPrefrenceManager;
+import com.fivetrue.timeattack.utils.UserUtils;
+import com.fivetrue.utils.Logger;
 
 public class UserPreferenceManager extends SharedPrefrenceManager {
 
@@ -33,7 +35,12 @@ public class UserPreferenceManager extends SharedPrefrenceManager {
 	}
 	
 	public void setUserPass(String pass){
-		savePref(USER_PASS, pass);
+		String code = UserUtils.getInstance(getContext()).decodePassword(pass);
+		if(TextUtils.isEmpty(code)){
+			Logger.e(PREFERENCE_NAME, "user Password is null or empty");
+		}else{
+			savePref(USER_PASS, pass);
+		}
 	}
 	
 	public String getUserPass(){
