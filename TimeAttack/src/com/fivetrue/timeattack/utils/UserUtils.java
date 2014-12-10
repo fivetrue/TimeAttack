@@ -8,6 +8,7 @@ public class UserUtils extends BaseUtils{
 	
 	static private UserUtils instance = null;
 	private final int RADIX = 16; 
+	private final int LAST_NUMBER_COUNT = 4;
 	private TelephonyManager mTelephonyManager = null; 
 	
 	static public UserUtils getInstance(Context context){
@@ -41,7 +42,7 @@ public class UserUtils extends BaseUtils{
 		String code = null;
 		
 		if(number != null){
-			lastNumber = getLast3Number(number);
+			lastNumber = getLastNumber(number, LAST_NUMBER_COUNT);
 		}
 		
 		if(lastNumber != null && !TextUtils.isEmpty(pass)){
@@ -56,21 +57,14 @@ public class UserUtils extends BaseUtils{
 		String pass = null;
 		
 		if(number != null){
-			lastNumber = getLast3Number(number);
+			lastNumber = getLastNumber(number, LAST_NUMBER_COUNT);
 		}
 		
 		if(lastNumber != null && !TextUtils.isEmpty(code)){
-			pass = decodeString(pass, Integer.parseInt(lastNumber, RADIX));
+			pass = decodeString(code, Integer.parseInt(lastNumber, RADIX));
 		}
 		return pass;
 		
-	}
-	
-	private String getLast3Number(String number){
-		if(number != null){
-			return number.substring(number.length() - 3, number.length());
-		}
-		return null;
 	}
 	
 	private UserUtils(Context context){

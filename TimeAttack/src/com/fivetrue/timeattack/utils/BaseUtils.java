@@ -1,6 +1,7 @@
 package com.fivetrue.timeattack.utils;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.util.Base64;
 
 abstract public class BaseUtils {
@@ -26,6 +27,13 @@ abstract public class BaseUtils {
 	
 	protected BaseUtils(Context context){
 		mContext = context;
+	}
+	
+	protected String getLastNumber(String number, int count){
+		if(!TextUtils.isEmpty(number)){
+			return number.substring(number.length() - count, number.length());
+		}
+		return null;
 	}
 	
 	abstract public String getClassName();

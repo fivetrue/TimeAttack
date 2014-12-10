@@ -26,7 +26,6 @@ import com.fivetrue.timeattack.fragment.DrawerFragment;
 import com.fivetrue.timeattack.view.actionbar.CustomActionBar;
 import com.fivetrue.utils.Logger;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;

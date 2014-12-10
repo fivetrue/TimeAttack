@@ -6,9 +6,15 @@ import com.api.google.place.PlaceDetailAPIHelper;
 import com.api.google.place.PlacesConstans;
 import com.api.google.place.entry.PlacesDetailEntry;
 import com.api.google.place.model.PlaceVO;
+import com.api.seoul.SeoulAPIConstants;
+import com.api.seoul.subway.SubwayArrivalInfoAPIHelper;
+import com.api.seoul.subway.SubwayFindInfoAPIHelper;
+import com.api.seoul.subway.entry.SubwayInfoEntry;
+import com.api.seoul.subway.model.StationVO;
 import com.fivetrue.timeattack.R;
 import com.fivetrue.timeattack.activity.manager.NearbyActivityManager;
 import com.fivetrue.timeattack.utils.ImageUtils;
+import com.fivetrue.utils.Logger;
 
 import android.graphics.Bitmap;
 import android.location.Location;
@@ -31,8 +37,6 @@ public class NearbyActivity extends BaseActivity {
 		public TextView tvLocationDetail = null;
 		
 		public ProgressBar pbLocationDetail = null;
-		
-
 	}
 
 	private ViewGroup mContentView = null;
@@ -40,6 +44,7 @@ public class NearbyActivity extends BaseActivity {
 
 
 	private PlaceVO mEntry = null;
+	private NearbyActivityManager mManager = null;
 
 
 	@Override
@@ -48,6 +53,7 @@ public class NearbyActivity extends BaseActivity {
 
 		mContentView = (ViewGroup) inflater.inflate(R.layout.activity_nearby, null);
 		initViews();
+		initModels();
 		initIntentData();
 		initData();
 
@@ -79,6 +85,10 @@ public class NearbyActivity extends BaseActivity {
 
 		mContentView.setBackground(getResources().getDrawable(R.color.nearby_primary_light_color));
 
+	}
+	
+	private void initModels(){
+		mManager = NearbyActivityManager.newInstance(this);
 	}
 
 	private void initIntentData(){
@@ -141,7 +151,39 @@ public class NearbyActivity extends BaseActivity {
 
 	private void setData(PlacesDetailEntry entry){
 		setLocationInfoFromPlaceDetailInfo(mViewHolder.tvLocationDetail, entry);
+		String subwayName = mManager.getSubwayNameFromPlacesSubwayData(mEntry);
+		loadingSubwayStaionInfo(subwayName);
 	}
+	
+	private void loadingSubwayStaionInfo(String subwayName){
+		if(subwayName != null){
+			mManager.findingSubwayInfo(subwayName, new BaseResponseListener<SubwayInfoEntry>() {
+				
+				@Override
+				public void onResponse(SubwayInfoEntry response) {
+					// TODO Auto-generated method stub
+					if(response != null){
+						if(response.getStatus().equals(SeoulAPIConstants.ResultInfo.OK)){
+							setSubwayInfoData(response);
+						}else if(response.getStatus().equals(SeoulAPIConstants.ResultInfo.NO_DATA)){
+							Logger.e("station info", "No data");
+						}
+					}
+				}
+			});
+		}else{
+			
+		}
+	}
+	
+	private void setSubwayInfoData(SubwayInfoEntry entry){
+		if(entry != null){
+			for(StationVO vo : entry.getStationList()){
+				Logger.e("station info", vo.toString());
+			}
+		}
+	}
+	
 
 	@Override
 	public String getActionBarTitleName() {
