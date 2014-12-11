@@ -19,7 +19,6 @@ import android.graphics.Bitmap;
 import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
-import android.telephony.PhoneNumberUtils;
 import android.text.Html;
 import android.text.TextUtils;
 import android.text.method.LinkMovementMethod;
@@ -50,7 +49,11 @@ public class NearbyActivity extends BaseActivity {
 	
 	private class SubwayViewHolder{
 		public ViewGroup contentView = null;
+		public ViewGroup layoutSubway = null;
 		public TextView tvSubwayName = null;
+		public TextView tvSubwayLine = null;
+		public TextView tvSubwayCode = null;
+		public TextView tvSubwayForiegnCode = null;
 	}
 
 	private ViewGroup mContentView = null;
@@ -178,17 +181,29 @@ public class NearbyActivity extends BaseActivity {
 			viewHolder.contentView =  (ViewGroup) inflater.inflate(R.layout.include_nearby_detail_info_layout, null);
 			viewHolder.tvPhoneNumber = (TextView) viewHolder.contentView.findViewById(R.id.tv_nearby_detail_info_phone_number);
 			viewHolder.tvGooglePlusUrl = (TextView) viewHolder.contentView.findViewById(R.id.tv_nearby_detail_info_google_plus_url);
-			viewHolder.tvPhoneNumber.setText(entry.getInternationalPhoneNumber());
-			viewHolder.tvPhoneNumber.setOnClickListener(new OnClickListener() {
-
-				@Override
-				public void onClick(View v) {
-					// TODO Auto-generated method stub
-					Intent intent = new Intent(Intent.ACTION_DIAL);
-					intent.setData(Uri.parse("tel:" + ((TextView)v).getText().toString().trim()));
-					startActivity(intent);
-				}
-			});
+			
+			if(TextUtils.isEmpty(entry.getInternationalPhoneNumber())){
+				viewHolder.tvPhoneNumber.setVisibility(View.GONE);
+			}else{
+				viewHolder.tvPhoneNumber.setText(entry.getInternationalPhoneNumber());
+				viewHolder.tvPhoneNumber.setOnClickListener(new OnClickListener() {
+					
+					@Override
+					public void onClick(View v) {
+						// TODO Auto-generated method stub
+						Intent intent = new Intent(Intent.ACTION_DIAL);
+						intent.setData(Uri.parse("tel:" + ((TextView)v).getText().toString().trim()));
+						startActivity(intent);
+					}
+				});
+			}
+			
+			if(TextUtils.isEmpty(entry.getPlaceUrl())){
+				viewHolder.tvGooglePlusUrl.setVisibility(View.GONE);
+			}else{
+				viewHolder.tvGooglePlusUrl.setText(Html.fromHtml("<a href=" + entry.getPlaceUrl() + ">" + entry.getPlaceUrl() + "</a>"));
+				viewHolder.tvGooglePlusUrl.setMovementMethod(LinkMovementMethod.getInstance());
+			}
 
 			viewHolder.tvGooglePlusUrl.setText(Html.fromHtml("<a href=" + entry.getPlaceUrl() + ">" + entry.getPlaceUrl() + "</a>"));
 			viewHolder.tvGooglePlusUrl.setMovementMethod(LinkMovementMethod.getInstance());
@@ -221,8 +236,22 @@ public class NearbyActivity extends BaseActivity {
 		if(parent != null && entry != null){
 			for(StationVO vo : entry.getStationList()){
 				if(vo != null){
+					SubwayViewHolder viewHolder = new SubwayViewHolder();
 					LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
-					ViewGroup subwayViews =  (ViewGroup) inflater.inflate(R.layout.include_nearby_subway_info_layout, null);
+					viewHolder.contentView =  (ViewGroup) inflater.inflate(R.layout.include_nearby_subway_info_layout, null);
+					viewHolder.layoutSubway = (ViewGroup) viewHolder.contentView.findViewById(R.id.layout_nearby_subway_info);
+					viewHolder.tvSubwayName = (TextView) viewHolder.contentView.findViewById(R.id.tv_nearby_subway_info_title);
+					viewHolder.tvSubwayLine = (TextView) viewHolder.contentView.findViewById(R.id.tv_nearby_subway_info);
+					viewHolder.tvSubwayCode = (TextView) viewHolder.contentView.findViewById(R.id.tv_nearby_subway_info2);
+					viewHolder.tvSubwayForiegnCode = (TextView) viewHolder.contentView.findViewById(R.id.tv_nearby_subway_info3);
+					
+					viewHolder.layoutSubway.setBackground(getResources().getDrawable(R.color.nearby_primary_color));
+					viewHolder.tvSubwayName.setText(vo.getStationName());
+					viewHolder.tvSubwayLine.setText(vo.getLineNumber());
+					viewHolder.tvSubwayCode.setText(vo.getStationCode());
+					viewHolder.tvSubwayForiegnCode.setText(vo.getForiegnCode());
+					
+					parent.addView(viewHolder.contentView);
 				}
 			}
 		}
