@@ -39,8 +39,18 @@ public class NearbyActivity extends BaseActivity {
 
 		public ViewGroup layoutLocationInfo = null;
 		public TextView tvLocationDetail = null;
-
 		public ProgressBar pbLocationDetail = null;
+	}
+	
+	private class DetailViewHolder{
+		public ViewGroup contentView = null;
+		public TextView tvPhoneNumber = null;
+		public TextView tvGooglePlusUrl = null;
+	}
+	
+	private class SubwayViewHolder{
+		public ViewGroup contentView = null;
+		public TextView tvSubwayName = null;
 	}
 
 	private ViewGroup mContentView = null;
@@ -146,7 +156,7 @@ public class NearbyActivity extends BaseActivity {
 		setDetailInfoFromPlaceDetailInfo((ViewGroup)mContentView.getChildAt(0) ,entry);
 
 		String subwayName = mManager.getSubwayNameFromPlacesSubwayData(mEntry);
-		loadingSubwayStaionInfo(subwayName);
+		loadingSubwayStaionInfo((ViewGroup)mContentView.getChildAt(0), subwayName);
 	}
 
 	private void setLocationInfoFromPlaceDetailInfo(TextView tv, PlacesDetailEntry entry){
@@ -163,10 +173,13 @@ public class NearbyActivity extends BaseActivity {
 
 	private void setDetailInfoFromPlaceDetailInfo(ViewGroup parent, PlacesDetailEntry entry){
 		if(entry != null){
+			DetailViewHolder viewHolder = new DetailViewHolder();
 			LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
-			ViewGroup detailViews =  (ViewGroup) inflater.inflate(R.layout.include_nearby_detail_info_layout, null);
-			((TextView)detailViews.findViewById(R.id.tv_nearby_detail_info_phone_number)).setText(entry.getInternationalPhoneNumber());
-			detailViews.findViewById(R.id.tv_nearby_detail_info_phone_number).setOnClickListener(new OnClickListener() {
+			viewHolder.contentView =  (ViewGroup) inflater.inflate(R.layout.include_nearby_detail_info_layout, null);
+			viewHolder.tvPhoneNumber = (TextView) viewHolder.contentView.findViewById(R.id.tv_nearby_detail_info_phone_number);
+			viewHolder.tvGooglePlusUrl = (TextView) viewHolder.contentView.findViewById(R.id.tv_nearby_detail_info_google_plus_url);
+			viewHolder.tvPhoneNumber.setText(entry.getInternationalPhoneNumber());
+			viewHolder.tvPhoneNumber.setOnClickListener(new OnClickListener() {
 
 				@Override
 				public void onClick(View v) {
@@ -177,13 +190,13 @@ public class NearbyActivity extends BaseActivity {
 				}
 			});
 
-			((TextView)detailViews.findViewById(R.id.tv_nearby_detail_info_google_plus_url)).setText(Html.fromHtml("<a href=" + entry.getPlaceUrl() + ">" + entry.getPlaceUrl() + "</a>"));
-			((TextView)detailViews.findViewById(R.id.tv_nearby_detail_info_google_plus_url)).setMovementMethod(LinkMovementMethod.getInstance());
-			parent.addView(detailViews);
+			viewHolder.tvGooglePlusUrl.setText(Html.fromHtml("<a href=" + entry.getPlaceUrl() + ">" + entry.getPlaceUrl() + "</a>"));
+			viewHolder.tvGooglePlusUrl.setMovementMethod(LinkMovementMethod.getInstance());
+			parent.addView(viewHolder.contentView);
 		}
 	}
 
-	private void loadingSubwayStaionInfo(String subwayName){
+	private void loadingSubwayStaionInfo(final ViewGroup parent, String subwayName){
 		if(subwayName != null){
 			mManager.findingSubwayInfo(this, subwayName, new BaseResponseListener<SubwayInfoEntry>() {
 
@@ -192,7 +205,7 @@ public class NearbyActivity extends BaseActivity {
 					// TODO Auto-generated method stub
 					if(response != null){
 						if(response.getStatus().equals(SeoulAPIConstants.ResultInfo.OK)){
-							setSubwayInfoData(response);
+							setSubwayInfoData(parent, response);
 						}else if(response.getStatus().equals(SeoulAPIConstants.ResultInfo.NO_DATA)){
 							Logger.e("station info", "No data");
 						}
@@ -204,10 +217,13 @@ public class NearbyActivity extends BaseActivity {
 		}
 	}
 
-	private void setSubwayInfoData(SubwayInfoEntry entry){
-		if(entry != null){
+	private void setSubwayInfoData(ViewGroup parent, SubwayInfoEntry entry){
+		if(parent != null && entry != null){
 			for(StationVO vo : entry.getStationList()){
-				Logger.e("station info", vo.toString());
+				if(vo != null){
+					LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
+					ViewGroup subwayViews =  (ViewGroup) inflater.inflate(R.layout.include_nearby_subway_info_layout, null);
+				}
 			}
 		}
 	}
