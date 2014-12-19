@@ -56,6 +56,7 @@ public class NearbyActivity extends BaseActivity {
 		public TextView tvSubwayForiegnCode = null;
 	}
 
+	
 	private ViewGroup mContentView = null;
 	private ViewHolder mViewHolder = new ViewHolder();
 
@@ -185,6 +186,7 @@ public class NearbyActivity extends BaseActivity {
 			if(TextUtils.isEmpty(entry.getInternationalPhoneNumber())){
 				viewHolder.tvPhoneNumber.setVisibility(View.GONE);
 			}else{
+				viewHolder.tvPhoneNumber.setVisibility(View.GONE);
 				viewHolder.tvPhoneNumber.setText(entry.getInternationalPhoneNumber());
 				viewHolder.tvPhoneNumber.setOnClickListener(new OnClickListener() {
 					
@@ -242,13 +244,13 @@ public class NearbyActivity extends BaseActivity {
 					viewHolder.layoutSubway = (ViewGroup) viewHolder.contentView.findViewById(R.id.layout_nearby_subway_info);
 					viewHolder.tvSubwayName = (TextView) viewHolder.contentView.findViewById(R.id.tv_nearby_subway_info_title);
 					viewHolder.tvSubwayLine = (TextView) viewHolder.contentView.findViewById(R.id.tv_nearby_subway_info);
-					viewHolder.tvSubwayCode = (TextView) viewHolder.contentView.findViewById(R.id.tv_nearby_subway_info2);
+//					viewHolder.tvSubwayCode = (TextView) viewHolder.contentView.findViewById(R.id.tv_nearby_subway_info2);
 					viewHolder.tvSubwayForiegnCode = (TextView) viewHolder.contentView.findViewById(R.id.tv_nearby_subway_info3);
 					
 					viewHolder.layoutSubway.setBackground(getResources().getDrawable(R.color.nearby_primary_color));
 					viewHolder.tvSubwayName.setText(vo.getStationName());
-					viewHolder.tvSubwayLine.setText(vo.getLineNumber());
-					viewHolder.tvSubwayCode.setText(vo.getStationCode());
+					viewHolder.tvSubwayLine.setText(entry.getLineCodeToName(NearbyActivity.this, vo.getLineNumber()));
+//					viewHolder.tvSubwayCode.setText(vo.getStationCode());
 					viewHolder.tvSubwayForiegnCode.setText(vo.getForiegnCode());
 					
 					parent.addView(viewHolder.contentView);
