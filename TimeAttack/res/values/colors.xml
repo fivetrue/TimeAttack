@@ -81,5 +81,13 @@
     <color name="nearby_primary_dark_color">#827717</color>
     <color name="nearby_primary_deep_color">#335D00</color>
     <color name="nearby_accent_color">#000000</color>
+    
+     <!-- Setting Color -->
+    <color name="setting_primary_color">#607D8B</color>
+    <color name="setting_primary_light_color">#ECEFF1</color>
+    <color name="setting_primary_soft_color">#B0BEC5</color>
+    <color name="setting_primary_dark_color">#263238</color>
+    <color name="setting_primary_deep_color">#004C63</color>
+    <color name="setting_accent_color">#FFFFFF</color>
 
 </resources>

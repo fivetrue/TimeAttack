@@ -46,6 +46,11 @@
             android:name="com.fivetrue.timeattack.activity.NearbyActivity"
             android:screenOrientation="portrait" >
         </activity>
+        
+        <activity
+            android:name="com.fivetrue.timeattack.activity.SettingActivity"
+            android:screenOrientation="portrait" >
+        </activity>
 
         <meta-data
             android:name="com.google.android.gms.version"

@@ -1,0 +1,68 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/scroll_setting"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="@dimen/setting_item_margin" >
+
+        <RelativeLayout
+            android:id="@+id/layout_map_setting"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/setting_item_height" >
+
+            <TextView
+                android:id="@+id/tv_setting_map"
+                style="@style/settingItemText"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="@string/setting_map" />
+
+            <ImageView
+                android:layout_width="@dimen/common_item_pattern_size"
+                android:layout_height="match_parent"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:rotation="180"
+                android:scaleType="center"
+                android:src="@drawable/ic_action_previous_item_w" />
+        </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/shadow_height"
+            android:layout_marginBottom="@dimen/setting_item_margin"
+            android:background="@drawable/shadow_pattern" />
+
+        <RelativeLayout
+            android:id="@+id/layout_account_setting"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/setting_item_height" >
+
+            <TextView
+                android:id="@+id/tv_setting_account"
+                style="@style/settingItemText"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="@string/setting_account" />
+
+            <ImageView
+                android:layout_width="@dimen/common_item_pattern_size"
+                android:layout_height="match_parent"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:rotation="180"
+                android:scaleType="center"
+                android:src="@drawable/ic_action_previous_item_w" />
+        </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/shadow_height"
+            android:background="@drawable/shadow_pattern" />
+    </LinearLayout>
+
+</ScrollView>

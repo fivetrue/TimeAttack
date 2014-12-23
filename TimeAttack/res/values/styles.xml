@@ -91,6 +91,10 @@
         <item name="android:textSize">@dimen/list_item_sub_title_text_size</item>
         <item name="android:textColor">@color/selector_list_sub_title_text_color</item>
     </style>
+    
+     <style name="settingItemText" parent="listHeaderText">
+        <item name="android:textColor">@color/setting_primary_light_color</item>
+    </style>
 
     <style name="listDescriptionText">
         <item name="android:textSize">@dimen/list_item_description_text_size</item>

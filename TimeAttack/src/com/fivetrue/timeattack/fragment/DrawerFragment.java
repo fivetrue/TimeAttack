@@ -4,6 +4,7 @@ import com.fivetrue.timeattack.R;
 import com.fivetrue.timeattack.activity.MainActivity;
 import com.fivetrue.timeattack.activity.MapActivity;
 import com.fivetrue.timeattack.activity.SearchLocationActivity;
+import com.fivetrue.timeattack.activity.SettingActivity;
 import com.fivetrue.timeattack.activity.manager.BaseActivityManager;
 import com.fivetrue.timeattack.utils.ImageUtils;
 import com.fivetrue.utils.ColorUtil;
@@ -124,6 +125,11 @@ public class DrawerFragment extends BaseFragment {
 				}
 				break;
 			case R.id.tv_drawer_setting :
+				if(!(getActivity() instanceof SettingActivity)){
+					Intent i = new Intent(getActivity(), SettingActivity.class);
+					i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+					BaseActivityManager.startActivity(getActivity(), i);
+				}
 				break;
 			}
 			
