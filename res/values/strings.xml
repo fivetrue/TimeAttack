@@ -42,6 +42,10 @@
     <string name="show_map">지도 보기</string>
     <string name="hide_map">지도 닫기</string>
     
+    <!-- Setting -->
+    <string name="setting_map">지도 설정</string>
+    <string name="setting_account">계정 설정</string>
+    
     <!-- NearbyFragment -->
     <string name="near_by_search_hint">위치검색</string>
     <string name="current_loaction">현재위치</string>

@@ -343,7 +343,7 @@ abstract public class BaseActivity extends LocationActivity implements IRequestR
 			case R.id.action_item_setting :
 			{
 				//설정.
-				Toast.makeText(getApplicationContext(), "action_settings", Toast.LENGTH_SHORT).show();
+				BaseActivityManager.startActivity(BaseActivity.this, SettingActivity.class);
 				return ;
 			}
 
