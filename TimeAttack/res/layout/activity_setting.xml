@@ -39,6 +39,7 @@
                 android:layout_height="@dimen/setting_item_detail_height"
                 android:paddingLeft="@dimen/setting_item_detail_margin"
                 android:text="@string/setting_map_type" />
+
             <View
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/shadow_height"
@@ -80,8 +81,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/setting_map_hybrid" />
             </RadioGroup>
-            
-            
+
             <TextView
                 android:id="@+id/tv_setting_map_interact"
                 style="@style/settingText.Medium"
@@ -90,30 +90,30 @@
                 android:layout_below="@id/rg_setting_map"
                 android:paddingLeft="@dimen/setting_item_detail_margin"
                 android:text="@string/setting_map_touch" />
+
             <View
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/shadow_height"
                 android:layout_below="@id/tv_setting_map_interact"
                 android:background="@drawable/shadow_pattern" />
-            
-            <CheckBox 
+
+            <CheckBox
                 android:id="@+id/cb_setting_map_rotation"
+                style="@style/MyRadioButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/tv_setting_map_interact"
                 android:layout_margin="@dimen/setting_item_detail_margin"
-               	android:text="@string/setting_map_rotation"
-                style="@style/MyRadioButton"/>
-            
-              <CheckBox 
+                android:text="@string/setting_map_rotation" />
+
+            <CheckBox
                 android:id="@+id/cb_setting_map_zoom_button"
+                style="@style/MyRadioButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/cb_setting_map_rotation"
                 android:layout_margin="@dimen/setting_item_detail_margin"
-               	android:text="@string/setting_map_zoom_button"
-                style="@style/MyRadioButton"/>
-            
+                android:text="@string/setting_map_zoom_button" />
         </RelativeLayout>
 
         <View
@@ -133,21 +133,34 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:text="@string/setting_account" />
-
-            <ImageView
-                android:layout_width="@dimen/common_item_pattern_size"
-                android:layout_height="match_parent"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:rotation="180"
-                android:scaleType="center"
-                android:src="@drawable/ic_action_previous_item_w" />
         </RelativeLayout>
 
         <View
             android:layout_width="match_parent"
             android:layout_height="@dimen/shadow_height"
             android:background="@drawable/shadow_pattern" />
+
+        <RelativeLayout
+            android:id="@+id/layout_account_setting_detail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+
+            <com.kakao.widget.LoginButton
+                android:id="@+id/btn_kakao_login"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/setting_item_detail_margin" />
+
+            <Button
+                android:id="@+id/btn_kakao_logout"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/setting_kakao_button_height"
+                android:layout_margin="@dimen/setting_item_detail_margin"
+                android:background="@drawable/kakao_login_button_background"
+                android:text="@string/setting_account_kakao_unlink"
+                android:textStyle="bold"
+                android:visibility="gone" />
+        </RelativeLayout>
     </LinearLayout>
 
 </ScrollView>
