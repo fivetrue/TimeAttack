@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="api_map_key">AIzaSyDBd9BYtE13_5X0nfbOzqhwqA4OfPbX6_M</string>
+    <string name="kakao_app_key">708ce72eae3ef4c13e303f2291fbd00b</string>
 
     <!-- Common -->
     <string name="app_name">타임어택</string>
@@ -32,6 +33,8 @@
     <string name="drawer_near_by">주변 찾기</string>
     <string name="drawer_direction">길 찾기</string>
     
+    <string name="drawer_login">로그인 하세요 !</string>
+    
     <!-- Fragment -->
     <string name="recently_infomation">최근 이용정보</string>
     <string name="recently_search_address">최근 주소검색</string>
@@ -56,6 +59,8 @@
     <string name="setting_map_satellite">위성 표시</string>
     <string name="setting_map_terrain">지형 표시</string>
     <string name="setting_map_hybrid">복합 표시</string>
+    
+    <string name="setting_account_kakao_unlink">카카오톡 연결 해제</string>
   
     
     <!-- NearbyFragment -->

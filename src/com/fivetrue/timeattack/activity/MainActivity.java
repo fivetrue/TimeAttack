@@ -2,7 +2,6 @@ package com.fivetrue.timeattack.activity;
 
 import java.util.ArrayList;
 
-import org.json.JSONObject;
 
 import com.api.google.geocoding.entry.GeocodingEntry;
 import com.api.google.place.entry.PlacesDetailEntry;
@@ -18,7 +17,6 @@ import com.fivetrue.timeattack.fragment.main.RecentlyPlacesListFragment;
 
 import android.location.Location;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;

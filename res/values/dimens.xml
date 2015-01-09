@@ -108,5 +108,6 @@
     <dimen name="setting_item_detail_height">20dp</dimen>
     <dimen name="setting_item_margin">2dp</dimen>
     <dimen name="setting_item_detail_margin">5dp</dimen>
+    <dimen name="setting_kakao_button_height">56dp</dimen>
 
 </resources>
