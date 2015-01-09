@@ -292,7 +292,7 @@ public class NearbyActivity extends BaseActivity {
 	}
 
 	@Override
-	public void requsetNetworkResultSuccess() {
+	public void requsetNetworkResultSuccess(String url, String request) {
 		// TODO Auto-generated method stub
 
 	}

@@ -134,23 +134,10 @@ public class MainActivity extends BaseActivity{
 		
 	}
 
-//	@Override
-//	public int getActionBarMenuResource() {
-//		// TODO Auto-generated method stub
-//		return R.menu.actionbar_main_menu;
-//	}
-
 	@Override
-	public void requsetNetworkResultSuccess() {
+	public void requsetNetworkResultSuccess(String url, String request) {
 		// TODO Auto-generated method stub
-
-		if(mPagerFragment != null){
-			for(Fragment f : mPagerFragment.getFragmentList()){
-				if(f instanceof BaseRecentlyListFragment<?>){
-					((BaseRecentlyListFragment<?>)f).onLoadListData();
-				}
-			}
-		}
+		updateFragmentData();
 	}
 
 	@Override
@@ -176,10 +163,9 @@ public class MainActivity extends BaseActivity{
 	}
 	
 	@Override
-	public void onSuccessRequest(String url, JSONObject request) {
+	protected boolean isSettingNetworkResultBroadcast() {
 		// TODO Auto-generated method stub
-		super.onSuccessRequest(url, request);
-		updateFragmentData();
+		return true;
 	}
 	
 	public void addFragmentToPager(BaseFragment f, String name, PagerFragment pager, Bundle arg){
@@ -227,4 +213,6 @@ public class MainActivity extends BaseActivity{
 		}
 		return place;
 	}
+	
+	
 }
