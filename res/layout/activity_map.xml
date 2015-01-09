@@ -23,18 +23,22 @@
             android:id="@+id/iv_map_place"
             android:layout_width="@dimen/map_control_size"
             android:layout_height="@dimen/map_control_size"
-            android:src="@drawable/ic_action_place"
+            android:src="@drawable/ic_train"
+            android:alpha="0.5"
             style="@style/AlphaWhiteButton.MapIcon"
              />
+<!--             android:src="@drawable/ic_action_place" -->
         
          <ImageView
               android:id="@+id/iv_map_direction"
             android:layout_width="@dimen/map_control_size"
             android:layout_height="@dimen/map_control_size"
-            android:src="@drawable/ic_action_directions"
+            android:src="@drawable/ic_walking"
+            android:alpha="0.5"
             android:layout_marginTop="@dimen/map_control_margin_right"
             style="@style/AlphaWhiteButton.MapIcon"
              />
+          <!-- android:src="@drawable/ic_action_directions" -->
     </LinearLayout>
 
 </RelativeLayout>

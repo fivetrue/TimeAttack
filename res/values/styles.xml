@@ -2,13 +2,13 @@
 
     <!--
         Base application theme, dependent on API level. This theme is replaced
-        by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
+        by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
     -->
     <style name="AppBaseTheme" parent="android:Theme.Light">
         <!--
             Theme customizations available in newer API levels can go in
             res/values-vXX/styles.xml, while customizations related to
-            backward-compatibility can go here.
+            backward-compatibility can go here.
         -->
     </style>
 
@@ -27,11 +27,12 @@
     </style>
 
     <!-- Fivetrue Custom ActionBar -->
-    <style name="MyActionBar" >
+    <style name="MyActionBar">
         <item name="android:background">@color/main_primary_color</item>
     </style>
 
     <style name="MyActionBarButton">
+
         <!-- <item name="android:background">@drawable/selector_main_primary_color</item> -->
         <item name="android:scaleType">center</item>
     </style>
@@ -45,7 +46,7 @@
         <item name="android:singleLine">true</item>
         <item name="android:typeface">monospace</item>
     </style>
-    
+
     <!-- ListStyle -->
     <style name="MyBaseList">
         <item name="android:listSelector">@android:color/white</item>
@@ -54,22 +55,22 @@
     </style>
 
     <!-- TextStyles -->
-     <style name="DrawerText" parent="baseListTextProperties">
+    <style name="DrawerText" parent="baseListTextProperties">
         <item name="android:textSize">@dimen/drawer_item_text_size</item>
         <item name="android:gravity">center</item>
         <item name="android:padding">@dimen/drawer_item_text_padding</item>
         <item name="android:textColor">@color/drawer_item_background_n</item>
         <item name="android:background">@drawable/selector_drawer_item_background</item>
     </style>
-    
+
     <style name="actionBarTitleText" parent="baseListTextProperties">
         <item name="android:textSize">@dimen/actionbar_title_text_size</item>
-          <item name="android:gravity">center</item>
+        <item name="android:gravity">center</item>
     </style>
 
     <style name="actionBarSubTitleText" parent="baseListTextProperties">
         <item name="android:textSize">@dimen/actionbar_sub_title_text_size</item>
-          <item name="android:gravity">center</item>
+        <item name="android:gravity">center</item>
     </style>
 
     <style name="dismissTitleText" parent="baseListTextProperties">
@@ -81,7 +82,7 @@
         <item name="android:textSize">@dimen/common_item_header_text_size</item>
         <item name="android:padding">@dimen/common_item_padding</item>
     </style>
-    
+
     <style name="listTitleText" parent="baseListTextProperties">
         <item name="android:textSize">@dimen/list_item_title_text_size</item>
         <item name="android:textColor">@color/selector_list_title_text_color</item>
@@ -91,8 +92,16 @@
         <item name="android:textSize">@dimen/list_item_sub_title_text_size</item>
         <item name="android:textColor">@color/selector_list_sub_title_text_color</item>
     </style>
+
+    <style name="settingText.Large" parent="listHeaderText">
+        <item name="android:textColor">@color/setting_primary_light_color</item>
+    </style>
+
+    <style name="settingText.Medium" parent="listTitleText">
+        <item name="android:textColor">@color/setting_primary_light_color</item>
+    </style>
     
-     <style name="settingItemText" parent="listHeaderText">
+    <style name="settingText.Small" parent="listSubTitleText">
         <item name="android:textColor">@color/setting_primary_light_color</item>
     </style>
 
@@ -176,6 +185,11 @@
         <item name="android:textColor">@color/selector_dialog_menu_text</item>
         <item name="android:background">@drawable/selector_dialog_content_menu</item>
         <item name="android:gravity">center</item>
+    </style>
+
+    <style name="MyRadioButton" parent="listSubTitleText">
+        <item name="android:textSize">@dimen/common_text_size</item>
+        <item name="android:gravity">left|center_vertical</item>
     </style>
 
     <!-- Alpha White Button -->
