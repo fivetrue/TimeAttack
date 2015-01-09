@@ -39,10 +39,10 @@ import android.view.View.OnClickListener;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.ViewGroup;
 
-public class RecentlyNetworkResultAdapter extends CommonListAdapter <NetworkResult>{
+public class RecentlyPlacesResultAdapter extends CommonListAdapter <NetworkResult>{
 	
 
-	public RecentlyNetworkResultAdapter(Context context, ArrayList<NetworkResult> arrayList, int[] colorList) {
+	public RecentlyPlacesResultAdapter(Context context, ArrayList<NetworkResult> arrayList, int[] colorList) {
 		super(context, arrayList, colorList);
 		// TODO Auto-generated constructor stub
 	}

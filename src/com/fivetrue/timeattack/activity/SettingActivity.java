@@ -49,6 +49,7 @@ public class SettingActivity extends BaseActivity {
 		mViewHolder.layoutMapSetting.setBackground(getResources().getDrawable(R.color.setting_primary_color));
 		mViewHolder.layoutAccountSetting.setBackground(getResources().getDrawable(R.color.setting_primary_color));
 		
+		
 		view.setBackground(getResources().getDrawable(R.color.setting_primary_light_color));
 		return view;
 	}

@@ -10,8 +10,6 @@ public class NetworkResult extends BaseEntry{
 		Direction,
 		GeoCoding,
 		Place,
-		SubwayInfo,
-		SubwayArrival,
 	}
 	
 	private int index = 0;

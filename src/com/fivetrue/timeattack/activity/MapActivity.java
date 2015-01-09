@@ -449,16 +449,23 @@ public class MapActivity extends BaseActivity {
 		public void onClickDetailItem(final PlaceVO item) {
 			// TODO Auto-generated method stub
 			if(item != null){
-				showProgressDialog();
-				mMapManager.saveLocateMapImage(mMap, item.getLatitude(), item.getLongitude(), mPlcaeZoomValue, item.getReference(), new OnSaveMapImageListener() {
-					
-					@Override
-					public void onComplete(Bitmap bm) {
-						// TODO Auto-generated method stub
-						dismissProgressDialog();
-						NearbyActivityManager.newInstance(MapActivity.this).goToActivity(item);
-					}
-				});
+			
+				if(ImageUtils.getInstance(MapActivity.this).getImageBitmap(item.getReference()) != null){
+					NearbyActivityManager.newInstance(MapActivity.this).goToActivity(item);
+				}else{
+					showProgressDialog();
+					mMapManager.saveLocateMapImage(mMap, item.getLatitude(), item.getLongitude(), mPlcaeZoomValue, item.getReference(), new OnSaveMapImageListener() {
+						
+						@Override
+						public void onComplete(Bitmap bm) {
+							// TODO Auto-generated method stub
+							ImageUtils.getInstance(MapActivity.this).saveBitmap(bm, item.getReference());
+							dismissProgressDialog();
+							NearbyActivityManager.newInstance(MapActivity.this).goToActivity(item);
+						}
+					});
+				}
+				
 			}
 		}
 	};

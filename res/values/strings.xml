@@ -34,6 +34,8 @@
     
     <!-- Fragment -->
     <string name="recently_infomation">최근 이용정보</string>
+    <string name="recently_search_address">최근 주소검색</string>
+    <string name="recently_search_place">최근 주변검색</string>
     <string name="recently_infomation_empty">최근 이용한 정보가 없습니다.</string>
     
     <string name="nearby_subway_infomation_empty">주변 지하철 정보가 없습니다.</string>

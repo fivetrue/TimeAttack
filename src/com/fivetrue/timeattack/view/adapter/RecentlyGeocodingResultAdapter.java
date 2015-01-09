@@ -39,10 +39,10 @@ import android.view.View.OnClickListener;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.ViewGroup;
 
-public class RecentlyNetworkResultAdapter extends CommonListAdapter <NetworkResult>{
+public class RecentlyGeocodingResultAdapter extends CommonListAdapter <NetworkResult>{
 	
 
-	public RecentlyNetworkResultAdapter(Context context, ArrayList<NetworkResult> arrayList, int[] colorList) {
+	public RecentlyGeocodingResultAdapter(Context context, ArrayList<NetworkResult> arrayList, int[] colorList) {
 		super(context, arrayList, colorList);
 		// TODO Auto-generated constructor stub
 	}
@@ -108,59 +108,11 @@ public class RecentlyNetworkResultAdapter extends CommonListAdapter <NetworkResu
 		return desc.toString();
 	}
 
-	public DirectionsEntry convertDirectionEntry(String result){
-		DirectionsEntry entry = null;
-		try {
-			JSONObject json = new JSONObject(result);
-			entry = new DirectionsConverter().onReceive(json);
-		} catch (JSONException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return entry;
-	}
-
-	public PlacesEntry convertPlaceEntry(String result){
-		PlacesEntry entry = null;
-		try {
-			JSONObject json = new JSONObject(result);
-			entry = new PlacesConverter().onReceive(json);
-		} catch (JSONException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return entry;
-	}
-
 	public GeocodingEntry convertGeocodeEntry(String result){
 		GeocodingEntry entry = null;
 		try {
 			JSONObject json = new JSONObject(result);
 			entry = new GeocodingConverter().onReceive(json);
-		} catch (JSONException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return entry;
-	}
-
-	public SubwayInfoEntry convertSubwayInfoEntry(String result){
-		SubwayInfoEntry entry = null;
-		try {
-			JSONObject json = new JSONObject(result);
-			entry = new SubwayInfoConverter().onReceive(json);
-		} catch (JSONException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return entry;
-	}
-
-	public SubwayArrivalInfoEntry convertSubwayArrivalInfoEntry(String result){
-		SubwayArrivalInfoEntry entry = null;
-		try {
-			JSONObject json = new JSONObject(result);
-			entry = new SubwayArrivalInfoConverter().onReceive(json);
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -193,64 +145,6 @@ public class RecentlyNetworkResultAdapter extends CommonListAdapter <NetworkResu
 			holder.mainImage.setVisibility(View.GONE);
 			holder.aboveBodyShadow.setVisibility(View.GONE);
 			
-			if(data.getType() != null){
-				switch(data.getType()){
-				case Direction : 
-					DirectionsEntry directions = convertDirectionEntry(data.getResult());
-					holder.headerTitle.setText(R.string.find_direction);
-					holder.Title.setText(directions.getRouteArray().get(0).getArrivalAddress());
-					holder.subTitle.setText(directions.getRouteArray().get(0).getSummary());
-					return convertView;
-
-				case Place :
-					holder.headerTitle.setText(R.string.find_subway_nearby);
-					if(data.getResult() != null){
-						final PlacesEntry places = convertPlaceEntry(data.getResult());
-						if(places.getPlaceList().size() > 0){
-							holder.Title.setText(places.getPlaceList().get(0).getName());
-							holder.subTitle.setText(places.getPlaceList().get(0).getTypeList().get(0));
-
-							Bitmap bm = VolleyInstance.getLruCache().get(places.getPlaceList().get(0).getIcon());
-
-							if(bm != null){
-								holder.thumbImage.setImageBitmap(bm);
-							}else{
-								VolleyInstance.getImageLoader().get(places.getPlaceList().get(0).getIcon(), new ImageListener() {
-
-									@Override
-									public void onErrorResponse(VolleyError error) {
-										// TODO Auto-generated method stub
-										error.printStackTrace();
-									}
-
-									@Override
-									public void onResponse(ImageContainer response, boolean isImmediate) {
-										// TODO Auto-generated method stub
-										if(response != null){
-											Bitmap bm = response.getBitmap();
-											if(bm != null){
-												holder.thumbImage.setImageBitmap(bm);
-											}
-										}
-
-									}
-								});
-							}
-						}
-						holder.arrowImage.setOnClickListener(new OnClickListener() {
-							
-							@Override
-							public void onClick(View v) {
-								// TODO Auto-generated method stub 
-								if(places != null && places.getPlaceList().size() > 0){
-									NearbyActivityManager.newInstance(mContext).goToActivity(places.getPlaceList().get(0));
-								}
-							}
-						});
-					return convertView;
-				}
-
-				case GeoCoding :
 					final GeocodingEntry geocoding = convertGeocodeEntry(data.getResult());
 					holder.headerTitle.setText(R.string.location_search);
 					holder.thumbImage.setImageResource(R.drawable.map);
@@ -288,8 +182,6 @@ public class RecentlyNetworkResultAdapter extends CommonListAdapter <NetworkResu
 					});
 					return convertView;
 				}
-			}
-		}
 		return convertView;
 	}
 
