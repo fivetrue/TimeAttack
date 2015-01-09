@@ -10,14 +10,13 @@ import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import com.api.common.BaseEntry;
 import com.fivetrue.timeattack.R;
-import com.fivetrue.timeattack.database.NetworkResultDBManager;
-import com.fivetrue.timeattack.database.model.NetworkResult;
 import com.fivetrue.timeattack.fragment.BaseListFragment;
-import com.fivetrue.timeattack.view.adapter.RecentlyNetworkResultAdapter;
 
-public class RecentlyListFragment extends BaseListFragment<NetworkResult> {
+abstract public class BaseRecentlyListFragment<T> extends BaseListFragment<T> {
 
+	static public final String RECENTRY_DATA = "RECENTRY_DATA";
 	
 	@Override
 	public View initHeader() {
@@ -34,29 +33,32 @@ public class RecentlyListFragment extends BaseListFragment<NetworkResult> {
 	@Override
 	public void onLoadListData() {
 		// TODO Auto-generated method stub
-		
-		NetworkResultDBManager manager = new NetworkResultDBManager(getActivity());
-		ArrayList<NetworkResult> arr = manager.getNetworkResults();
-		if(arr != null && arr.size() > 0){
-			if(adapter != null){
-				adapter.setArrayList(arr);
-				adapter.notifyDataSetChanged();
-			}else{
+		if(getArguments() != null){
+			BaseEntry entry = getArguments().getParcelable(RECENTRY_DATA);
+			if(entry != null){
 				setColorList(new int[]{R.color.main_primary_color,
 						R.color.main_primary_light_color, R.color.main_primary_deep_color});
-				adapter = new RecentlyNetworkResultAdapter(getActivity(), arr, getColorList());
-				adapter.setIconSelector(R.drawable.selector_main_primary_color);
-			}
-			listView.setAdapter(adapter);
-			setEmptyLayout(false);
-		}else{
-			getTvEmpty().setText(R.string.recently_infomation_empty);
-			getTvEmpty().setTextColor(getResources().getColor(R.color.main_primary_deep_color));
-			getEmptyLayout().setBackground(getResources().getDrawable(R.color.main_primary_light_color));
-			setEmptyLayout(true);
+				ArrayList<T> list = getListFromEntry(entry);
+				if(list != null && list.size() > 0){
+					onLoadListData(list);
+					setEmptyLayout(false);
+					if(adapter != null){
+						adapter.setIconSelector(R.drawable.selector_main_primary_color);
+					}
+				}else{
+					getTvEmpty().setText(R.string.recently_infomation_empty);
+					getTvEmpty().setTextColor(getResources().getColor(R.color.main_primary_deep_color));
+					getEmptyLayout().setBackground(getResources().getDrawable(R.color.main_primary_light_color));
+					setEmptyLayout(true);
+				}
+			} 
 		}
 	}
-
+	
+	public abstract void onLoadListData(ArrayList<T> arr);
+	
+	protected abstract ArrayList<T> getListFromEntry(BaseEntry entry);
+	
 	@Override
 	protected void configView(ListView listview, LayoutInflater inflater) {
 		// TODO Auto-generated method stub
@@ -81,6 +83,14 @@ public class RecentlyListFragment extends BaseListFragment<NetworkResult> {
 	protected void onListScrollStateChanged(AbsListView view, int scrollState) {
 		// TODO Auto-generated method stub
 		
+	}
+	
+	public void onResetData(ArrayList<T> list){
+		if(adapter != null){
+			adapter.getArrayList().clear();
+			adapter = null;
+		}
+		onLoadListData(list);
 	}
 }
 

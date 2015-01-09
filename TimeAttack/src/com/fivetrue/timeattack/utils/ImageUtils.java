@@ -23,7 +23,7 @@ public class ImageUtils extends BaseUtils{
 	static private ImageUtils instance = null;
 	private final int STROKE_WIDTH = 3;
 	private String PNG = ".png";
-	private int QUALITY = 90;
+	private int QUALITY = 50;
 	
 	private String mCacheDirPath = null;
 	private float mDensity = 0;

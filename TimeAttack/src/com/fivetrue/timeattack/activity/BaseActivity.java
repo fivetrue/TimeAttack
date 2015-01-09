@@ -332,7 +332,7 @@ abstract public class BaseActivity extends LocationActivity implements IRequestR
 	abstract public void onClickAcitionMenuLocationSearch(View view);
 
 	abstract public boolean isActionBarBlending();
-
+	
 	protected OnClickListener onClickActionBarItem = new OnClickListener() {
 
 		@Override
@@ -396,6 +396,7 @@ abstract public class BaseActivity extends LocationActivity implements IRequestR
 
 	public void onSuccessRequest(String url, org.json.JSONObject request) {
 		boolean isResultOK = false;
+		
 		if(url.contains(Constants.GoogleDirectionsAPI.DIRECTION_API_HOST)){
 			DirectionsEntry entry = new DirectionsConverter().onReceive(request);
 			if(entry.getStatus().equals(DirectionsConstants.Status.OK.toString())){
@@ -434,6 +435,7 @@ abstract public class BaseActivity extends LocationActivity implements IRequestR
 	@Override
 	public void onFailRequest(String url) {
 		// TODO Auto-generated method stub
+		mNetworkResultDBM.deleteNetworkResult(url);
 	}
 
 	protected void log(String msg){

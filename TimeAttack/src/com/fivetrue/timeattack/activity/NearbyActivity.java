@@ -122,6 +122,8 @@ public class NearbyActivity extends BaseActivity {
 			if(map != null){
 				mViewHolder.ivMap.setImageBitmap(map);
 				map = null;
+			}else{
+				mViewHolder.ivMap.setVisibility(View.GONE);
 			}
 			setLocationInfoFromPlaceInfo(mViewHolder.tvLocationDetail, mEntry);
 			loadDetailData();
