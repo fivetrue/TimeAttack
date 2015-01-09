@@ -20,12 +20,17 @@ import com.fivetrue.dialog.ProgressDialog;
 import com.fivetrue.location.activity.LocationActivity;
 import com.fivetrue.timeattack.R;
 import com.fivetrue.timeattack.activity.manager.BaseActivityManager;
+import com.fivetrue.timeattack.constants.ActionConstants;
 import com.fivetrue.timeattack.database.NetworkResultDBManager;
 import com.fivetrue.timeattack.fragment.BaseFragment;
 import com.fivetrue.timeattack.fragment.DrawerFragment;
 import com.fivetrue.timeattack.view.actionbar.CustomActionBar;
 import com.fivetrue.utils.Logger;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -47,6 +52,9 @@ import android.widget.Toast;
 
 abstract public class BaseActivity extends LocationActivity implements IRequestResult{
 
+	private final String URL = "URL";
+	private final String REQUEST = "REQUEST";
+	
 	protected boolean isRunningGps = false;
 	protected final int INVALID_VALUE = -1;
 	private DrawerLayout mDrawerLayout = null;
@@ -73,6 +81,20 @@ abstract public class BaseActivity extends LocationActivity implements IRequestR
 		initActionBar(mInflater);
 		initActionBarSetting(mInflater);
 		initModels();
+		
+		IntentFilter filter = new IntentFilter(ActionConstants.ACTION_NETWORK_SUCCESS);
+		if(isSettingNetworkResultBroadcast()){
+			registerReceiver(mNetworkSuccessBroadcastReceiver, filter);
+		}
+	}
+	
+	@Override
+	protected void onDestroy() {
+		// TODO Auto-generated method stub
+		super.onDestroy();
+		if(mNetworkSuccessBroadcastReceiver != null && isSettingNetworkResultBroadcast()){
+			unregisterReceiver(mNetworkSuccessBroadcastReceiver);
+		}
 	}
 
 	@Override
@@ -101,6 +123,10 @@ abstract public class BaseActivity extends LocationActivity implements IRequestR
 		// TODO Auto-generated method stub
 		super.finish();
 		overridePendingTransition(R.anim.activity_slide_in_left, R.anim.activity_alpha_out);
+	}
+	
+	protected boolean isSettingNetworkResultBroadcast(){
+		return false;
 	}
 	
 
@@ -162,18 +188,6 @@ abstract public class BaseActivity extends LocationActivity implements IRequestR
 		mCustomActionBar.setDrawerLayout(mDrawerLayout);
 		mCustomActionBar.setLayoutDrawer(mLayoutDrawer);
 	}
-
-
-	//	private void initActionBarButtons(Menu menu){
-	//		if(menu != null){
-	//			for(int i = 0 ; i < menu.size() ; i ++){
-	//				View view = menu.getItem(i).getActionView();
-	//				if(view != null){
-	//					view.setOnClickListener(onClickActionBarItem);
-	//				}
-	//			}
-	//		}
-	//	}
 
 	DrawerListener onDrawerListener = new DrawerListener() {
 
@@ -327,7 +341,7 @@ abstract public class BaseActivity extends LocationActivity implements IRequestR
 
 	abstract public boolean isHomeAsUp();
 
-	abstract public void requsetNetworkResultSuccess();
+	abstract public void requsetNetworkResultSuccess(String url, String request);
 
 	abstract public void onClickAcitionMenuLocationSearch(View view);
 
@@ -428,7 +442,10 @@ abstract public class BaseActivity extends LocationActivity implements IRequestR
 		}
 		if(isResultOK){
 			mNetworkResultDBM.insertNetworkResult(url, request);
-			requsetNetworkResultSuccess();
+			Intent intent = new Intent(ActionConstants.ACTION_NETWORK_SUCCESS);
+			intent.putExtra(URL, url);
+			intent.putExtra(REQUEST, request.toString());
+			sendBroadcast(intent);
 		}
 	};
 
@@ -472,5 +489,19 @@ abstract public class BaseActivity extends LocationActivity implements IRequestR
 	public DrawerFragment getDrawerFragment(){
 		return mFragmentDrawer;
 	}
+	
+	protected BroadcastReceiver mNetworkSuccessBroadcastReceiver = new BroadcastReceiver() {
+		
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			// TODO Auto-generated method stub
+			if(context != null && intent != null){
+				String action = intent.getAction();
+				if(action != null && action.equals(ActionConstants.ACTION_NETWORK_SUCCESS)){
+					requsetNetworkResultSuccess(intent.getStringExtra(URL), intent.getStringExtra(REQUEST));
+				}
+			}
+		}
+	};
 
 }

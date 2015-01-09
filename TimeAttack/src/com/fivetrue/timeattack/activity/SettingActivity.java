@@ -80,7 +80,7 @@ public class SettingActivity extends BaseActivity {
 	}
 
 	@Override
-	public void requsetNetworkResultSuccess() {
+	public void requsetNetworkResultSuccess(String url, String request) {
 		// TODO Auto-generated method stub
 
 	}
