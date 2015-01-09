@@ -16,19 +16,104 @@
 
             <TextView
                 android:id="@+id/tv_setting_map"
-                style="@style/settingItemText"
+                style="@style/settingText.Large"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:text="@string/setting_map" />
+        </RelativeLayout>
 
-            <ImageView
-                android:layout_width="@dimen/common_item_pattern_size"
-                android:layout_height="match_parent"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:rotation="180"
-                android:scaleType="center"
-                android:src="@drawable/ic_action_previous_item_w" />
+        <RelativeLayout
+            android:id="@+id/layout_map_setting_detail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/shadow_height"
+                android:background="@drawable/shadow_pattern" />
+
+            <TextView
+                android:id="@+id/tv_setting_map_type"
+                style="@style/settingText.Medium"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/setting_item_detail_height"
+                android:paddingLeft="@dimen/setting_item_detail_margin"
+                android:text="@string/setting_map_type" />
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/shadow_height"
+                android:layout_below="@id/tv_setting_map_type"
+                android:background="@drawable/shadow_pattern" />
+
+            <RadioGroup
+                android:id="@+id/rg_setting_map"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tv_setting_map_type"
+                android:layout_margin="@dimen/setting_item_detail_margin" >
+
+                <RadioButton
+                    android:id="@+id/rb_setting_map_normal"
+                    style="@style/MyRadioButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/setting_map_normal" />
+
+                <RadioButton
+                    android:id="@+id/rb_setting_map_satellite"
+                    style="@style/MyRadioButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/setting_map_satellite" />
+
+                <RadioButton
+                    android:id="@+id/rb_setting_map_terrain"
+                    style="@style/MyRadioButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/setting_map_terrain" />
+
+                <RadioButton
+                    android:id="@+id/rb_setting_map_hybrid"
+                    style="@style/MyRadioButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/setting_map_hybrid" />
+            </RadioGroup>
+            
+            
+            <TextView
+                android:id="@+id/tv_setting_map_interact"
+                style="@style/settingText.Medium"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/setting_item_detail_height"
+                android:layout_below="@id/rg_setting_map"
+                android:paddingLeft="@dimen/setting_item_detail_margin"
+                android:text="@string/setting_map_touch" />
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/shadow_height"
+                android:layout_below="@id/tv_setting_map_interact"
+                android:background="@drawable/shadow_pattern" />
+            
+            <CheckBox 
+                android:id="@+id/cb_setting_map_rotation"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tv_setting_map_interact"
+                android:layout_margin="@dimen/setting_item_detail_margin"
+               	android:text="@string/setting_map_rotation"
+                style="@style/MyRadioButton"/>
+            
+              <CheckBox 
+                android:id="@+id/cb_setting_map_zoom_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/cb_setting_map_rotation"
+                android:layout_margin="@dimen/setting_item_detail_margin"
+               	android:text="@string/setting_map_zoom_button"
+                style="@style/MyRadioButton"/>
+            
         </RelativeLayout>
 
         <View
@@ -44,7 +129,7 @@
 
             <TextView
                 android:id="@+id/tv_setting_account"
-                style="@style/settingItemText"
+                style="@style/settingText.Large"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:text="@string/setting_account" />
