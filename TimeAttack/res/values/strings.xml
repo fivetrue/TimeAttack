@@ -51,6 +51,7 @@
     <string name="setting_map">지도 설정</string>
     <string name="setting_map_type">지도 표시 방법</string>
     <string name="setting_map_touch">지도 터치 설정</string>
+    <string name="setting_map_radius">주변검색 범위 설정</string>
     <string name="setting_map_rotation">지도 회전</string>
     <string name="setting_map_zoom_button">Zoom 버튼 노출</string>
     <string name="setting_account">계정 설정</string>

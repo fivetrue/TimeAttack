@@ -28,6 +28,8 @@ import android.widget.RadioGroup.OnCheckedChangeListener;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ScrollView;
+import android.widget.SeekBar;
+import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
 
 public class SettingActivity extends BaseActivity {
@@ -40,9 +42,12 @@ public class SettingActivity extends BaseActivity {
 		public ViewGroup layoutMapSettingDetail = null;
 		public TextView tvMapSettingType = null;
 		public TextView tvMapSettingInteract = null;
+		public TextView tvMapSettingRadius = null;
+		public TextView tvMapSettingRadiusValue = null;
 		public RadioGroup rgMapSetting = null;
 		public CheckBox cbMapSettingRotation = null;
 		public CheckBox cbMapSettingZoomButton = null;
+		public SeekBar sbMapSettingRadius = null;
 
 		public ViewGroup layoutAccountSetting = null;
 		public ViewGroup layoutAccountSettingDetail = null;
@@ -101,15 +106,20 @@ public class SettingActivity extends BaseActivity {
 		mViewHolder.layoutMapSettingDetail  = (ViewGroup) view.findViewById(R.id.layout_map_setting_detail);
 		mViewHolder.tvMapSettingType = (TextView)  view.findViewById(R.id.tv_setting_map_type);
 		mViewHolder.tvMapSettingInteract = (TextView)  view.findViewById(R.id.tv_setting_map_interact);
+		mViewHolder.tvMapSettingRadius = (TextView)  view.findViewById(R.id.tv_setting_map_radius);
+		mViewHolder.tvMapSettingRadiusValue = (TextView)  view.findViewById(R.id.tv_setting_map_radius_value);
+		
 
 		mViewHolder.cbMapSettingRotation = (CheckBox) view.findViewById(R.id.cb_setting_map_rotation);
 		mViewHolder.cbMapSettingZoomButton = (CheckBox) view.findViewById(R.id.cb_setting_map_zoom_button);
 		mViewHolder.rgMapSetting = (RadioGroup) view.findViewById(R.id.rg_setting_map);
+		mViewHolder.sbMapSettingRadius = (SeekBar) view.findViewById(R.id.sb_setting_map_radius);
 
 		mViewHolder.layoutMapSetting.setBackground(getResources().getDrawable(R.color.setting_primary_color));
 		mViewHolder.tvMapSettingType.setBackground(getResources().getDrawable(R.color.setting_primary_soft_color));
 		mViewHolder.tvMapSettingInteract.setBackground(getResources().getDrawable(R.color.setting_primary_soft_color));
-
+		mViewHolder.tvMapSettingRadius.setBackground(getResources().getDrawable(R.color.setting_primary_soft_color));
+		
 		//Account Settings
 		mViewHolder.layoutAccountSetting = (ViewGroup) view.findViewById(R.id.layout_account_setting);
 		mViewHolder.layoutAccountSettingDetail  = (ViewGroup) view.findViewById(R.id.layout_account_setting_detail);
@@ -164,6 +174,36 @@ public class SettingActivity extends BaseActivity {
 						break;
 					}
 				}
+			}
+		});
+		
+		
+		mViewHolder.sbMapSettingRadius.setProgress(mMapPref.getMapPlaceRadius());
+		mViewHolder.tvMapSettingRadiusValue.setText(mMapPref.getMapPlaceRadius() + "M");
+		mViewHolder.sbMapSettingRadius.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
+			
+			@Override
+			public void onStopTrackingTouch(SeekBar seekBar) {
+				// TODO Auto-generated method stub
+				if(seekBar != null){
+					mMapPref.setMapPlaceRadius(seekBar.getProgress());
+				}
+			}
+			
+			@Override
+			public void onStartTrackingTouch(SeekBar seekBar) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void onProgressChanged(SeekBar seekBar, int progress,
+					boolean fromUser) {
+				// TODO Auto-generated method stub
+				if(seekBar != null && fromUser){
+					mViewHolder.tvMapSettingRadiusValue.setText(progress + "M");
+				}
+				
 			}
 		});
 

@@ -9,7 +9,6 @@ import com.android.volley.toolbox.ImageLoader.ImageListener;
 import com.api.google.place.model.PlaceVO;
 import com.fivetrue.network.VolleyInstance;
 import com.fivetrue.timeattack.R;
-import com.fivetrue.timeattack.activity.manager.NearbyActivityManager;
 import com.fivetrue.timeattack.fragment.map.NearBySearchListFragment.PlaceItemDetailClickListener;
 
 import android.animation.AnimatorSet;

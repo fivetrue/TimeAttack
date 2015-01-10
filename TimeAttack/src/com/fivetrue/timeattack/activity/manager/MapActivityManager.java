@@ -36,7 +36,7 @@ public class MapActivityManager extends BaseActivityManager{
 	
 	public static String MAP_DATA  = "MAP_DATA";
 	public static String MAP_DATA_TYPE  = "MAP_DATA_TYPE";
-	
+	public static String DATA_ROUTE  = "DATA_ROUTE";
 	
 	public static final int DATA_GEOCODING = 0x00;
 	public static final int DATA_PLACE = 0x01;
@@ -119,6 +119,20 @@ public class MapActivityManager extends BaseActivityManager{
 				markers.add(drawPointToMap(map, vo.getDepartureAddress(), null, departure));
 				return markers;
 			}
+		}else{
+			error("Entry is null");
+		}
+		return null;
+	}
+	
+	public ArrayList<MarkerOptions> drawPointToMap(GoogleMap map, RouteVO route){
+		if(route != null){
+			ArrayList<MarkerOptions> markers = new ArrayList<MarkerOptions>();
+			LatLng arrival = new LatLng(Double.parseDouble(route.getArrivalLatidute()), Double.parseDouble(route.getArrivalLongitude()));
+			markers.add(drawPointToMap(map, route.getArrivalAddress(), null, arrival));
+			LatLng departure = new LatLng(Double.parseDouble(route.getDepartureLatidute()), Double.parseDouble(route.getDepartureLongitude()));
+			markers.add(drawPointToMap(map, route.getDepartureAddress(), null, departure));
+			return markers;
 		}else{
 			error("Entry is null");
 		}

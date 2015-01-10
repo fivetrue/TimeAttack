@@ -3,6 +3,7 @@ package com.fivetrue.timeattack.preference;
 import android.content.Context;
 
 import com.fivetrue.preference.SharedPrefrenceManager;
+import com.fivetrue.timeattack.R;
 import com.google.android.gms.maps.GoogleMap;
 
 public class MapPreferenceManager extends SharedPrefrenceManager {
@@ -14,6 +15,7 @@ public class MapPreferenceManager extends SharedPrefrenceManager {
 	private final String MAP_ZOOM_BUTTON = "MAP_ZOOM_BUTTON";
 	private final String MAP_ROTATE = "MAP_ROTATE";
 	private final String MAP_TYPE = "MAP_TYPE";
+	private final String MAP_PLACE_RADIUS = "MAP_PLACE_RADIUS";
 	
 	
 	static public MapPreferenceManager newInstance(Context context){
@@ -73,5 +75,11 @@ public class MapPreferenceManager extends SharedPrefrenceManager {
 		return loadIntPref(MAP_TYPE, GoogleMap.MAP_TYPE_NORMAL);
 	}
 	
-
+	public void setMapPlaceRadius(int value){
+		savePref(MAP_PLACE_RADIUS, value);
+	}
+	
+	public int getMapPlaceRadius(){
+		return loadIntPref(MAP_PLACE_RADIUS, getContext().getResources().getInteger(R.integer.setting_map_place_radius_default)); 
+	}
 }
