@@ -46,7 +46,7 @@ public class SearchLocationResultAdapter extends CommonListAdapter <AddressResul
 	private String getGeocodingDescription(AddressResultVO entry){
 		String postal_code = null;
 		for(AddressComponentVO componnt : entry.getAddressComponents()){
-			if(componnt.getTypes() != null && componnt.getTypes().size() >= 0){
+			if(componnt.getTypes() != null && componnt.getTypes().size() > 0){
 				if(componnt.getTypes().get(0).equals(GeocodingConstants.Types.postal_code.toString())){
 					postal_code = componnt.getLongName();
 					break;
@@ -165,7 +165,7 @@ public class SearchLocationResultAdapter extends CommonListAdapter <AddressResul
 		holder.headerTitle.setText(mContext.getString(R.string.location_infomation));
 		holder.Title.setText(data.getAddress());
 		if(data.getTypes() != null){
-			if(!TextUtils.isEmpty(data.getTypes().get(0))){
+			if(data.getTypes() != null && data.getTypes().size() > 0 && !TextUtils.isEmpty(data.getTypes().get(0))){
 				holder.subTitle.setText(data.getTypes().get(0));
 			}
 		}

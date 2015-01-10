@@ -7,106 +7,103 @@
     <string name="admob_add_footer">ca-app-pub-9489297717026983/8641474956</string>
     <string name="admob_add_header">ca-app-pub-9489297717026983/5408806953</string>
     <!-- Common -->
-    <string name="app_name">타임어택</string>
+    <string name="app_name">TimeAttack</string>
     <string name="action_settings">Settings</string>
     
     <string name="drawer_open">DrawerOpen</string>
     <string name="drawer_close">DrawerClose</string>
     
-    <string name="search">검색</string>
+    <string name="search">Search</string>
     <string name="title">Title</string>
     <string name="description">Description</string>
     
-    <string name="ok">확인</string>
-    <string name="cancel">취소</string>
-    <string name="alert">알림</string>
+    <string name="ok">Ok</string>
+    <string name="cancel">Cancel</string>
+    <string name="alert">Alert</string>
     
-    <string name="find_subway_nearby">주변 지하철역</string>
-    <string name="find_direction">대중교통 길 찾기</string>
+    <string name="find_subway_nearby">Subway Near by</string>
+    <string name="find_direction">find trasit way</string>
     
     <!-- Error Message -->
-    <string name="error_location_out_of_service">위치정보 서비스를 이용 할 수 없는 상태입니다.</string>
-    <string name="error_network_request_fail">네트워크 통신에 실패 하였습니다.</string>
-    <string name="error_zero_result_nearby_subway">반경 %s 내에 지하철이 없습니다.</string>
+    <string name="error_location_out_of_service">Do no you GPS service.</string>
+    <string name="error_network_request_fail">Fail network connection.</string>
+    <string name="error_zero_result_nearby_subway">No subway in Radius %s</string>
     
     <!--Drawer Texts -->
-    <string name="drawer_home">홈</string>
-    <string name="drawer_map">지도</string>
-    <string name="drawer_search_address">주소검색</string>
-    <string name="drawer_near_by">주변 찾기</string>
-    <string name="drawer_direction">길 찾기</string>
+    <string name="drawer_home">Home</string>
+    <string name="drawer_map">Map</string>
+    <string name="drawer_search_address">Search address</string>
+    <string name="drawer_near_by">Find nearby</string>
+    <string name="drawer_direction">Find way</string>
     
-    <string name="drawer_login">로그인 하세요 !</string>
+    <string name="drawer_login">Login !</string>
     
     <!-- Fragment -->
-    <string name="recently_infomation">최근 이용정보</string>
-    <string name="recently_search_address">최근 주소검색</string>
-    <string name="recently_search_place">최근 주변검색</string>
-    <string name="recently_infomation_empty">최근 이용한 정보가 없습니다.</string>
+    <string name="recently_infomation">Recently used</string>
+    <string name="recently_search_address">Recently searched address</string>
+    <string name="recently_search_place">Recently searched nearby</string>
+    <string name="recently_infomation_empty">No data.</string>
     
-    <string name="nearby_subway_infomation_empty">주변 지하철 정보가 없습니다.</string>
+    <string name="nearby_subway_infomation_empty">No subway around here.</string>
     
     <!-- Map Fragment -->
-    <string name="show_map">지도 보기</string>
-    <string name="hide_map">지도 닫기</string>
+    <string name="show_map">Show map</string>
+    <string name="hide_map">Close map</string>
     
     <!-- Setting -->
-    <string name="setting_map">지도 설정</string>
-    <string name="setting_map_type">지도 표시 방법</string>
-    <string name="setting_map_touch">지도 터치 설정</string>
-    <string name="setting_map_radius">주변검색 범위 설정</string>
-    <string name="setting_map_rotation">지도 회전</string>
-    <string name="setting_map_zoom_button">Zoom 버튼 노출</string>
-    <string name="setting_account">계정 설정</string>
+    <string name="setting_map">Setting map</string>
+    <string name="setting_map_type">Setting map type</string>
+    <string name="setting_map_touch">Setting map interaction</string>
+    <string name="setting_map_radius">Setting nearby radius value</string>
+    <string name="setting_map_rotation">Rotation map</string>
+    <string name="setting_map_zoom_button">Showing Zoom button</string>
+    <string name="setting_account">Setting Account</string>
     
-    <string name="setting_map_normal">일반 표시</string>
-    <string name="setting_map_satellite">위성 표시</string>
-    <string name="setting_map_terrain">지형 표시</string>
-    <string name="setting_map_hybrid">복합 표시</string>
+    <string name="setting_map_normal">Normal</string>
+    <string name="setting_map_satellite">Satellite</string>
+    <string name="setting_map_terrain">Terrain</string>
+    <string name="setting_map_hybrid">Hybrid</string>
     
-    <string name="setting_account_kakao_unlink">카카오톡 연결 해제</string>
+    <string name="setting_account_kakao_unlink">Unlink Kakao account</string>
   
     
     <!-- NearbyFragment -->
-    <string name="near_by_search_hint">위치검색</string>
-    <string name="current_loaction">현재위치</string>
+    <string name="near_by_search_hint">Search location</string>
+    <string name="current_loaction">Current location</string>
     
     <!-- Search Activity -->
-    <string name="location_search">지역검색</string>
+    <string name="location_search">Search location</string>
     
     <!-- ActionBar Items -->
-    <string name="actionbar_search">검색</string>
-    <string name="actionbar_current_location">현재위치탐색</string>
-    <string name="actionbar_map">지도</string>
-    <string name="actionbar_place">주변찾기</string>
-    <string name="actionbar_direction">경로검색</string>
-    <string name="actionbar_setting">설정</string>
+    <string name="actionbar_search">Search</string>
+    <string name="actionbar_current_location">Current location</string>
+    <string name="actionbar_map">Map</string>
+    <string name="actionbar_place">Find nearby</string>
+    <string name="actionbar_direction">Find way</string>
+    <string name="actionbar_setting">Setting</string>
     
     <!-- Main -->
-    <string name="activity_home">타임어택</string>
-    <string name="activity_map">지도정보</string>
+    <string name="activity_home">TimeAttack</string>
+    <string name="activity_map">Map infomation</string>
     
     <!-- Search -->
-    <string name="input_location_place_message">검색 위치를 입력하세요.</string>
-    <string name="invalid_location_place_message">검색 위치를 다시 확인해주세요.</string>
+    <string name="input_location_place_message">Please input location.</string>
+    <string name="invalid_location_place_message">Please check location name and try again</string>
     
     <!-- Location Infomation -->
-    <string name="location_infomation">위치정보</string>
-    <string name="location_address">주소</string>
-	<string name="location_postal_code">우편번호</string>
-    <string name="location_latitude">위도</string>
-    <string name="location_longitude">경도</string>
-    <string name="location_type">주소</string>
+    <string name="location_infomation">Location infomation</string>
+    <string name="location_address">Address</string>
+	<string name="location_postal_code">Postal code</string>
+    <string name="location_latitude">Latitude</string>
+    <string name="location_longitude">Longitude</string>
+    <string name="location_type">Address</string>
     
-    <string name="location_address_message">주소\n%s\n</string>
-    <string name="location_postal_code_message">우편번호 (%s)\n</string>
-    <string name="location_latlng_message" formatted="false">위도,경도 (%s, %s)</string>
+    <string name="location_address_message">Address\n%s\n</string>
+    <string name="location_postal_code_message">Postal code (%s)\n</string>
+    <string name="location_latlng_message" formatted="false">Latitude,Longitude (%s, %s)</string>
     
     <!-- NearBy -->
-    <string name="station">역</string>
-    <string name="detail_info">상세정보</string>
-    
-    
-    
+    <string name="station">Station</string>
+    <string name="detail_info">Detail infomation</string>
 
 </resources>
