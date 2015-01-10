@@ -1,8 +1,14 @@
 package com.fivetrue.timeattack.activity;
 
 
+import java.util.List;
+
 import com.api.common.BaseEntry;
 import com.api.common.BaseResponseListener;
+import com.api.google.directions.DirectionsAPIHelper;
+import com.api.google.directions.DirectionsConstants;
+import com.api.google.directions.entry.DirectionsEntry;
+import com.api.google.directions.model.RouteVO;
 import com.api.google.geocoding.model.AddressResultVO;
 import com.api.google.place.PlaceAPIHelper;
 import com.api.google.place.PlacesConstans;
@@ -13,15 +19,16 @@ import com.fivetrue.timeattack.R;
 import com.fivetrue.timeattack.activity.manager.MapActivityManager;
 import com.fivetrue.timeattack.activity.manager.MapActivityManager.OnSaveMapImageListener;
 import com.fivetrue.timeattack.activity.manager.NearbyActivityManager;
+import com.fivetrue.timeattack.fragment.map.DirectionsListFragment;
+import com.fivetrue.timeattack.fragment.map.DirectionsListFragment.DirectionsItemClickListener;
 import com.fivetrue.timeattack.fragment.map.NearBySearchListFragment;
 import com.fivetrue.timeattack.fragment.map.NearBySearchListFragment.PlaceItemDetailClickListener;
 import com.fivetrue.timeattack.preference.MapPreferenceManager;
 import com.fivetrue.timeattack.utils.ImageUtils;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.GoogleMap.OnMapLoadedCallback;
-import com.google.android.gms.maps.GoogleMap.SnapshotReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.PolylineOptions;
 
 import android.graphics.Bitmap;
 import android.location.Location;
@@ -49,6 +56,7 @@ public class MapActivity extends BaseActivity {
 
 	//Fragment
 	private NearBySearchListFragment mNearBySearchFragment = null;
+	private DirectionsListFragment mDirectionFragment = null;
 
 	//Model
 	private BaseEntry mEntry = null;
@@ -56,6 +64,8 @@ public class MapActivity extends BaseActivity {
 	private MapActivityManager mMapManager = null;
 	private ViewHolder mMyControlView = null;
 	private MyLocationSearchAsycTask mMyLocationAyncTask = null;
+	
+	private MapPreferenceManager mMapPref = null;
 
 	private Location mMyLocation = null;
 
@@ -63,7 +73,9 @@ public class MapActivity extends BaseActivity {
 	private float mZoomValue = 14;
 	private float mMyLocationZoomValue = 18;
 	private float mPlcaeZoomValue = 19;
-	private int mLocationRadius = 1000;
+	
+	private LatLng mDestinationLatLng = null;
+	private int mDrawColorIndex = 0;
 
 
 	@Override
@@ -133,15 +145,15 @@ public class MapActivity extends BaseActivity {
 	}
 
 	private void initModels(){
-
+		mMapPref = MapPreferenceManager.newInstance(this);
+		
 		if(mMapFragment != null){
-			MapPreferenceManager pref = MapPreferenceManager.newInstance(this);
 			mMap = mMapFragment.getMap();
-			mMap.setMapType(pref.getMapType());
-			mMap.getUiSettings().setRotateGesturesEnabled(pref.isRotateEnable());
-			mMap.getUiSettings().setZoomControlsEnabled(pref.isZoomButtonEnable());
-			mMap.setBuildingsEnabled(pref.isBuildingEnable());
-			mMap.setIndoorEnabled(pref.isIndoorEnable());
+			mMap.setMapType(mMapPref.getMapType());
+			mMap.getUiSettings().setRotateGesturesEnabled(mMapPref.isRotateEnable());
+			mMap.getUiSettings().setZoomControlsEnabled(mMapPref.isZoomButtonEnable());
+			mMap.setBuildingsEnabled(mMapPref.isBuildingEnable());
+			mMap.setIndoorEnabled(mMapPref.isIndoorEnable());
 			mMapManager = MapActivityManager.newInstance(this);
 		}else{
 			log("map fragment is null");
@@ -170,6 +182,7 @@ public class MapActivity extends BaseActivity {
 	private void setGeocodingMapData(final AddressResultVO addressVo){
 		mMyControlView.layoutMyControl.setVisibility(View.VISIBLE);
 		final String key = addressVo.getLatitude() + addressVo.getLongitude();
+		mDestinationLatLng = new LatLng(Double.parseDouble(addressVo.getLatitude()), Double.parseDouble(addressVo.getLongitude()));
 		showProgressDialog();
 		mMapManager.saveLocateMapImage(mMap, addressVo.getLatitude(), addressVo.getLongitude(), mMyLocationZoomValue, key, new OnSaveMapImageListener() {
 			
@@ -409,7 +422,7 @@ public class MapActivity extends BaseActivity {
 			
 			
 			new PlaceAPIHelper(MapActivity.this, API_TYPE.NEAR_BY_SEARCH, MapActivity.this)
-			.requestNearBySearchSubway(latitude, longitude, mLocationRadius, new BaseResponseListener<PlacesEntry>() {
+			.requestNearBySearchSubway(latitude, longitude, mMapPref.getMapPlaceRadius(), new BaseResponseListener<PlacesEntry>() {
 				
 				@Override
 				public void onResponse(PlacesEntry response) {
@@ -423,7 +436,7 @@ public class MapActivity extends BaseActivity {
 							mNearBySearchFragment.setPlaceItemDetailClickListener(mPlaceItemDetailClickListener);
 							mMapManager.drawPointToMap(mMap, response.getPlaceList());
 						}else if(response.getStatus().equals(PlacesConstans.Status.ZERO_RESULTS.toString())){
-							makeToast(String.format(getString(R.string.error_zero_result_nearby_subway), mLocationRadius));
+							makeToast(String.format(getString(R.string.error_zero_result_nearby_subway), mMapPref.getMapPlaceRadius()));
 						}else{
 							makeToast(response.getStatusMessgae());
 						}
@@ -440,8 +453,52 @@ public class MapActivity extends BaseActivity {
 		@Override
 		public void onClick(View v) {
 			// TODO Auto-generated method stub
+			if(mMap != null && mMyLocation != null && mDestinationLatLng != null){
+				new DirectionsAPIHelper(MapActivity.this, MapActivity.this)
+				.requestTransitModeDirections(mMyLocation.getLatitude(), mMyLocation.getLongitude(),
+						mDestinationLatLng.latitude, mDestinationLatLng.longitude,
+						System.currentTimeMillis() / 1000, new BaseResponseListener<DirectionsEntry>() {
+							
+							@Override
+							public void onResponse(DirectionsEntry response) {
+								// TODO Auto-generated method stub
+								if(response != null){
+									if(response.getStatus().equals(DirectionsConstants.Status.OK.toString())){
+										Bundle argument = new Bundle();
+										argument.putParcelable(MapActivityManager.MAP_DATA, response);
+										mDirectionFragment = (DirectionsListFragment) createFragment(DirectionsListFragment.class, 
+												"place", INVALID_VALUE, argument
+												, R.anim.slide_in_top, R.anim.slide_in_top);
+										mDirectionFragment.setDirecitonsItemClickListener(mDirectionItemClickListener);
+									}
+								}
+								
+							}
+						});
+			}else{
+				makeToast("현재 위치를 알 수 없습니다.");
+			}
 		}
 	};
+	
+	private void drawPolyline(RouteVO route){
+		if(mMap != null && route != null){
+			int arrColor[];
+			arrColor = new int[5];
+			arrColor[0] = getResources().getColor(android.R.color.holo_red_dark);
+			arrColor[1] = getResources().getColor(android.R.color.holo_blue_dark);
+			arrColor[2] = getResources().getColor(android.R.color.holo_green_dark);
+			arrColor[3] = getResources().getColor(android.R.color.holo_orange_dark);
+			arrColor[4] = getResources().getColor(android.R.color.holo_purple);
+			List<LatLng> points = route.decodePoly(route.getOverviewPolylinePoints());
+			PolylineOptions line = new PolylineOptions();
+			if(mDrawColorIndex >= arrColor.length)
+				mDrawColorIndex = 0;
+			
+			line.addAll(points).color(arrColor[mDrawColorIndex++]);
+			mMap.addPolyline(line);
+		}
+	}
 	
 	private PlaceItemDetailClickListener mPlaceItemDetailClickListener = new PlaceItemDetailClickListener() {
 		
@@ -469,11 +526,32 @@ public class MapActivity extends BaseActivity {
 			}
 		}
 	};
-
+	
+	private DirectionsItemClickListener mDirectionItemClickListener = new DirectionsItemClickListener() {
+		
+		@Override
+		public void onClickDetailItem(RouteVO item) {
+			// TODO Auto-generated method stub
+			if(mMap != null){
+				mMap.clear();
+				mMapManager.drawPointToMap(mMap, item);
+				drawPolyline(item);
+			}
+			
+		}
+	};
+	
 	public void onBackPressed(){
-		if(mNearBySearchFragment != null){
-			removeFragment(mNearBySearchFragment, R.anim.slide_out_bottom, R.anim.slide_out_bottom);
-			mNearBySearchFragment = null;
+		if(mNearBySearchFragment != null || mDirectionFragment != null){
+			if(mNearBySearchFragment != null){
+				removeFragment(mNearBySearchFragment, R.anim.slide_out_bottom, R.anim.slide_out_bottom);
+				mNearBySearchFragment = null;
+			}
+			
+			if(mDirectionFragment != null){
+				removeFragment(mDirectionFragment, R.anim.slide_out_bottom, R.anim.slide_out_bottom);
+				mDirectionFragment = null;
+			}
 		}else{
 			super.onBackPressed();
 		}

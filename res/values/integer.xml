@@ -2,4 +2,6 @@
 <resources>
     <integer name="common_animation_duration">500</integer>
     <integer name="activity_animation_duration">200</integer>
+    <integer name="setting_map_place_radius_max">3000</integer>
+    <integer name="setting_map_place_radius_default">1000</integer>
 </resources>
