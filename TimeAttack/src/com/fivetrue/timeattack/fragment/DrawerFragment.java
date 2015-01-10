@@ -5,12 +5,15 @@ import com.android.volley.toolbox.ImageLoader.ImageContainer;
 import com.android.volley.toolbox.ImageLoader.ImageListener;
 import com.fivetrue.network.VolleyInstance;
 import com.fivetrue.timeattack.R;
+import com.fivetrue.timeattack.activity.BaseActivity;
 import com.fivetrue.timeattack.activity.MainActivity;
 import com.fivetrue.timeattack.activity.MapActivity;
 import com.fivetrue.timeattack.activity.SearchLocationActivity;
 import com.fivetrue.timeattack.activity.SettingActivity;
 import com.fivetrue.timeattack.activity.manager.BaseActivityManager;
 import com.fivetrue.timeattack.constants.ActionConstants;
+import com.fivetrue.timeattack.ga.GoogleAnalyticsConstants;
+import com.fivetrue.timeattack.ga.GoogleAnalyticsConstants.ACTION;
 import com.fivetrue.timeattack.login.LoginManager;
 import com.fivetrue.timeattack.preference.UserPreferenceManager;
 import com.fivetrue.timeattack.utils.ImageUtils;
@@ -133,6 +136,7 @@ public class DrawerFragment extends BaseFragment {
 					Intent i = new Intent(getActivity(), MainActivity.class);
 					i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 					BaseActivityManager.startActivity(getActivity(), i);
+					((BaseActivity)getActivity()).mGaManager.sendEven(getClass().getSimpleName(), ACTION.TAG, ACTION.GO_HOME);
 				}
 				break;
 
@@ -141,6 +145,7 @@ public class DrawerFragment extends BaseFragment {
 					Intent i = new Intent(getActivity(), MapActivity.class);
 					i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 					BaseActivityManager.startActivity(getActivity(), i);
+					((BaseActivity)getActivity()).mGaManager.sendEven(getClass().getSimpleName(), ACTION.TAG, ACTION.GO_MAP);
 				}
 				break;
 
@@ -149,6 +154,7 @@ public class DrawerFragment extends BaseFragment {
 					Intent i = new Intent(getActivity(), SearchLocationActivity.class);
 					i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 					BaseActivityManager.startActivity(getActivity(), i);
+					((BaseActivity)getActivity()).mGaManager.sendEven(getClass().getSimpleName(), ACTION.TAG, ACTION.GO_SEARCH);
 				}
 				break;
 				
@@ -158,6 +164,7 @@ public class DrawerFragment extends BaseFragment {
 					Intent i = new Intent(getActivity(), SettingActivity.class);
 					i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 					BaseActivityManager.startActivity(getActivity(), i);
+					((BaseActivity)getActivity()).mGaManager.sendEven(getClass().getSimpleName(), ACTION.TAG, ACTION.GO_SEARCH);
 				}
 				break;
 			}

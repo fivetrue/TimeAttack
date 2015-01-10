@@ -1,6 +1,7 @@
 package com.fivetrue.timeattack.activity;
 
 import com.fivetrue.timeattack.R;
+import com.fivetrue.timeattack.ga.GoogleAnalyticsConstants.*;
 import com.fivetrue.timeattack.login.LoginManager;
 import com.fivetrue.timeattack.preference.MapPreferenceManager;
 import com.google.android.gms.maps.GoogleMap;
@@ -160,17 +161,22 @@ public class SettingActivity extends BaseActivity {
 					switch(checkedId){
 					case R.id.rb_setting_map_normal : 
 						mMapPref.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+						mGaManager.sendEven(getClass().getSimpleName(), SETTING.TAG, SETTING.MAP_NORMAL);
 						break;
 					case R.id.rb_setting_map_satellite :
 						mMapPref.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
+						mGaManager.sendEven(getClass().getSimpleName(), SETTING.TAG, SETTING.MAP_SATELLITE);
 						break;
 
 					case R.id.rb_setting_map_terrain :
 						mMapPref.setMapType(GoogleMap.MAP_TYPE_TERRAIN);
+						mGaManager.sendEven(getClass().getSimpleName(), SETTING.TAG, SETTING.MAP_TERRAIN);
+						
 						break;
 
 					case R.id.rb_setting_map_hybrid :
 						mMapPref.setMapType(GoogleMap.MAP_TYPE_HYBRID);
+						mGaManager.sendEven(getClass().getSimpleName(), SETTING.TAG, SETTING.MAP_HYBRID);
 						break;
 					}
 				}
@@ -187,6 +193,7 @@ public class SettingActivity extends BaseActivity {
 				// TODO Auto-generated method stub
 				if(seekBar != null){
 					mMapPref.setMapPlaceRadius(seekBar.getProgress());
+					mGaManager.sendEven(getClass().getSimpleName(), SETTING.TAG, SETTING.PLACE_RADIUS);
 				}
 			}
 			
@@ -216,6 +223,9 @@ public class SettingActivity extends BaseActivity {
 				if(buttonView != null){
 					buttonView.setChecked(isChecked);
 					mMapPref.setRotateEnable(isChecked);
+					if(isChecked){
+						mGaManager.sendEven(getClass().getSimpleName(), SETTING.TAG, SETTING.ROTATION_MAP);
+					}
 				}
 			}
 		});
@@ -229,6 +239,10 @@ public class SettingActivity extends BaseActivity {
 				if(buttonView != null){
 					buttonView.setChecked(isChecked);
 					mMapPref.setZoomButtonEnable(isChecked);
+					
+					if(isChecked){
+						mGaManager.sendEven(getClass().getSimpleName(), SETTING.TAG, SETTING.ZOOM_BUTTON);
+					}
 				}
 			}
 		});
@@ -249,6 +263,7 @@ public class SettingActivity extends BaseActivity {
 							@Override
 							public void onSuccess(final long userId) {
 								showKakaoLoginButton(true);
+								mGaManager.sendEven(getClass().getSimpleName(), ACCOUNT.TAG, ACCOUNT.LOGOUT_KAKAO);
 							}
 
 							@Override
@@ -361,8 +376,7 @@ public class SettingActivity extends BaseActivity {
 			@Override
 			public void onSuccess(UserProfile userProfile) {
 				// TODO Auto-generated method stub
-				System.out.println("ojkwon : userProfile = " + userProfile.toString());
-				System.out.println("ojkwon : userProfile = " + userProfile.getId());
+				mGaManager.sendEven(getClass().getSimpleName(), ACCOUNT.TAG, ACCOUNT.LOGIN_KAKAO);
 			}
 			
 			@Override
