@@ -24,8 +24,10 @@ import com.fivetrue.timeattack.constants.ActionConstants;
 import com.fivetrue.timeattack.database.NetworkResultDBManager;
 import com.fivetrue.timeattack.fragment.BaseFragment;
 import com.fivetrue.timeattack.fragment.DrawerFragment;
+import com.fivetrue.timeattack.ga.GoogleAnalyticsManager;
 import com.fivetrue.timeattack.view.actionbar.CustomActionBar;
 import com.fivetrue.utils.Logger;
+import com.google.android.gms.analytics.GoogleAnalytics;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -69,6 +71,8 @@ abstract public class BaseActivity extends LocationActivity implements IRequestR
 	private LayoutInflater mInflater = null;
 
 	private ProgressDialog mProgressDialog = null;
+	
+	public GoogleAnalyticsManager mGaManager = null;
 
 	@Override
 	protected void onCreate(Bundle arg0) {
@@ -76,7 +80,7 @@ abstract public class BaseActivity extends LocationActivity implements IRequestR
 		super.onCreate(arg0);
 		setContentView(R.layout.activity_base);
 		mInflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
-
+		mGaManager = new GoogleAnalyticsManager(this);
 		initViews(mInflater);
 		initActionBar(mInflater);
 		initActionBarSetting(mInflater);
@@ -86,6 +90,8 @@ abstract public class BaseActivity extends LocationActivity implements IRequestR
 		if(isSettingNetworkResultBroadcast()){
 			registerReceiver(mNetworkSuccessBroadcastReceiver, filter);
 		}
+
+		mGaManager.sendView(getClass().getSimpleName());
 	}
 	
 	@Override

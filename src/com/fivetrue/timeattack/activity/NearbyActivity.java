@@ -6,13 +6,9 @@ import com.api.google.place.PlaceDetailAPIHelper;
 import com.api.google.place.PlacesConstans;
 import com.api.google.place.entry.PlacesDetailEntry;
 import com.api.google.place.model.PlaceVO;
-import com.api.seoul.SeoulAPIConstants;
-import com.api.seoul.subway.entry.SubwayInfoEntry;
-import com.api.seoul.subway.model.StationVO;
 import com.fivetrue.timeattack.R;
 import com.fivetrue.timeattack.activity.manager.NearbyActivityManager;
 import com.fivetrue.timeattack.utils.ImageUtils;
-import com.fivetrue.utils.Logger;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -162,7 +158,7 @@ public class NearbyActivity extends BaseActivity {
 		setDetailInfoFromPlaceDetailInfo((ViewGroup)mContentView.getChildAt(0) ,entry);
 
 		String subwayName = mManager.getSubwayNameFromPlacesSubwayData(mEntry);
-		loadingSubwayStaionInfo((ViewGroup)mContentView.getChildAt(0), subwayName);
+//		loadingSubwayStaionInfo((ViewGroup)mContentView.getChildAt(0), subwayName);
 	}
 
 	private void setLocationInfoFromPlaceDetailInfo(TextView tv, PlacesDetailEntry entry){
@@ -215,51 +211,51 @@ public class NearbyActivity extends BaseActivity {
 		}
 	}
 
-	private void loadingSubwayStaionInfo(final ViewGroup parent, String subwayName){
-		if(subwayName != null){
-			mManager.findingSubwayInfo(this, subwayName, new BaseResponseListener<SubwayInfoEntry>() {
-
-				@Override
-				public void onResponse(SubwayInfoEntry response) {
-					// TODO Auto-generated method stub
-					if(response != null){
-						if(response.getStatus().equals(SeoulAPIConstants.ResultInfo.OK)){
-							setSubwayInfoData(parent, response);
-						}else if(response.getStatus().equals(SeoulAPIConstants.ResultInfo.NO_DATA)){
-							Logger.e("station info", "No data");
-						}
-					}
-				}
-			});
-		}else{
-
-		}
-	}
-
-	private void setSubwayInfoData(ViewGroup parent, SubwayInfoEntry entry){
-		if(parent != null && entry != null){
-			for(StationVO vo : entry.getStationList()){
-				if(vo != null){
-					SubwayViewHolder viewHolder = new SubwayViewHolder();
-					LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
-					viewHolder.contentView =  (ViewGroup) inflater.inflate(R.layout.include_nearby_subway_info_layout, null);
-					viewHolder.layoutSubway = (ViewGroup) viewHolder.contentView.findViewById(R.id.layout_nearby_subway_info);
-					viewHolder.tvSubwayName = (TextView) viewHolder.contentView.findViewById(R.id.tv_nearby_subway_info_title);
-					viewHolder.tvSubwayLine = (TextView) viewHolder.contentView.findViewById(R.id.tv_nearby_subway_info);
-//					viewHolder.tvSubwayCode = (TextView) viewHolder.contentView.findViewById(R.id.tv_nearby_subway_info2);
-					viewHolder.tvSubwayForiegnCode = (TextView) viewHolder.contentView.findViewById(R.id.tv_nearby_subway_info3);
-					
-					viewHolder.layoutSubway.setBackground(getResources().getDrawable(R.color.nearby_primary_color));
-					viewHolder.tvSubwayName.setText(vo.getStationName());
-					viewHolder.tvSubwayLine.setText(entry.getLineCodeToName(NearbyActivity.this, vo.getLineNumber()));
-//					viewHolder.tvSubwayCode.setText(vo.getStationCode());
-					viewHolder.tvSubwayForiegnCode.setText(vo.getForiegnCode());
-					
-					parent.addView(viewHolder.contentView);
-				}
-			}
-		}
-	}
+//	private void loadingSubwayStaionInfo(final ViewGroup parent, String subwayName){
+//		if(subwayName != null){
+//			mManager.findingSubwayInfo(this, subwayName, new BaseResponseListener<SubwayInfoEntry>() {
+//
+//				@Override
+//				public void onResponse(SubwayInfoEntry response) {
+//					// TODO Auto-generated method stub
+//					if(response != null){
+//						if(response.getStatus().equals(SeoulAPIConstants.ResultInfo.OK)){
+//							setSubwayInfoData(parent, response);
+//						}else if(response.getStatus().equals(SeoulAPIConstants.ResultInfo.NO_DATA)){
+//							Logger.e("station info", "No data");
+//						}
+//					}
+//				}
+//			});
+//		}else{
+//
+//		}
+//	}
+//
+//	private void setSubwayInfoData(ViewGroup parent, SubwayInfoEntry entry){
+//		if(parent != null && entry != null){
+//			for(StationVO vo : entry.getStationList()){
+//				if(vo != null){
+//					SubwayViewHolder viewHolder = new SubwayViewHolder();
+//					LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
+//					viewHolder.contentView =  (ViewGroup) inflater.inflate(R.layout.include_nearby_subway_info_layout, null);
+//					viewHolder.layoutSubway = (ViewGroup) viewHolder.contentView.findViewById(R.id.layout_nearby_subway_info);
+//					viewHolder.tvSubwayName = (TextView) viewHolder.contentView.findViewById(R.id.tv_nearby_subway_info_title);
+//					viewHolder.tvSubwayLine = (TextView) viewHolder.contentView.findViewById(R.id.tv_nearby_subway_info);
+////					viewHolder.tvSubwayCode = (TextView) viewHolder.contentView.findViewById(R.id.tv_nearby_subway_info2);
+//					viewHolder.tvSubwayForiegnCode = (TextView) viewHolder.contentView.findViewById(R.id.tv_nearby_subway_info3);
+//					
+//					viewHolder.layoutSubway.setBackground(getResources().getDrawable(R.color.nearby_primary_color));
+//					viewHolder.tvSubwayName.setText(vo.getStationName());
+//					viewHolder.tvSubwayLine.setText(entry.getLineCodeToName(NearbyActivity.this, vo.getLineNumber()));
+////					viewHolder.tvSubwayCode.setText(vo.getStationCode());
+//					viewHolder.tvSubwayForiegnCode.setText(vo.getForiegnCode());
+//					
+//					parent.addView(viewHolder.contentView);
+//				}
+//			}
+//		}
+//	}
 
 
 	@Override

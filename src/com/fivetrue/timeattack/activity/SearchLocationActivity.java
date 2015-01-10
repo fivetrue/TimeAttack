@@ -8,6 +8,8 @@ import com.api.google.geocoding.entry.GeocodingEntry;
 import com.fivetrue.timeattack.R;
 import com.fivetrue.timeattack.activity.manager.SearchActivityManager;
 import com.fivetrue.timeattack.fragment.search.AddressSearchListFragment;
+import com.fivetrue.timeattack.ga.GoogleAnalyticsConstants.ACTION;
+import com.fivetrue.timeattack.ga.GoogleAnalyticsConstants.SETTING;
 
 import android.location.Location;
 import android.os.Bundle;
@@ -187,6 +189,7 @@ public class SearchLocationActivity extends BaseActivity {
 			return ;
 		}
 		
+		mGaManager.sendEven(getClass().getSimpleName(), ACTION.TAG, ACTION.DO_SEARCH);
 		final String input = mViewHolder.et_input.getText().toString().trim();
 		new GeocodingAPIHelper(this, this).requestGeocoding(input, new BaseResponseListener<GeocodingEntry>() {
 
@@ -216,7 +219,6 @@ public class SearchLocationActivity extends BaseActivity {
 		}else{
 			mSearchFragment.onLoadListData(entry.getAddressList());
 		}
-		
 	}
 	
 	@Override

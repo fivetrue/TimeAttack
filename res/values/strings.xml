@@ -2,7 +2,10 @@
 <resources>
     <string name="api_map_key">AIzaSyDBd9BYtE13_5X0nfbOzqhwqA4OfPbX6_M</string>
     <string name="kakao_app_key">708ce72eae3ef4c13e303f2291fbd00b</string>
-
+    
+    <string name="admob_add_full">ca-app-pub-9489297717026983/2594941359</string>
+    <string name="admob_add_footer">ca-app-pub-9489297717026983/8641474956</string>
+    <string name="admob_add_header">ca-app-pub-9489297717026983/5408806953</string>
     <!-- Common -->
     <string name="app_name">타임어택</string>
     <string name="action_settings">Settings</string>

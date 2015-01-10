@@ -23,6 +23,7 @@ import com.fivetrue.timeattack.fragment.map.DirectionsListFragment;
 import com.fivetrue.timeattack.fragment.map.DirectionsListFragment.DirectionsItemClickListener;
 import com.fivetrue.timeattack.fragment.map.NearBySearchListFragment;
 import com.fivetrue.timeattack.fragment.map.NearBySearchListFragment.PlaceItemDetailClickListener;
+import com.fivetrue.timeattack.ga.GoogleAnalyticsConstants.ACTION;
 import com.fivetrue.timeattack.preference.MapPreferenceManager;
 import com.fivetrue.timeattack.utils.ImageUtils;
 import com.google.android.gms.maps.GoogleMap;
@@ -302,6 +303,9 @@ public class MapActivity extends BaseActivity {
 	public void onClickAcitionMenuLocationSearch(final View view) {
 		// TODO Auto-generated method stub
 		if(isGpsEnable()){
+			
+			mGaManager.sendEven(getClass().getSimpleName(), ACTION.TAG, ACTION.DO_CURRENT_LOCATION_SEARCH);
+			
 			view.setSelected(!view.isSelected());
 
 			if(mMyLocationAyncTask == null){
@@ -420,7 +424,7 @@ public class MapActivity extends BaseActivity {
 			if(latitude == INVALID_VALUE || longitude == INVALID_VALUE)
 				return;
 			
-			
+			mGaManager.sendEven(getClass().getSimpleName(), ACTION.TAG, ACTION.DO_FIND_NEAR_BY_SEARCH);
 			new PlaceAPIHelper(MapActivity.this, API_TYPE.NEAR_BY_SEARCH, MapActivity.this)
 			.requestNearBySearchSubway(latitude, longitude, mMapPref.getMapPlaceRadius(), new BaseResponseListener<PlacesEntry>() {
 				
@@ -454,6 +458,7 @@ public class MapActivity extends BaseActivity {
 		public void onClick(View v) {
 			// TODO Auto-generated method stub
 			if(mMap != null && mMyLocation != null && mDestinationLatLng != null){
+				mGaManager.sendEven(getClass().getSimpleName(), ACTION.TAG, ACTION.DO_FIND_DIRECTION);
 				new DirectionsAPIHelper(MapActivity.this, MapActivity.this)
 				.requestTransitModeDirections(mMyLocation.getLatitude(), mMyLocation.getLongitude(),
 						mDestinationLatLng.latitude, mDestinationLatLng.longitude,

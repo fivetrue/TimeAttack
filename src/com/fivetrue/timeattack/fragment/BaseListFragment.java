@@ -3,6 +3,10 @@ package com.fivetrue.timeattack.fragment;
 
 import com.fivetrue.timeattack.R;
 import com.fivetrue.timeattack.view.adapter.MyBaseAdapter;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdSize;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.InterstitialAd;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -61,15 +65,27 @@ abstract public class BaseListFragment <T> extends BaseFragment implements OnIte
 		listFooter = initFooter();
 		listHeader = initHeader();
 		
+		listView.addHeaderView(makeAdView(getResources().getString(R.string.admob_add_header), AdSize.LARGE_BANNER));
+		
 		if(listHeader != null){
 			listView.addHeaderView(listHeader, null, false);
 		}
 		
+		listView.addFooterView(makeAdView(getResources().getString(R.string.admob_add_footer), AdSize.LARGE_BANNER));
+
 		if(listFooter != null){
 			listView.addFooterView(listFooter, null, false);
 		}
 		
 		configView(listView, inflater);
+	}
+	
+	public AdView makeAdView(String adId, AdSize adSize){
+		AdView adView = new AdView(getActivity());
+		adView.setAdUnitId(adId);
+		adView.setAdSize(adSize);
+		adView.loadAd(new AdRequest.Builder().build());
+		return adView;
 	}
 	
 	protected void setEmptyLayout(boolean isShowing){
